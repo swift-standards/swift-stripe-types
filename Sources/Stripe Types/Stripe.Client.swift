@@ -52,7 +52,6 @@ import Stripe_Tokens_Types
 // public var stripeJsScript: some HTML { script().src("https://js.stripe.com/v3/") }
 
 extension Stripe {
-    @DependencyClient
     public struct Client: Sendable {
         public var balance: Stripe.Balance.Client
         public var balanceTransactions: Stripe.BalanceTransactions.Client

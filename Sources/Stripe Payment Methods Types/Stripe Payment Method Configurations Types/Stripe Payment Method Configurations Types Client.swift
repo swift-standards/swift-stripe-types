@@ -9,32 +9,28 @@ import Dependencies
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.PaymentMethodConfigurations {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/payment_method_configurations/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Create.Request) async throws ->
+            @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.PaymentMethodConfigurations.Configuration
 
         // https://docs.stripe.com/api/payment_method_configurations/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.PaymentMethodConfigurations.Configuration.ID) async throws ->
+            @Sendable (_ id: Stripe.PaymentMethodConfigurations.Configuration.ID) async throws(Witness.Unimplemented.Error) ->
                 Stripe.PaymentMethodConfigurations.Configuration
 
         // https://docs.stripe.com/api/payment_method_configurations/update.md
-        @DependencyEndpoint
         public var update:
             @Sendable (
                 _ id: Stripe.PaymentMethodConfigurations.Configuration.ID, _ request: Update.Request
-            ) async throws -> Stripe.PaymentMethodConfigurations.Configuration
+            ) async throws(Witness.Unimplemented.Error) -> Stripe.PaymentMethodConfigurations.Configuration
 
         // https://docs.stripe.com/api/payment_method_configurations/list.md
-        @DependencyEndpoint
-        public var list: @Sendable (_ request: List.Request) async throws -> List.Response
+        public var list: @Sendable (_ request: List.Request) async throws(Witness.Unimplemented.Error) -> List.Response
     }
 }

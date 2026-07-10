@@ -260,7 +260,7 @@ extension Stripe.PaymentIntents.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let paymentIntents = Path {
+    public static var paymentIntents: Path<PathBuilder.Component<String>> { Path {
         "payment_intents"
-    }
+    } }
 }

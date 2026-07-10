@@ -20,7 +20,7 @@ struct DisputesRouterTests {
     func testRetrieveDisputeURL() throws {
         let router: Stripe.Disputes.API.Router = .init()
 
-        let id = Stripe.Disputes.Dispute.ID(rawValue: "dp_123")
+        let id = try #require(Stripe.Disputes.Dispute.ID(rawValue: "dp_123"))
         let api: Stripe.Disputes.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -36,7 +36,7 @@ struct DisputesRouterTests {
     func testUpdateDisputeURL() throws {
         let router: Stripe.Disputes.API.Router = .init()
 
-        let id = Stripe.Disputes.Dispute.ID(rawValue: "dp_123")
+        let id = try #require(Stripe.Disputes.Dispute.ID(rawValue: "dp_123"))
         let updateRequest = Stripe.Disputes.Update.Request(
             evidence: .init(
                 customerCommunication: "Email exchange",
@@ -75,7 +75,7 @@ struct DisputesRouterTests {
     func testCloseDisputeURL() throws {
         let router: Stripe.Disputes.API.Router = .init()
 
-        let id = Stripe.Disputes.Dispute.ID(rawValue: "dp_456")
+        let id = try #require(Stripe.Disputes.Dispute.ID(rawValue: "dp_456"))
         let api: Stripe.Disputes.API = .close(id: id)
 
         let url = router.url(for: api)
@@ -91,7 +91,7 @@ struct DisputesRouterTests {
     func testRetrieveDisputeMethod() throws {
         let router: Stripe.Disputes.API.Router = .init()
 
-        let id = Stripe.Disputes.Dispute.ID(rawValue: "dp_789")
+        let id = try #require(Stripe.Disputes.Dispute.ID(rawValue: "dp_789"))
         let api: Stripe.Disputes.API = .retrieve(id: id)
         let request = try router.request(for: api)
 
@@ -102,7 +102,7 @@ struct DisputesRouterTests {
     func testUpdateDisputeMethod() throws {
         let router: Stripe.Disputes.API.Router = .init()
 
-        let id = Stripe.Disputes.Dispute.ID(rawValue: "dp_789")
+        let id = try #require(Stripe.Disputes.Dispute.ID(rawValue: "dp_789"))
         let updateRequest = Stripe.Disputes.Update.Request(
             submit: true
         )
@@ -116,7 +116,7 @@ struct DisputesRouterTests {
     func testCloseDisputeMethod() throws {
         let router: Stripe.Disputes.API.Router = .init()
 
-        let id = Stripe.Disputes.Dispute.ID(rawValue: "dp_close")
+        let id = try #require(Stripe.Disputes.Dispute.ID(rawValue: "dp_close"))
         let api: Stripe.Disputes.API = .close(id: id)
         let request = try router.request(for: api)
 

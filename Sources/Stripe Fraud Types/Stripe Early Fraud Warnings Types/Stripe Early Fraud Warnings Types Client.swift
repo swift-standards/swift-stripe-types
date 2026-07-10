@@ -4,15 +4,13 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Fraud.EarlyFraudWarnings {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/radar/early_fraud_warnings/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: EarlyFraudWarning.ID) async throws -> EarlyFraudWarning
+            @Sendable (_ id: EarlyFraudWarning.ID) async throws(Witness.Unimplemented.Error) -> EarlyFraudWarning
 
         // https://docs.stripe.com/api/radar/early_fraud_warnings/list.md
-        @DependencyEndpoint
-        public var list: @Sendable (_ request: API.List.Request) async throws -> API.List.Response
+        public var list: @Sendable (_ request: API.List.Request) async throws(Witness.Unimplemented.Error) -> API.List.Response
     }
 }

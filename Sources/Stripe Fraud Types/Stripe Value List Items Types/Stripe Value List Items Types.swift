@@ -1,7 +1,7 @@
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.Fraud.ValueListItems.API {
     // https://docs.stripe.com/api/radar/value_list_items/create.md

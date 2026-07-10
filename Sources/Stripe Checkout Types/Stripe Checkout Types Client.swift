@@ -2,7 +2,6 @@ import Foundation
 import Stripe_Types_Shared
 
 extension Stripe.Checkout {
-    @DependencyClient
     @dynamicMemberLookup
     public struct Client: Sendable {
         public let sessions: Stripe.Checkout.Sessions.Client

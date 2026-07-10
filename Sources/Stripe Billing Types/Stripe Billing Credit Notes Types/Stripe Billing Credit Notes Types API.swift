@@ -217,15 +217,15 @@ extension Stripe.Billing.CreditNotes.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let credit_notes = Path {
+    public static var credit_notes: Path<PathBuilder.Component<String>> { Path {
         "credit_notes"
-    }
+    } }
 
-    public static let preview = Path {
+    public static var preview: Path<PathBuilder.Component<String>> { Path {
         "preview"
-    }
+    } }
 
-    public static let voidPath = Path {
+    public static var voidPath: Path<PathBuilder.Component<String>> { Path {
         "void"
-    }
+    } }
 }

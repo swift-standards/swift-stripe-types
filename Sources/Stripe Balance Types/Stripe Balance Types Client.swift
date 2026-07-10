@@ -11,10 +11,9 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Balance {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/balance/retrieve.md
-        @DependencyEndpoint
-        public var retrieve: @Sendable () async throws -> Stripe.Balance
+        public var retrieve: @Sendable () async throws(Witness.Unimplemented.Error) -> Stripe.Balance
     }
 }

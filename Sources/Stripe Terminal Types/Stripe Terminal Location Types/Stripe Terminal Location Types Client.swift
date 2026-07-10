@@ -4,27 +4,22 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Terminal.Locations {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/terminal/locations/create.md
-        @DependencyEndpoint
-        public var create: @Sendable (_ request: Create.Request) async throws -> Location
+        public var create: @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Location
 
         // https://docs.stripe.com/api/terminal/locations/retrieve.md
-        @DependencyEndpoint
-        public var retrieve: @Sendable (_ id: Location.ID) async throws -> Location
+        public var retrieve: @Sendable (_ id: Location.ID) async throws(Witness.Unimplemented.Error) -> Location
 
         // https://docs.stripe.com/api/terminal/locations/update.md
-        @DependencyEndpoint
         public var update:
-            @Sendable (_ id: Location.ID, _ request: Update.Request) async throws -> Location
+            @Sendable (_ id: Location.ID, _ request: Update.Request) async throws(Witness.Unimplemented.Error) -> Location
 
         // https://docs.stripe.com/api/terminal/locations/list.md
-        @DependencyEndpoint
-        public var list: @Sendable (_ request: List.Request) async throws -> List.Response
+        public var list: @Sendable (_ request: List.Request) async throws(Witness.Unimplemented.Error) -> List.Response
 
         // https://docs.stripe.com/api/terminal/locations/delete.md
-        @DependencyEndpoint
-        public var delete: @Sendable (_ id: Location.ID) async throws -> DeletedObject<Location>
+        public var delete: @Sendable (_ id: Location.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<Location>
     }
 }

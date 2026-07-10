@@ -9,7 +9,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Products.Discounts {
@@ -50,15 +50,15 @@ extension Stripe.Products.Discounts.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let discount = Path {
+    public static var discount: Path<PathBuilder.Component<String>> { Path {
         "discount"
-    }
+    } }
 
-    public static let customers = Path {
+    public static var customers: Path<PathBuilder.Component<String>> { Path {
         "customers"
-    }
+    } }
 
-    public static let subscriptions = Path {
+    public static var subscriptions: Path<PathBuilder.Component<String>> { Path {
         "subscriptions"
-    }
+    } }
 }

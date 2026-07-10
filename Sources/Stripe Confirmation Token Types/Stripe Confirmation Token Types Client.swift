@@ -4,11 +4,10 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe {
-    @DependencyClient
+    @Witness
     public struct ConfirmationTokenClient: Sendable {
         // https://docs.stripe.com/api/confirmation_tokens/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: ConfirmationToken.ID) async throws -> ConfirmationToken
+            @Sendable (_ id: ConfirmationToken.ID) async throws(Witness.Unimplemented.Error) -> ConfirmationToken
     }
 }

@@ -2,51 +2,45 @@ import Dependencies
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.Customers.BankAccounts {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/customer_bank_accounts/create.md
-        @DependencyEndpoint
         public var create:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ request: Create.Request)
-                async throws
+                async throws(Witness.Unimplemented.Error)
                 -> BankAccount
 
         // https://docs.stripe.com/api/customer_bank_accounts/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ bankAccountId: BankAccount.ID)
-                async throws -> BankAccount
+                async throws(Witness.Unimplemented.Error) -> BankAccount
 
         // https://docs.stripe.com/api/customer_bank_accounts/update.md
-        @DependencyEndpoint
         public var update:
             @Sendable (
                 _ customerId: Stripe.Customers.Customer.ID, _ bankAccountId: BankAccount.ID,
                 _ request: Update.Request
-            ) async throws -> BankAccount
+            ) async throws(Witness.Unimplemented.Error) -> BankAccount
 
         // https://docs.stripe.com/api/customer_bank_accounts/list.md
-        @DependencyEndpoint
         public var list:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ request: List.Request)
-                async throws
+                async throws(Witness.Unimplemented.Error)
                 -> List.Response
 
         // https://docs.stripe.com/api/customer_bank_accounts/delete.md
-        @DependencyEndpoint
         public var delete:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ bankAccountId: BankAccount.ID)
-                async throws -> DeletedObject<BankAccount>
+                async throws(Witness.Unimplemented.Error) -> DeletedObject<BankAccount>
 
         // https://docs.stripe.com/api/customer_bank_accounts/verify.md
-        @DependencyEndpoint
         public var verify:
             @Sendable (
                 _ customerId: Stripe.Customers.Customer.ID, _ bankAccountId: BankAccount.ID,
                 _ request: Verify.Request
-            ) async throws -> BankAccount
+            ) async throws(Witness.Unimplemented.Error) -> BankAccount
     }
 }

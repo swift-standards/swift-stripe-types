@@ -10,37 +10,31 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Products.Products {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Stripe.Products.Products.Create.Request) async throws ->
+            @Sendable (_ request: Stripe.Products.Products.Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Products.Product
 
-        @DependencyEndpoint
         public var update:
             @Sendable (
                 _ id: Stripe.Products.Product.ID, _ request: Stripe.Products.Products.Update.Request
-            ) async throws -> Stripe.Products.Product
+            ) async throws(Witness.Unimplemented.Error) -> Stripe.Products.Product
 
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.Products.Product.ID) async throws -> Stripe.Products.Product
+            @Sendable (_ id: Stripe.Products.Product.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Products.Product
 
-        @DependencyEndpoint
         public var list:
-            @Sendable (_ request: Stripe.Products.Products.List.Request) async throws ->
+            @Sendable (_ request: Stripe.Products.Products.List.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Products.Products.List.Response
 
-        @DependencyEndpoint
         public var delete:
-            @Sendable (_ id: Stripe.Products.Product.ID) async throws -> DeletedObject<
+            @Sendable (_ id: Stripe.Products.Product.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<
                 Stripe.Products.Product
             >
 
-        @DependencyEndpoint
         public var search:
-            @Sendable (_ request: Stripe.Products.Products.Search.Request) async throws ->
+            @Sendable (_ request: Stripe.Products.Products.Search.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Products.Products.Search.Response
     }
 }

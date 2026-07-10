@@ -37,7 +37,7 @@ extension Stripe.Connect.AccountLinks.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let account_links = Path {
+    public static var account_links: Path<PathBuilder.Component<String>> { Path {
         "account_links"
-    }
+    } }
 }

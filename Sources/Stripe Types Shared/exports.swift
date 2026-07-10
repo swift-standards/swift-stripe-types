@@ -5,6 +5,10 @@
 //  Created by Coen ten Thije Boonkkamp on 10/08/2025.
 //
 
-@_exported import DependenciesMacros
-@_exported import Tagged
-@_exported import TypesFoundation
+@_exported import Dependencies
+@_exported import Tagged_Primitives
+@_exported import CasePaths
+@_exported import URLRouting
+@_exported import Parsing
+@_exported import URLFormCoding
+@_exported import URLFormCodingURLRouting

@@ -1,7 +1,7 @@
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.PaymentMethodDomains {
     // https://docs.stripe.com/api/payment_method_domains/create.md

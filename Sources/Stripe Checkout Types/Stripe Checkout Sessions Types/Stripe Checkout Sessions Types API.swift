@@ -137,11 +137,11 @@ extension Stripe.Checkout.Sessions.API {
 
 // Add path extensions for Sessions
 extension Path<PathBuilder.Component<String>> {
-    public static let sessions = Path {
+    public static var sessions: Path<PathBuilder.Component<String>> { Path {
         "sessions"
-    }
+    } }
 
-    public static let checkout = Path {
+    public static var checkout: Path<PathBuilder.Component<String>> { Path {
         "checkout"
-    }
+    } }
 }

@@ -128,10 +128,10 @@ extension Stripe.Billing.Credit.Grant.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let credit_grants = Path {
+    public static var credit_grants: Path<PathBuilder.Component<String>> { Path {
         "credit_grants"
-    }
-    public static let expire = Path {
+    } }
+    public static var expire: Path<PathBuilder.Component<String>> { Path {
         "expire"
-    }
+    } }
 }

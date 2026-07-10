@@ -164,5 +164,5 @@ extension Stripe.Billing.Subscriptions.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    package static let subscriptions = Path { "subscriptions" }
+    package static var subscriptions: Path<PathBuilder.Component<String>> { Path { "subscriptions" } }
 }

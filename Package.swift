@@ -1,4 +1,4 @@
-// swift-tools-version:6.0
+// swift-tools-version: 6.3.1
 
 import Foundation
 import PackageDescription
@@ -96,17 +96,27 @@ extension Target.Dependency {
 }
 
 extension Target.Dependency {
-    static var typesFoundation: Self { .product(name: "TypesFoundation", package: "swift-types-foundation") }
-    static var dependenciesMacros: Self { .product(name: "DependenciesMacros", package: "swift-dependencies") }
-    static var dependenciesTestSupport: Self { .product(name: "DependenciesTestSupport", package: "swift-dependencies") }
-    static var tagged: Self { .product(name: "Tagged", package: "swift-tagged") }
+    static var dependencies: Self { .product(name: "Dependencies", package: "swift-dependencies") }
+    static var dependenciesTestSupport: Self { .product(name: "Dependencies Test Support", package: "swift-dependencies") }
+    static var tagged: Self { .product(name: "Tagged Primitives", package: "swift-tagged-primitives") }
+    // TRANSITIONAL — retained third-party debt (pointfreeco + coenttb), not yet ported to institute
+    // equivalents this wave. swift-types-foundation used to funnel these transitively; now declared
+    // precisely. See swift-stripe-types port report for the gap analysis on each.
+    static var casePaths: Self { .product(name: "CasePaths", package: "swift-case-paths") }
+    static var urlRouting: Self { .product(name: "URLRouting", package: "swift-url-routing") }
+    static var parsing: Self { .product(name: "Parsing", package: "swift-parsing") }
+    static var urlFormCoding: Self { .product(name: "URLFormCoding", package: "swift-url-form-coding") }
+    static var urlFormCodingURLRouting: Self { .product(name: "URLFormCodingURLRouting", package: "swift-url-form-coding") }
 }
 
 let package = Package(
     name: "swift-stripe-types",
     platforms: [
-        .macOS(.v14),
-        .iOS(.v17)
+        .macOS(.v26),
+        .iOS(.v26),
+        .tvOS(.v26),
+        .watchOS(.v26),
+        .visionOS(.v26)
     ],
     products: [
         .library(name: .stripeTypes, targets: [.stripeTypes]),
@@ -154,22 +164,35 @@ let package = Package(
         .library(name: .stripeTypesModels, targets: [.stripeTypesModels])
     ],
     dependencies: [
-        .package(url: "https://github.com/coenttb/swift-types-foundation.git", from: "0.0.1"),
-        .package(url: "https://github.com/pointfreeco/swift-dependencies.git", from: "1.9.2"),
-        .package(url: "https://github.com/pointfreeco/swift-tagged.git", from: "0.10.0")
+        .package(url: "https://github.com/swift-foundations/swift-dependencies.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-tagged-primitives.git", branch: "main"),
+        // TRANSITIONAL — third-party debt retained this wave (see swift-stripe-types port report):
+        .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.7.1"),
+        .package(url: "https://github.com/swift-foundations/swift-url-routing.git", from: "0.6.2"),
+        .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.14.1"),
+        .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main")
     ],
     targets: [
         .target(
             name: .stripeTypesShared,
             dependencies: [
-                .typesFoundation,
-                .dependenciesMacros
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
             ]
         ),
         .target(
             name: .stripeTypesModels,
             dependencies: [
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged,
                 .stripeTypesShared
             ]
@@ -179,7 +202,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged,
                 .stripeBalance,
                 .stripeBalanceTransactions,
@@ -250,7 +278,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -266,7 +299,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -282,7 +320,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -298,7 +341,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -314,7 +362,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -330,7 +383,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -346,7 +404,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -362,7 +425,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -378,7 +446,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -394,7 +467,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -410,7 +488,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -426,7 +509,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -442,7 +530,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -458,7 +551,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -474,7 +572,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -490,7 +593,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -506,7 +614,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -522,7 +635,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -538,7 +656,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -554,7 +677,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -570,7 +698,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -586,7 +719,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -602,7 +740,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -618,7 +761,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -634,7 +782,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -650,7 +803,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -666,7 +824,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -682,7 +845,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -698,7 +866,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -714,7 +887,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -730,7 +908,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -746,7 +929,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -762,7 +950,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -778,7 +971,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -794,7 +992,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -810,7 +1013,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -826,7 +1034,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -842,7 +1055,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -858,7 +1076,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),
@@ -874,7 +1097,12 @@ let package = Package(
             dependencies: [
                 .stripeTypesModels,
                 .stripeTypesShared,
-                .typesFoundation,
+                .dependencies,
+                .casePaths,
+                .urlRouting,
+                .parsing,
+                .urlFormCoding,
+                .urlFormCodingURLRouting,
                 .tagged
             ]
         ),

@@ -31,7 +31,7 @@ extension Stripe.ConfirmationToken.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let confirmationTokens = Path {
+    public static var confirmationTokens: Path<PathBuilder.Component<String>> { Path {
         "confirmation_tokens"
-    }
+    } }
 }

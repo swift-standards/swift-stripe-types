@@ -226,31 +226,31 @@ extension Stripe.Billing.Quotes.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let quotes = Path {
+    public static var quotes: Path<PathBuilder.Component<String>> { Path {
         "quotes"
-    }
+    } }
 
-    public static let accept = Path {
+    public static var accept: Path<PathBuilder.Component<String>> { Path {
         "accept"
-    }
+    } }
 
-    public static let quotes_cancel = Path {
+    public static var quotes_cancel: Path<PathBuilder.Component<String>> { Path {
         "cancel"
-    }
+    } }
 
-    public static let quotes_finalize = Path {
+    public static var quotes_finalize: Path<PathBuilder.Component<String>> { Path {
         "finalize"
-    }
+    } }
 
-    public static let pdf = Path {
+    public static var pdf: Path<PathBuilder.Component<String>> { Path {
         "pdf"
-    }
+    } }
 
-    public static let line_items = Path {
+    public static var line_items: Path<PathBuilder.Component<String>> { Path {
         "line_items"
-    }
+    } }
 
-    public static let computed_upfront_line_items = Path {
+    public static var computed_upfront_line_items: Path<PathBuilder.Component<String>> { Path {
         "computed_upfront_line_items"
-    }
+    } }
 }

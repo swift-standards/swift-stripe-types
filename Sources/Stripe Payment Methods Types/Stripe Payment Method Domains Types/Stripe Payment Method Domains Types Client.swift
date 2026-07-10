@@ -2,37 +2,32 @@ import Dependencies
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.PaymentMethodDomains {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/payment_method_domains/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Create.Request) async throws -> Stripe.PaymentMethodDomain
+            @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.PaymentMethodDomain
 
         // https://docs.stripe.com/api/payment_method_domains/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.PaymentMethodDomain.ID) async throws ->
+            @Sendable (_ id: Stripe.PaymentMethodDomain.ID) async throws(Witness.Unimplemented.Error) ->
                 Stripe.PaymentMethodDomain
 
         // https://docs.stripe.com/api/payment_method_domains/update.md
-        @DependencyEndpoint
         public var update:
-            @Sendable (_ id: Stripe.PaymentMethodDomain.ID, _ request: Update.Request) async throws
+            @Sendable (_ id: Stripe.PaymentMethodDomain.ID, _ request: Update.Request) async throws(Witness.Unimplemented.Error)
                 ->
                 Stripe.PaymentMethodDomain
 
         // https://docs.stripe.com/api/payment_method_domains/list.md
-        @DependencyEndpoint
-        public var list: @Sendable (_ request: List.Request) async throws -> List.Response
+        public var list: @Sendable (_ request: List.Request) async throws(Witness.Unimplemented.Error) -> List.Response
 
         // https://docs.stripe.com/api/payment_method_domains/validate.md
-        @DependencyEndpoint
         public var validate:
-            @Sendable (_ id: Stripe.PaymentMethodDomain.ID) async throws ->
+            @Sendable (_ id: Stripe.PaymentMethodDomain.ID) async throws(Witness.Unimplemented.Error) ->
                 Stripe.PaymentMethodDomain
     }
 }

@@ -114,7 +114,7 @@ extension Stripe.PaymentLinks.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let paymentLinks = Path {
+    public static var paymentLinks: Path<PathBuilder.Component<String>> { Path {
         "payment_links"
-    }
+    } }
 }

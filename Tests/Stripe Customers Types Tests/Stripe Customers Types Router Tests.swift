@@ -35,7 +35,7 @@ struct CustomerRouterTests {
     func testRetrieveCustomerURL() throws {
         let router: Stripe.Customers.API.Router = .init()
 
-        let id = Stripe.Customers.Customer.ID(rawValue: "cus_123")
+        let id = try #require(Stripe.Customers.Customer.ID(rawValue: "cus_123"))
         let api: Stripe.Customers.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -51,7 +51,7 @@ struct CustomerRouterTests {
     func testUpdateCustomerURL() throws {
         let router: Stripe.Customers.API.Router = .init()
 
-        let id = Stripe.Customers.Customer.ID(rawValue: "cus_123")
+        let id = try #require(Stripe.Customers.Customer.ID(rawValue: "cus_123"))
         let updateRequest = Stripe.Customers.Update.Request(
             description: "Updated customer",
             metadata: ["updated": "true"]
@@ -87,7 +87,7 @@ struct CustomerRouterTests {
     func testDeleteCustomerURL() throws {
         let router: Stripe.Customers.API.Router = .init()
 
-        let id = Stripe.Customers.Customer.ID(rawValue: "cus_123")
+        let id = try #require(Stripe.Customers.Customer.ID(rawValue: "cus_123"))
         let api: Stripe.Customers.API = .delete(id: id)
 
         let url = router.url(for: api)

@@ -140,19 +140,19 @@ extension Stripe.Billing.Meters.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let billing = Path {
+    public static var billing: Path<PathBuilder.Component<String>> { Path {
         "billing"
-    }
+    } }
 
-    public static let meters = Path {
+    public static var meters: Path<PathBuilder.Component<String>> { Path {
         "meters"
-    }
+    } }
 
-    public static let deactivate = Path {
+    public static var deactivate: Path<PathBuilder.Component<String>> { Path {
         "deactivate"
-    }
+    } }
 
-    public static let reactivate = Path {
+    public static var reactivate: Path<PathBuilder.Component<String>> { Path {
         "reactivate"
-    }
+    } }
 }

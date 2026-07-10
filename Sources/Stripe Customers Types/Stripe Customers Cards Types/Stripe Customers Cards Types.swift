@@ -1,7 +1,7 @@
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.Customers {
     public enum Cards: Sendable {}

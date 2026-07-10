@@ -33,7 +33,7 @@ struct FilesRouterTests {
     func testRetrieveFileURL() throws {
         let router: Stripe.Files.API.Router = .init()
 
-        let id = Stripe.Files.File.ID(rawValue: "file_123")
+        let id = try #require(Stripe.Files.File.ID(rawValue: "file_123"))
         let api: Stripe.Files.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -85,7 +85,7 @@ struct FilesRouterTests {
     func testRetrieveFileMethod() throws {
         let router: Stripe.Files.API.Router = .init()
 
-        let id = Stripe.Files.File.ID(rawValue: "file_456")
+        let id = try #require(Stripe.Files.File.ID(rawValue: "file_456"))
         let api: Stripe.Files.API = .retrieve(id: id)
         let request = try router.request(for: api)
 

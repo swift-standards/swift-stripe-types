@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.UsageRecordSummary {
@@ -55,5 +55,5 @@ extension Stripe.Billing.UsageRecordSummary.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    package static let usage_record_summaries = Path { "usage_record_summaries" }
+    package static var usage_record_summaries: Path<PathBuilder.Component<String>> { Path { "usage_record_summaries" } }
 }

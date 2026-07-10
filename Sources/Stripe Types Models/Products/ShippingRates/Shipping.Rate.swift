@@ -7,7 +7,7 @@
 
 import Foundation
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 // https://docs.stripe.com/api/shipping_rates/object.md
 

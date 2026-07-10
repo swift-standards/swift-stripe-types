@@ -1,7 +1,7 @@
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.Products.ShippingRates {
     // https://docs.stripe.com/api/shipping_rates/create.md

@@ -2,9 +2,8 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
-import UnixEpochParsing
 
 extension Stripe.Products.Coupons {
     @CasePathable
@@ -100,7 +99,7 @@ extension Stripe.Products.Coupons.API {
 
 // Add path extensions for Coupons
 extension Path<PathBuilder.Component<String>> {
-    public static let coupons = Path {
+    public static var coupons: Path<PathBuilder.Component<String>> { Path {
         "coupons"
-    }
+    } }
 }

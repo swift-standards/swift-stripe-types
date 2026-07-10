@@ -1,6 +1,6 @@
 import Foundation
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.Capital {
     public struct FinancingOffer: Codable, Equatable, Sendable, Identifiable {

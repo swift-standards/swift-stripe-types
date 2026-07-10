@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Customers.Cards {
@@ -107,7 +107,7 @@ extension Stripe.Customers.Cards.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let cards = Path {
+    public static var cards: Path<PathBuilder.Component<String>> { Path {
         "cards"
-    }
+    } }
 }

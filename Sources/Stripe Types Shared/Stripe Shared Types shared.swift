@@ -10,23 +10,23 @@ import Parsing
 import URLRouting
 
 extension Path<PathBuilder.Component<String>> {
-    package static let v1 = Path {
+    package static var v1: Path<PathBuilder.Component<String>> { Path {
         "v1"
-    }
+    } }
 
-    package static let v2 = Path {
+    package static var v2: Path<PathBuilder.Component<String>> { Path {
         "v2"
-    }
+    } }
 
-    package static let v3 = Path {
+    package static var v3: Path<PathBuilder.Component<String>> { Path {
         "v3"
-    }
+    } }
 
-    package static let v4 = Path {
+    package static var v4: Path<PathBuilder.Component<String>> { Path {
         "v4"
-    }
+    } }
 
-    package static let v5 = Path {
+    package static var v5: Path<PathBuilder.Component<String>> { Path {
         "v5"
-    }
+    } }
 }

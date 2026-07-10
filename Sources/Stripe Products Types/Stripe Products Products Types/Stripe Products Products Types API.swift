@@ -10,7 +10,6 @@ import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
-import UnixEpochParsing
 
 extension Stripe.Products.Products {
     @CasePathable
@@ -141,5 +140,5 @@ extension Stripe.Products.Products.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    package static let products = Path { "products" }
+    package static var products: Path<PathBuilder.Component<String>> { Path { "products" } }
 }

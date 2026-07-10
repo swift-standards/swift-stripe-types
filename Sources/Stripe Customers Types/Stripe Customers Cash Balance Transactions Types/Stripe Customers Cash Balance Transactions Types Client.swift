@@ -2,24 +2,22 @@ import Dependencies
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.Customers.CashBalanceTransactions {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/cash_balance_transactions/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
             @Sendable (
                 _ customerId: Stripe.Customers.Customer.ID,
                 _ transactionId: CashBalanceTransaction.ID
-            ) async throws -> CashBalanceTransaction
+            ) async throws(Witness.Unimplemented.Error) -> CashBalanceTransaction
 
         // https://docs.stripe.com/api/cash_balance_transactions/list.md
-        @DependencyEndpoint
         public var list:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ request: List.Request)
-                async throws
+                async throws(Witness.Unimplemented.Error)
                 -> List.Response
     }
 }

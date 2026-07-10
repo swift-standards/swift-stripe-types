@@ -7,7 +7,7 @@
 
 import Foundation
 @_exported import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.Billing {
     public enum SubscriptionItems {}

@@ -8,9 +8,7 @@
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import TypesFoundation
 import URLRouting
-import UnixEpochParsing
 
 extension Stripe.Billing {
     public enum API: Equatable, Sendable {

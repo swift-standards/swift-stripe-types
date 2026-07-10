@@ -9,7 +9,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Connect.Accounts {
@@ -131,11 +131,11 @@ extension Stripe.Connect.Accounts.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    static let accounts = Path {
+    static var accounts: Path<PathBuilder.Component<String>> { Path {
         "accounts"
-    }
+    } }
 
-    static let reject = Path {
+    static var reject: Path<PathBuilder.Component<String>> { Path {
         "reject"
-    }
+    } }
 }

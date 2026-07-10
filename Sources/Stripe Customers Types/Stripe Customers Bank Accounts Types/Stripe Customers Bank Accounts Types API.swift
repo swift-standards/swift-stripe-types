@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Customers.BankAccounts {
@@ -130,15 +130,15 @@ extension Stripe.Customers.BankAccounts.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let bankAccounts = Path {
+    public static var bankAccounts: Path<PathBuilder.Component<String>> { Path {
         "bank_accounts"
-    }
+    } }
 
-    public static let sources = Path {
+    public static var sources: Path<PathBuilder.Component<String>> { Path {
         "sources"
-    }
+    } }
 
-    public static let verify = Path {
+    public static var verify: Path<PathBuilder.Component<String>> { Path {
         "verify"
-    }
+    } }
 }

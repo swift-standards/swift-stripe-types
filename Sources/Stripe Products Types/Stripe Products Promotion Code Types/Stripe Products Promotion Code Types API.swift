@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Products.PromotionCodes {
@@ -105,7 +105,7 @@ extension Stripe.Products.PromotionCodes.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let promotionCodes = Path {
+    public static var promotionCodes: Path<PathBuilder.Component<String>> { Path {
         "promotion_codes"
-    }
+    } }
 }

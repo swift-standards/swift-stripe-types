@@ -40,7 +40,7 @@ struct PaymentIntentsRouterTests {
     func testRetrievePaymentIntentURL() throws {
         let router: Stripe.PaymentIntents.API.Router = .init()
 
-        let id = Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123")
+        let id = try #require(Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123"))
         let api: Stripe.PaymentIntents.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -58,7 +58,7 @@ struct PaymentIntentsRouterTests {
     func testUpdatePaymentIntentURL() throws {
         let router: Stripe.PaymentIntents.API.Router = .init()
 
-        let id = Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123")
+        let id = try #require(Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123"))
         let updateRequest = Stripe.PaymentIntents.Update.Request(
             amount: 3000,
             metadata: ["updated": "true"],
@@ -95,7 +95,7 @@ struct PaymentIntentsRouterTests {
     func testCancelPaymentIntentURL() throws {
         let router: Stripe.PaymentIntents.API.Router = .init()
 
-        let id = Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123")
+        let id = try #require(Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123"))
         let cancelRequest = Stripe.PaymentIntents.Cancel.Request(
             cancellationReason: .abandoned
         )
@@ -117,7 +117,7 @@ struct PaymentIntentsRouterTests {
     func testCapturePaymentIntentURL() throws {
         let router: Stripe.PaymentIntents.API.Router = .init()
 
-        let id = Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123")
+        let id = try #require(Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123"))
         let captureRequest = Stripe.PaymentIntents.Capture.Request(
             amountToCapture: 1500
         )
@@ -130,7 +130,7 @@ struct PaymentIntentsRouterTests {
     func testConfirmPaymentIntentURL() throws {
         let router: Stripe.PaymentIntents.API.Router = .init()
 
-        let id = Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123")
+        let id = try #require(Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123"))
         let confirmRequest = Stripe.PaymentIntents.Confirm.Request(
             paymentMethod: "pm_123",
             returnUrl: "https://example.com/return"
@@ -144,7 +144,7 @@ struct PaymentIntentsRouterTests {
     func testIncrementAuthorizationURL() throws {
         let router: Stripe.PaymentIntents.API.Router = .init()
 
-        let id = Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123")
+        let id = try #require(Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123"))
         let request = Stripe.PaymentIntents.IncrementAuthorization.Request(
             amount: 500,
             description: "Additional charge"
@@ -158,7 +158,7 @@ struct PaymentIntentsRouterTests {
     func testApplyCustomerBalanceURL() throws {
         let router: Stripe.PaymentIntents.API.Router = .init()
 
-        let id = Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123")
+        let id = try #require(Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123"))
         let api: Stripe.PaymentIntents.API = .applyCustomerBalance(id: id)
 
         let url = router.url(for: api)
@@ -198,7 +198,7 @@ struct PaymentIntentsRouterTests {
     func testVerifyMicrodepositsURL() throws {
         let router: Stripe.PaymentIntents.API.Router = .init()
 
-        let id = Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123")
+        let id = try #require(Stripe.PaymentIntents.PaymentIntent.ID(rawValue: "pi_123"))
         let request = Stripe.PaymentIntents.VerifyMicrodeposits.Request(
             amounts: [32, 45]
         )

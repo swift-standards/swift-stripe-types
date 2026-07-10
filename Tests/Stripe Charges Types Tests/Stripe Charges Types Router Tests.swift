@@ -36,7 +36,7 @@ struct ChargesRouterTests {
     func testRetrieveChargeURL() throws {
         let router: Stripe.Charges.API.Router = .init()
 
-        let id = Stripe.Charges.Charge.ID(rawValue: "ch_123")
+        let id = try #require(Stripe.Charges.Charge.ID(rawValue: "ch_123"))
         let api: Stripe.Charges.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -52,7 +52,7 @@ struct ChargesRouterTests {
     func testUpdateChargeURL() throws {
         let router: Stripe.Charges.API.Router = .init()
 
-        let id = Stripe.Charges.Charge.ID(rawValue: "ch_123")
+        let id = try #require(Stripe.Charges.Charge.ID(rawValue: "ch_123"))
         let updateRequest = Stripe.Charges.Update.Request(
             description: "Updated charge",
             metadata: ["updated": "true"]
@@ -88,7 +88,7 @@ struct ChargesRouterTests {
     func testCaptureChargeURL() throws {
         let router: Stripe.Charges.API.Router = .init()
 
-        let id = Stripe.Charges.Charge.ID(rawValue: "ch_123")
+        let id = try #require(Stripe.Charges.Charge.ID(rawValue: "ch_123"))
         let captureRequest = Stripe.Charges.Capture.Request(
             amount: 1500
         )
@@ -130,7 +130,7 @@ struct ChargesRouterTests {
     func testRetrieveChargeMethod() throws {
         let router: Stripe.Charges.API.Router = .init()
 
-        let id = Stripe.Charges.Charge.ID(rawValue: "ch_123")
+        let id = try #require(Stripe.Charges.Charge.ID(rawValue: "ch_123"))
         let api: Stripe.Charges.API = .retrieve(id: id)
         let request = try router.request(for: api)
 

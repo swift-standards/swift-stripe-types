@@ -9,7 +9,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Tax.Calculations {
@@ -80,15 +80,15 @@ extension Stripe.Tax.Calculations.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let tax = Path {
+    public static var tax: Path<PathBuilder.Component<String>> { Path {
         "tax"
-    }
+    } }
 
-    public static let calculations = Path {
+    public static var calculations: Path<PathBuilder.Component<String>> { Path {
         "calculations"
-    }
+    } }
 
-    public static let lineItems = Path {
+    public static var lineItems: Path<PathBuilder.Component<String>> { Path {
         "line_items"
-    }
+    } }
 }

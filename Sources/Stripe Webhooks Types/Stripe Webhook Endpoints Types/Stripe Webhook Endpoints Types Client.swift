@@ -4,34 +4,29 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.WebhookEndpoint {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/webhook_endpoints/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Stripe.WebhookEndpoint.Create.Request) async throws -> Webhook
+            @Sendable (_ request: Stripe.WebhookEndpoint.Create.Request) async throws(Witness.Unimplemented.Error) -> Webhook
 
         // https://docs.stripe.com/api/webhook_endpoints/retrieve.md
-        @DependencyEndpoint
-        public var retrieve: @Sendable (_ id: Stripe.WebhookEndpoint.ID) async throws -> Webhook
+        public var retrieve: @Sendable (_ id: Stripe.WebhookEndpoint.ID) async throws(Witness.Unimplemented.Error) -> Webhook
 
         // https://docs.stripe.com/api/webhook_endpoints/update.md
-        @DependencyEndpoint
         public var update:
             @Sendable (
                 _ id: Stripe.WebhookEndpoint.ID, _ request: Stripe.WebhookEndpoint.Update.Request
             )
-                async throws -> Webhook
+                async throws(Witness.Unimplemented.Error) -> Webhook
 
         // https://docs.stripe.com/api/webhook_endpoints/list.md
-        @DependencyEndpoint
         public var list:
-            @Sendable (_ request: Stripe.WebhookEndpoint.List.Request) async throws -> List.Response
+            @Sendable (_ request: Stripe.WebhookEndpoint.List.Request) async throws(Witness.Unimplemented.Error) -> List.Response
 
         // https://docs.stripe.com/api/webhook_endpoints/delete.md
-        @DependencyEndpoint
         public var delete:
-            @Sendable (_ id: Stripe.WebhookEndpoint.ID) async throws -> DeletedObject<
+            @Sendable (_ id: Stripe.WebhookEndpoint.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<
                 Stripe.WebhookEndpoint
             >
     }

@@ -9,7 +9,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Subscription.Schedule {
@@ -176,15 +176,15 @@ extension Stripe.Billing.Subscription.Schedule.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let subscription_schedules = Path {
+    public static var subscription_schedules: Path<PathBuilder.Component<String>> { Path {
         "subscription_schedules"
-    }
+    } }
 
-    public static let cancel = Path {
+    public static var cancel: Path<PathBuilder.Component<String>> { Path {
         "cancel"
-    }
+    } }
 
-    public static let release = Path {
+    public static var release: Path<PathBuilder.Component<String>> { Path {
         "release"
-    }
+    } }
 }

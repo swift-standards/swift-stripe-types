@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 import URLRouting
 
@@ -243,51 +243,51 @@ extension Stripe.Terminal.Readers.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let terminal = Path {
+    public static var terminal: Path<PathBuilder.Component<String>> { Path {
         "terminal"
-    }
+    } }
 
-    public static let readers = Path {
+    public static var readers: Path<PathBuilder.Component<String>> { Path {
         "readers"
-    }
+    } }
 
-    public static let cancelAction = Path {
+    public static var cancelAction: Path<PathBuilder.Component<String>> { Path {
         "cancel_action"
-    }
+    } }
 
-    public static let processPaymentIntent = Path {
+    public static var processPaymentIntent: Path<PathBuilder.Component<String>> { Path {
         "process_payment_intent"
-    }
+    } }
 
-    public static let processSetupIntent = Path {
+    public static var processSetupIntent: Path<PathBuilder.Component<String>> { Path {
         "process_setup_intent"
-    }
+    } }
 
-    public static let collectInputs = Path {
+    public static var collectInputs: Path<PathBuilder.Component<String>> { Path {
         "collect_inputs"
-    }
+    } }
 
-    public static let confirmPaymentIntent = Path {
+    public static var confirmPaymentIntent: Path<PathBuilder.Component<String>> { Path {
         "confirm_payment_intent"
-    }
+    } }
 
-    public static let collectPaymentMethod = Path {
+    public static var collectPaymentMethod: Path<PathBuilder.Component<String>> { Path {
         "collect_payment_method"
-    }
+    } }
 
-    public static let refundPayment = Path {
+    public static var refundPayment: Path<PathBuilder.Component<String>> { Path {
         "refund_payment"
-    }
+    } }
 
-    public static let setReaderDisplay = Path {
+    public static var setReaderDisplay: Path<PathBuilder.Component<String>> { Path {
         "set_reader_display"
-    }
+    } }
 
-    public static let testHelpers = Path {
+    public static var testHelpers: Path<PathBuilder.Component<String>> { Path {
         "test_helpers"
-    }
+    } }
 
-    public static let presentPaymentMethod = Path {
+    public static var presentPaymentMethod: Path<PathBuilder.Component<String>> { Path {
         "present_payment_method"
-    }
+    } }
 }

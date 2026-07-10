@@ -11,75 +11,65 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Billing.Invoices {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/invoices/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Stripe.Billing.Invoices.Create.Request) async throws ->
+            @Sendable (_ request: Stripe.Billing.Invoices.Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Invoice
 
         // https://docs.stripe.com/api/invoices/create_preview.md
-        @DependencyEndpoint
         public var createPreview:
-            @Sendable (_ request: Stripe.Billing.Invoices.CreatePreview.Request) async throws ->
+            @Sendable (_ request: Stripe.Billing.Invoices.CreatePreview.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Invoice
 
         // https://docs.stripe.com/api/invoices/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.Billing.Invoice.ID) async throws -> Stripe.Billing.Invoice
+            @Sendable (_ id: Stripe.Billing.Invoice.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice
 
         // https://docs.stripe.com/api/invoices/update.md
-        @DependencyEndpoint
         public var update:
             @Sendable (
                 _ id: Stripe.Billing.Invoice.ID, _ request: Stripe.Billing.Invoices.Update.Request
             )
-                async throws -> Stripe.Billing.Invoice
+                async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice
 
         // https://docs.stripe.com/api/invoices/list.md
-        @DependencyEndpoint
         public var list:
-            @Sendable (_ request: Stripe.Billing.Invoices.List.Request) async throws ->
+            @Sendable (_ request: Stripe.Billing.Invoices.List.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Invoices.List.Response
 
         // https://docs.stripe.com/api/invoices/delete.md
-        @DependencyEndpoint
         public var delete:
-            @Sendable (_ id: Stripe.Billing.Invoice.ID) async throws -> DeletedObject<
+            @Sendable (_ id: Stripe.Billing.Invoice.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<
                 Stripe.Billing.Invoice
             >
 
         // https://docs.stripe.com/api/invoices/finalize_invoice.md
-        @DependencyEndpoint
         public var finalize:
             @Sendable (
                 _ id: Stripe.Billing.Invoice.ID, _ request: Stripe.Billing.Invoices.Finalize.Request
-            ) async throws -> Stripe.Billing.Invoice
+            ) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice
 
         // https://docs.stripe.com/api/invoices/pay.md
-        @DependencyEndpoint
         public var pay:
             @Sendable (
                 _ id: Stripe.Billing.Invoice.ID, _ request: Stripe.Billing.Invoices.Pay.Request
             )
-                async throws -> Stripe.Billing.Invoice
+                async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice
 
         // https://docs.stripe.com/api/invoices/send.md
-        @DependencyEndpoint
         public var send:
             @Sendable (
                 _ id: Stripe.Billing.Invoice.ID, _ request: Stripe.Billing.Invoices.Send.Request
             )
-                async throws -> Stripe.Billing.Invoice
+                async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice
 
         // https://docs.stripe.com/api/invoices/void.md
-        @DependencyEndpoint
         public var void:
             @Sendable (
                 _ id: Stripe.Billing.Invoice.ID, _ request: Stripe.Billing.Invoices.Void.Request
             )
-                async throws -> Stripe.Billing.Invoice
+                async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice
     }
 }

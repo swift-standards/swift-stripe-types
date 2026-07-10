@@ -25,16 +25,7 @@ struct CheckoutSessionRouterTests {
             cancelUrl: "https://example.com/cancel",
             clientReferenceId: "test_ref",
             lineItems: [
-                .init(
-                    id: .init(rawValue: "li_test"),
-                    object: "line_item",
-                    price: .init(
-                        id: "price_123",
-                        object: "price",
-                        created: Date()
-                    ),
-                    quantity: 1
-                )
+                .init(price: "price_123", quantity: 1)
             ],
             mode: .payment
         )
@@ -47,7 +38,7 @@ struct CheckoutSessionRouterTests {
     func testRetrieveSessionURL() throws {
         let router: Stripe.Checkout.Sessions.API.Router = .init()
 
-        let id = Stripe.Checkout.Session.ID(rawValue: "cs_123")
+        let id = try #require(Stripe.Checkout.Session.ID(rawValue: "cs_123"))
         let url = router.url(for: .retrieve(id: id))
         #expect(url.path == "/v1/checkout/sessions/cs_123")
     }
@@ -56,7 +47,7 @@ struct CheckoutSessionRouterTests {
     func testUpdateSessionURL() throws {
         let router: Stripe.Checkout.Sessions.API.Router = .init()
 
-        let id = Stripe.Checkout.Session.ID(rawValue: "cs_123")
+        let id = try #require(Stripe.Checkout.Session.ID(rawValue: "cs_123"))
         let updateRequest = Stripe.Checkout.Sessions.Update.Request(
             metadata: ["updated": "true"]
         )
@@ -93,7 +84,7 @@ struct CheckoutSessionRouterTests {
     func testExpireSessionURL() throws {
         let router: Stripe.Checkout.Sessions.API.Router = .init()
 
-        let id = Stripe.Checkout.Session.ID(rawValue: "cs_123")
+        let id = try #require(Stripe.Checkout.Session.ID(rawValue: "cs_123"))
         let url = router.url(for: .expire(id: id))
         #expect(url.path == "/v1/checkout/sessions/cs_123/expire")
     }
@@ -102,7 +93,7 @@ struct CheckoutSessionRouterTests {
     func testLineItemsSessionURL() throws {
         let router: Stripe.Checkout.Sessions.API.Router = .init()
 
-        let id = Stripe.Checkout.Session.ID(rawValue: "cs_123")
+        let id = try #require(Stripe.Checkout.Session.ID(rawValue: "cs_123"))
         let lineItemsRequest = Stripe.Checkout.Sessions.LineItems.Request(
             limit: 10
         )

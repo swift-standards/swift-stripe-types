@@ -230,27 +230,27 @@ extension Stripe.Billing.Invoices.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let invoices = Path {
+    public static var invoices: Path<PathBuilder.Component<String>> { Path {
         "invoices"
-    }
+    } }
 
-    public static let createPreview = Path {
+    public static var createPreview: Path<PathBuilder.Component<String>> { Path {
         "create_preview"
-    }
+    } }
 
-    public static let finalize = Path {
+    public static var finalize: Path<PathBuilder.Component<String>> { Path {
         "finalize"
-    }
+    } }
 
-    public static let pay = Path {
+    public static var pay: Path<PathBuilder.Component<String>> { Path {
         "pay"
-    }
+    } }
 
-    public static let send = Path {
+    public static var send: Path<PathBuilder.Component<String>> { Path {
         "send"
-    }
+    } }
 
-    public static let void = Path {
+    public static var void: Path<PathBuilder.Component<String>> { Path {
         "void"
-    }
+    } }
 }

@@ -125,7 +125,23 @@ struct ReadmeVerificationTests {
 
     @Test("Testing Pattern (README lines 189-221)")
     func testingPattern() async throws {
-        struct TestError: Error {}
+        // README shows plain `throw TestError()` closures; the actual Client
+        // slots are now typed-throws(Witness.Unimplemented.Error), so the
+        // unimplemented endpoints below throw that typed error instead
+        // (nested @Witness clients get it for free via `.unimplemented()`).
+        @Sendable func unimplemented(
+            _ operation: String,
+            fileID: String = #fileID,
+            filePath: String = #filePath,
+            line: Int = #line,
+            column: Int = #column
+        ) -> Witness.Unimplemented.Error {
+            Witness.Unimplemented.Error(
+                witness: "Stripe.Customers.Client",
+                operation: operation,
+                location: Source_Primitives.Source.Location(fileID: fileID, filePath: filePath, line: line, column: column)
+            )
+        }
 
         // Create mock client as shown in README
         let mockClient = Stripe.Customers.Client(
@@ -138,34 +154,15 @@ struct ReadmeVerificationTests {
                     created: Date()
                 )
             },
-            update: { _, _ in throw TestError() },
-            retrieve: { _ in throw TestError() },
-            list: { _ in throw TestError() },
-            delete: { _ in throw TestError() },
-            search: { _ in throw TestError() },
-            bankAccounts: .init(
-                create: { _, _ in throw TestError() },
-                retrieve: { _, _ in throw TestError() },
-                update: { _, _, _ in throw TestError() },
-                list: { _, _ in throw TestError() },
-                delete: { _, _ in throw TestError() },
-                verify: { _, _, _ in throw TestError() }
-            ),
-            cards: .init(
-                create: { _, _ in throw TestError() },
-                retrieve: { _, _ in throw TestError() },
-                update: { _, _, _ in throw TestError() },
-                list: { _, _ in throw TestError() },
-                delete: { _, _ in throw TestError() }
-            ),
-            cashBalance: .init(
-                retrieve: { _ in throw TestError() },
-                update: { _, _ in throw TestError() }
-            ),
-            cashBalanceTransactions: .init(
-                retrieve: { _, _ in throw TestError() },
-                list: { _, _ in throw TestError() }
-            )
+            update: { (_, _) async throws(Witness.Unimplemented.Error) in throw unimplemented("update") },
+            retrieve: { (_) async throws(Witness.Unimplemented.Error) in throw unimplemented("retrieve") },
+            list: { (_) async throws(Witness.Unimplemented.Error) in throw unimplemented("list") },
+            delete: { (_) async throws(Witness.Unimplemented.Error) in throw unimplemented("delete") },
+            search: { (_) async throws(Witness.Unimplemented.Error) in throw unimplemented("search") },
+            bankAccounts: .unimplemented(),
+            cards: .unimplemented(),
+            cashBalance: .unimplemented(),
+            cashBalanceTransactions: .unimplemented()
         )
 
         // Test with mock

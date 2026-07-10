@@ -11,12 +11,11 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Billing.MeterEventSummary {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/billing/meter-event-summary/list.md
-        @DependencyEndpoint
         public var list:
             @Sendable (_ meterId: String, _ request: Stripe.Billing.MeterEventSummary.List.Request)
-                async throws -> List.Response
+                async throws(Witness.Unimplemented.Error) -> List.Response
     }
 }

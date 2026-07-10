@@ -9,7 +9,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Plans {
@@ -118,7 +118,7 @@ extension Stripe.Billing.Plans.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let plans = Path {
+    public static var plans: Path<PathBuilder.Component<String>> { Path {
         "plans"
-    }
+    } }
 }

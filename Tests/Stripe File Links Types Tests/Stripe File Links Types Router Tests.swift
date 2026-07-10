@@ -33,7 +33,7 @@ struct FileLinksRouterTests {
     func testRetrieveFileLinkURL() throws {
         let router: Stripe.FileLinks.API.Router = .init()
 
-        let id = Stripe.FileLinks.FileLink.ID(rawValue: "link_123")
+        let id = try #require(Stripe.FileLinks.FileLink.ID(rawValue: "link_123"))
         let api: Stripe.FileLinks.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -49,7 +49,7 @@ struct FileLinksRouterTests {
     func testUpdateFileLinkURL() throws {
         let router: Stripe.FileLinks.API.Router = .init()
 
-        let id = Stripe.FileLinks.FileLink.ID(rawValue: "link_123")
+        let id = try #require(Stripe.FileLinks.FileLink.ID(rawValue: "link_123"))
         let updateRequest = Stripe.FileLinks.Update.Request(
             metadata: ["key": "value"]
         )
@@ -97,7 +97,7 @@ struct FileLinksRouterTests {
     func testRetrieveFileLinkMethod() throws {
         let router: Stripe.FileLinks.API.Router = .init()
 
-        let id = Stripe.FileLinks.FileLink.ID(rawValue: "link_456")
+        let id = try #require(Stripe.FileLinks.FileLink.ID(rawValue: "link_456"))
         let api: Stripe.FileLinks.API = .retrieve(id: id)
         let request = try router.request(for: api)
 
@@ -108,7 +108,7 @@ struct FileLinksRouterTests {
     func testUpdateFileLinkMethod() throws {
         let router: Stripe.FileLinks.API.Router = .init()
 
-        let id = Stripe.FileLinks.FileLink.ID(rawValue: "link_789")
+        let id = try #require(Stripe.FileLinks.FileLink.ID(rawValue: "link_789"))
         let updateRequest = Stripe.FileLinks.Update.Request()
         let api: Stripe.FileLinks.API = .update(id: id, request: updateRequest)
         let request = try router.request(for: api)

@@ -20,7 +20,7 @@ struct EventsRouterTests {
     func testRetrieveEventURL() throws {
         let router: Stripe.Events.API.Router = .init()
 
-        let id = Stripe.Events.Event.ID(rawValue: "evt_123")
+        let id = try #require(Stripe.Events.Event.ID(rawValue: "evt_123"))
         let api: Stripe.Events.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -60,7 +60,7 @@ struct EventsRouterTests {
     func testRetrieveEventMethod() throws {
         let router: Stripe.Events.API.Router = .init()
 
-        let id = Stripe.Events.Event.ID(rawValue: "evt_456")
+        let id = try #require(Stripe.Events.Event.ID(rawValue: "evt_456"))
         let api: Stripe.Events.API = .retrieve(id: id)
         let request = try router.request(for: api)
 

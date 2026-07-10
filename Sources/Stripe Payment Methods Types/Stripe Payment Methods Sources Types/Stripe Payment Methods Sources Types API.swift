@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.PaymentMethods.Sources {
@@ -12,13 +12,13 @@ extension Stripe.PaymentMethods.Sources {
         // https://docs.stripe.com/api/sources/create.md
         case create(request: Create.Request)
         // https://docs.stripe.com/api/sources/retrieve.md
-        case retrieve(id: Source.ID)
+        case retrieve(id: Stripe_Types_Models.Source.ID)
         // https://docs.stripe.com/api/sources/update.md
-        case update(id: Source.ID, request: Update.Request)
+        case update(id: Stripe_Types_Models.Source.ID, request: Update.Request)
         // https://docs.stripe.com/api/sources/attach.md
-        case attach(customerId: Stripe.Customers.Customer.ID, source: Source.ID)
+        case attach(customerId: Stripe.Customers.Customer.ID, source: Stripe_Types_Models.Source.ID)
         // https://docs.stripe.com/api/sources/detach.md
-        case detach(customerId: Stripe.Customers.Customer.ID, sourceId: Source.ID)
+        case detach(customerId: Stripe.Customers.Customer.ID, sourceId: Stripe_Types_Models.Source.ID)
     }
 }
 
@@ -45,14 +45,14 @@ extension Stripe.PaymentMethods.Sources.API {
                     Method.get
                     Path.v1
                     Path.sources
-                    Path { Parse(.string.representing(Source.ID.self)) }
+                    Path { Parse(.string.representing(Stripe_Types_Models.Source.ID.self)) }
                 }
 
                 Route(.case(Stripe.PaymentMethods.Sources.API.update)) {
                     Method.post
                     Path.v1
                     Path.sources
-                    Path { Parse(.string.representing(Source.ID.self)) }
+                    Path { Parse(.string.representing(Stripe_Types_Models.Source.ID.self)) }
                     Body(
                         .form(
                             Stripe.PaymentMethods.Sources.Update.Request.self,
@@ -69,7 +69,7 @@ extension Stripe.PaymentMethods.Sources.API {
                     Path { Parse(.string.representing(Stripe.Customers.Customer.ID.self)) }
                     Path.sources
                     Query {
-                        Field("source") { Parse(.string.representing(Source.ID.self)) }
+                        Field("source") { Parse(.string.representing(Stripe_Types_Models.Source.ID.self)) }
                     }
                 }
 
@@ -79,7 +79,7 @@ extension Stripe.PaymentMethods.Sources.API {
                     Path.customers
                     Path { Parse(.string.representing(Stripe.Customers.Customer.ID.self)) }
                     Path.sources
-                    Path { Parse(.string.representing(Source.ID.self)) }
+                    Path { Parse(.string.representing(Stripe_Types_Models.Source.ID.self)) }
                 }
             }
         }
@@ -87,7 +87,7 @@ extension Stripe.PaymentMethods.Sources.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let sources = Path {
+    public static var sources: Path<PathBuilder.Component<String>> { Path {
         "sources"
-    }
+    } }
 }

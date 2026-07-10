@@ -8,7 +8,6 @@
 import Stripe_Types_Shared
 
 extension Stripe.Products {
-    @DependencyClient
     public struct Client: Sendable {
         public let products: Stripe.Products.Products.Client
         public let prices: Stripe.Products.Prices.Client

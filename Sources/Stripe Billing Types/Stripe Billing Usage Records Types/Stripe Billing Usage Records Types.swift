@@ -1,7 +1,7 @@
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 // Helper type for timestamp that can be either an integer or "now"
 public enum Either<A: Codable & Equatable & Sendable, B: Codable & Equatable & Sendable>: Codable,

@@ -34,7 +34,7 @@ struct PayoutsRouterTests {
     func testRetrievePayoutURL() throws {
         let router: Stripe.Payouts.API.Router = .init()
 
-        let id = Stripe.Payouts.Payout.ID(rawValue: "po_123")
+        let id = try #require(Stripe.Payouts.Payout.ID(rawValue: "po_123"))
         let api: Stripe.Payouts.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -50,7 +50,7 @@ struct PayoutsRouterTests {
     func testUpdatePayoutURL() throws {
         let router: Stripe.Payouts.API.Router = .init()
 
-        let id = Stripe.Payouts.Payout.ID(rawValue: "po_123")
+        let id = try #require(Stripe.Payouts.Payout.ID(rawValue: "po_123"))
         let updateRequest = Stripe.Payouts.Update.Request(
             metadata: ["key": "value"]
         )
@@ -87,7 +87,7 @@ struct PayoutsRouterTests {
     func testCancelPayoutURL() throws {
         let router: Stripe.Payouts.API.Router = .init()
 
-        let id = Stripe.Payouts.Payout.ID(rawValue: "po_123")
+        let id = try #require(Stripe.Payouts.Payout.ID(rawValue: "po_123"))
         let api: Stripe.Payouts.API = .cancel(id: id)
 
         let url = router.url(for: api)
@@ -103,7 +103,7 @@ struct PayoutsRouterTests {
     func testReversePayoutURL() throws {
         let router: Stripe.Payouts.API.Router = .init()
 
-        let id = Stripe.Payouts.Payout.ID(rawValue: "po_123")
+        let id = try #require(Stripe.Payouts.Payout.ID(rawValue: "po_123"))
         let api: Stripe.Payouts.API = .reverse(id: id, request: .init(metadata: ["key": "value"]))
 
         let url = router.url(for: api)
@@ -133,7 +133,7 @@ struct PayoutsRouterTests {
     func testRetrievePayoutMethod() throws {
         let router: Stripe.Payouts.API.Router = .init()
 
-        let id = Stripe.Payouts.Payout.ID(rawValue: "po_456")
+        let id = try #require(Stripe.Payouts.Payout.ID(rawValue: "po_456"))
         let api: Stripe.Payouts.API = .retrieve(id: id)
         let request = try router.request(for: api)
 
@@ -144,7 +144,7 @@ struct PayoutsRouterTests {
     func testUpdatePayoutMethod() throws {
         let router: Stripe.Payouts.API.Router = .init()
 
-        let id = Stripe.Payouts.Payout.ID(rawValue: "po_789")
+        let id = try #require(Stripe.Payouts.Payout.ID(rawValue: "po_789"))
         let updateRequest = Stripe.Payouts.Update.Request()
         let api: Stripe.Payouts.API = .update(id: id, request: updateRequest)
         let request = try router.request(for: api)
@@ -167,7 +167,7 @@ struct PayoutsRouterTests {
     func testCancelPayoutMethod() throws {
         let router: Stripe.Payouts.API.Router = .init()
 
-        let id = Stripe.Payouts.Payout.ID(rawValue: "po_cancel")
+        let id = try #require(Stripe.Payouts.Payout.ID(rawValue: "po_cancel"))
         let api: Stripe.Payouts.API = .cancel(id: id)
         let request = try router.request(for: api)
 
@@ -178,7 +178,7 @@ struct PayoutsRouterTests {
     func testReversePayoutMethod() throws {
         let router: Stripe.Payouts.API.Router = .init()
 
-        let id = Stripe.Payouts.Payout.ID(rawValue: "po_reverse")
+        let id = try #require(Stripe.Payouts.Payout.ID(rawValue: "po_reverse"))
         let api: Stripe.Payouts.API = .reverse(id: id, request: .init())
         let request = try router.request(for: api)
 

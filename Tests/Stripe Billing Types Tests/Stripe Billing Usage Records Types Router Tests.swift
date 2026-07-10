@@ -8,9 +8,13 @@ import URLRouting
 @Suite("Usage Records Router Tests")
 struct UsageRecordsRouterTests {
     let router = Stripe.Billing.UsageRecords.API.Router()
-    let subscriptionItemId = Stripe.Billing.SubscriptionItems.SubscriptionItem.ID(
-        rawValue: "si_1234567890"
-    )
+    let subscriptionItemId: Stripe.Billing.SubscriptionItems.SubscriptionItem.ID
+
+    init() throws {
+        subscriptionItemId = try #require(
+            Stripe.Billing.SubscriptionItems.SubscriptionItem.ID(rawValue: "si_1234567890")
+        )
+    }
 
     @Test("Create usage record endpoint")
     func testCreateRoute() throws {

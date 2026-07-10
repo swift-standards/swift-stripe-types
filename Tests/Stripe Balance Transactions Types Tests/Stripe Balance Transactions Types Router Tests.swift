@@ -20,7 +20,7 @@ struct BalanceTransactionsRouterTests {
     func testRetrieveBalanceTransactionURL() throws {
         let router: Stripe.BalanceTransactions.API.Router = .init()
 
-        let id = Stripe.Balance.Transaction.ID(rawValue: "txn_123")
+        let id = try #require(Stripe.Balance.Transaction.ID(rawValue: "txn_123"))
         let api: Stripe.BalanceTransactions.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -117,7 +117,7 @@ struct BalanceTransactionsRouterTests {
     func testRetrieveBalanceTransactionMethod() throws {
         let router: Stripe.BalanceTransactions.API.Router = .init()
 
-        let id = Stripe.Balance.Transaction.ID(rawValue: "txn_123")
+        let id = try #require(Stripe.Balance.Transaction.ID(rawValue: "txn_123"))
         let api: Stripe.BalanceTransactions.API = .retrieve(id: id)
         let request = try router.request(for: api)
 

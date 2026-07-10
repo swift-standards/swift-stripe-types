@@ -4,33 +4,28 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.PaymentMethods.Sources {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/sources/create.md
-        @DependencyEndpoint
-        public var create: @Sendable (_ request: Create.Request) async throws -> Source
+        public var create: @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe_Types_Models.Source
 
         // https://docs.stripe.com/api/sources/retrieve.md
-        @DependencyEndpoint
-        public var retrieve: @Sendable (_ id: Source.ID) async throws -> Source
+        public var retrieve: @Sendable (_ id: Stripe_Types_Models.Source.ID) async throws(Witness.Unimplemented.Error) -> Stripe_Types_Models.Source
 
         // https://docs.stripe.com/api/sources/update.md
-        @DependencyEndpoint
         public var update:
-            @Sendable (_ id: Source.ID, _ request: Update.Request) async throws -> Source
+            @Sendable (_ id: Stripe_Types_Models.Source.ID, _ request: Update.Request) async throws(Witness.Unimplemented.Error) -> Stripe_Types_Models.Source
 
         // https://docs.stripe.com/api/sources/attach.md
-        @DependencyEndpoint
         public var attach:
-            @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ source: Source.ID) async throws
+            @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ source: Stripe_Types_Models.Source.ID) async throws(Witness.Unimplemented.Error)
                 ->
-                Source
+                Stripe_Types_Models.Source
 
         // https://docs.stripe.com/api/sources/detach.md
-        @DependencyEndpoint
         public var detach:
-            @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ sourceId: Source.ID)
-                async throws ->
-                Source
+            @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ sourceId: Stripe_Types_Models.Source.ID)
+                async throws(Witness.Unimplemented.Error) ->
+                Stripe_Types_Models.Source
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import Testing
 import URLRouting
 
@@ -42,7 +42,7 @@ struct TaxRateRouterTests {
 
     @Test("Retrieve tax rate route")
     func testRetrieveRoute() throws {
-        let id = Stripe.Tax.Rate.ID(rawValue: "txr_1234567890")
+        let id = try #require(Stripe.Tax.Rate.ID(rawValue: "txr_1234567890"))
         let route = Stripe.Products.TaxRates.API.retrieve(id: id)
         let (method, path, _) = try router.parse(route)
 
@@ -52,7 +52,7 @@ struct TaxRateRouterTests {
 
     @Test("Update tax rate route")
     func testUpdateRoute() throws {
-        let id = Stripe.Tax.Rate.ID(rawValue: "txr_1234567890")
+        let id = try #require(Stripe.Tax.Rate.ID(rawValue: "txr_1234567890"))
         let request = Stripe.Products.TaxRates.Update.Request(
             active: false,
             description: "Updated description"
@@ -96,7 +96,7 @@ struct TaxRateRouterTests {
 
     @Test("Round-trip parsing")
     func testRoundTrip() throws {
-        let id = Stripe.Tax.Rate.ID(rawValue: "txr_test123")
+        let id = try #require(Stripe.Tax.Rate.ID(rawValue: "txr_test123"))
         let originalRoute = Stripe.Products.TaxRates.API.retrieve(id: id)
 
         let request = try router.request(for: originalRoute)

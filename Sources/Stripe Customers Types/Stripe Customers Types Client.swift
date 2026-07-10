@@ -13,23 +13,23 @@ import Stripe_Types_Shared
 extension Stripe.Customers {
     public struct Client: Sendable {
         public var create:
-            @Sendable (_ request: Stripe.Customers.Create.Request) async throws -> Customer
+            @Sendable (_ request: Stripe.Customers.Create.Request) async throws(Witness.Unimplemented.Error) -> Customer
 
         public var update:
-            @Sendable (_ id: Customer.ID, _ request: Stripe.Customers.Update.Request) async throws
+            @Sendable (_ id: Customer.ID, _ request: Stripe.Customers.Update.Request) async throws(Witness.Unimplemented.Error)
                 ->
                 Customer
 
-        public var retrieve: @Sendable (_ id: Customer.ID) async throws -> Customer
+        public var retrieve: @Sendable (_ id: Customer.ID) async throws(Witness.Unimplemented.Error) -> Customer
 
         public var list:
-            @Sendable (_ request: Stripe.Customers.List.Request) async throws ->
+            @Sendable (_ request: Stripe.Customers.List.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Customers.List.Response
 
-        public var delete: @Sendable (_ id: Customer.ID) async throws -> DeletedObject<Customer>
+        public var delete: @Sendable (_ id: Customer.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<Customer>
 
         public var search:
-            @Sendable (_ request: Stripe.Customers.Search.Request) async throws ->
+            @Sendable (_ request: Stripe.Customers.Search.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Customers.Search.Response
 
         public var bankAccounts: Stripe.Customers.BankAccounts.Client
@@ -39,18 +39,18 @@ extension Stripe.Customers {
 
         public init(
             create:
-                @escaping @Sendable (_ request: Stripe.Customers.Create.Request) async throws ->
+                @escaping @Sendable (_ request: Stripe.Customers.Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Customer,
             update:
                 @escaping @Sendable (_ id: Customer.ID, _ request: Stripe.Customers.Update.Request)
-                async throws -> Customer,
-            retrieve: @escaping @Sendable (_ id: Customer.ID) async throws -> Customer,
+                async throws(Witness.Unimplemented.Error) -> Customer,
+            retrieve: @escaping @Sendable (_ id: Customer.ID) async throws(Witness.Unimplemented.Error) -> Customer,
             list:
-                @escaping @Sendable (_ request: Stripe.Customers.List.Request) async throws ->
+                @escaping @Sendable (_ request: Stripe.Customers.List.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Customers.List.Response,
-            delete: @escaping @Sendable (_ id: Customer.ID) async throws -> DeletedObject<Customer>,
+            delete: @escaping @Sendable (_ id: Customer.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<Customer>,
             search:
-                @escaping @Sendable (_ request: Stripe.Customers.Search.Request) async throws ->
+                @escaping @Sendable (_ request: Stripe.Customers.Search.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Customers.Search.Response,
             bankAccounts: Stripe.Customers.BankAccounts.Client,
             cards: Stripe.Customers.Cards.Client,

@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.PaymentMethodDomains {
@@ -100,11 +100,11 @@ extension Stripe.PaymentMethodDomains.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let paymentMethodDomains = Path {
+    public static var paymentMethodDomains: Path<PathBuilder.Component<String>> { Path {
         "payment_method_domains"
-    }
+    } }
 
-    public static let validate = Path {
+    public static var validate: Path<PathBuilder.Component<String>> { Path {
         "validate"
-    }
+    } }
 }

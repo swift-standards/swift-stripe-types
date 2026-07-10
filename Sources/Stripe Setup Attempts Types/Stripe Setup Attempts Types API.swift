@@ -59,7 +59,7 @@ extension Stripe.Setup.Attempts.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let setupAttempts = Path {
+    public static var setupAttempts: Path<PathBuilder.Component<String>> { Path {
         "setup_attempts"
-    }
+    } }
 }

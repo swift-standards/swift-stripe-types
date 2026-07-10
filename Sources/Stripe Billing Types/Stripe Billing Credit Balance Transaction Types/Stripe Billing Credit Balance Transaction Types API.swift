@@ -64,5 +64,5 @@ extension Stripe.Billing.Credit.Balance.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    package static let credit_balance_transactions = Path { "credit_balance_transactions" }
+    package static var credit_balance_transactions: Path<PathBuilder.Component<String>> { Path { "credit_balance_transactions" } }
 }

@@ -125,7 +125,7 @@ extension Stripe.Billing.InvoiceItems.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let invoiceitems = Path {
+    public static var invoiceitems: Path<PathBuilder.Component<String>> { Path {
         "invoiceitems"
-    }
+    } }
 }

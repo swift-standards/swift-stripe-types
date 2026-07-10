@@ -34,7 +34,7 @@ struct RefundsRouterTests {
     func testRetrieveRefundURL() throws {
         let router: Stripe.Refunds.API.Router = .init()
 
-        let id = Stripe.Refunds.Refund.ID(rawValue: "re_123")
+        let id = try #require(Stripe.Refunds.Refund.ID(rawValue: "re_123"))
         let api: Stripe.Refunds.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -50,7 +50,7 @@ struct RefundsRouterTests {
     func testUpdateRefundURL() throws {
         let router: Stripe.Refunds.API.Router = .init()
 
-        let id = Stripe.Refunds.Refund.ID(rawValue: "re_123")
+        let id = try #require(Stripe.Refunds.Refund.ID(rawValue: "re_123"))
         let updateRequest = Stripe.Refunds.Update.Request(
             metadata: ["key": "value"]
         )
@@ -85,7 +85,7 @@ struct RefundsRouterTests {
     func testCancelRefundURL() throws {
         let router: Stripe.Refunds.API.Router = .init()
 
-        let id = Stripe.Refunds.Refund.ID(rawValue: "re_123")
+        let id = try #require(Stripe.Refunds.Refund.ID(rawValue: "re_123"))
         let api: Stripe.Refunds.API = .cancel(id: id)
 
         let url = router.url(for: api)
@@ -115,7 +115,7 @@ struct RefundsRouterTests {
     func testRetrieveRefundMethod() throws {
         let router: Stripe.Refunds.API.Router = .init()
 
-        let id = Stripe.Refunds.Refund.ID(rawValue: "re_456")
+        let id = try #require(Stripe.Refunds.Refund.ID(rawValue: "re_456"))
         let api: Stripe.Refunds.API = .retrieve(id: id)
         let request = try router.request(for: api)
 
@@ -126,7 +126,7 @@ struct RefundsRouterTests {
     func testUpdateRefundMethod() throws {
         let router: Stripe.Refunds.API.Router = .init()
 
-        let id = Stripe.Refunds.Refund.ID(rawValue: "re_789")
+        let id = try #require(Stripe.Refunds.Refund.ID(rawValue: "re_789"))
         let updateRequest = Stripe.Refunds.Update.Request()
         let api: Stripe.Refunds.API = .update(id: id, request: updateRequest)
         let request = try router.request(for: api)
@@ -149,7 +149,7 @@ struct RefundsRouterTests {
     func testCancelRefundMethod() throws {
         let router: Stripe.Refunds.API.Router = .init()
 
-        let id = Stripe.Refunds.Refund.ID(rawValue: "re_cancel")
+        let id = try #require(Stripe.Refunds.Refund.ID(rawValue: "re_cancel"))
         let api: Stripe.Refunds.API = .cancel(id: id)
         let request = try router.request(for: api)
 

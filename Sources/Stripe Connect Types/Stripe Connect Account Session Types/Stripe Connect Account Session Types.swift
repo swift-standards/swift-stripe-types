@@ -8,7 +8,7 @@
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.Connect.Account.Session {
     // https://docs.stripe.com/api/account_sessions/create.md

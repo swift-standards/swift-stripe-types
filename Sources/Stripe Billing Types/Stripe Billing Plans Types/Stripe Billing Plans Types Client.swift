@@ -11,35 +11,30 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Billing.Plans {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/plans/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Stripe.Billing.Plans.Create.Request) async throws ->
+            @Sendable (_ request: Stripe.Billing.Plans.Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Plan
 
         // https://docs.stripe.com/api/plans/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.Billing.Plan.ID) async throws -> Stripe.Billing.Plan
+            @Sendable (_ id: Stripe.Billing.Plan.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Plan
 
         // https://docs.stripe.com/api/plans/update.md
-        @DependencyEndpoint
         public var update:
             @Sendable (_ id: Stripe.Billing.Plan.ID, _ request: Stripe.Billing.Plans.Update.Request)
-                async throws -> Stripe.Billing.Plan
+                async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Plan
 
         // https://docs.stripe.com/api/plans/list.md
-        @DependencyEndpoint
         public var list:
-            @Sendable (_ request: Stripe.Billing.Plans.List.Request) async throws ->
+            @Sendable (_ request: Stripe.Billing.Plans.List.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Plans.List.Response
 
         // https://docs.stripe.com/api/plans/delete.md
-        @DependencyEndpoint
         public var delete:
-            @Sendable (_ id: Stripe.Billing.Plan.ID) async throws -> DeletedObject<
+            @Sendable (_ id: Stripe.Billing.Plan.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<
                 Stripe.Billing.Plan
             >
     }

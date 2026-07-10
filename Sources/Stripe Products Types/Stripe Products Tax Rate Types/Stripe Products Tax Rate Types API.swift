@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Products.TaxRates {
@@ -95,7 +95,7 @@ extension Stripe.Products.TaxRates.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let taxRates = Path {
+    public static var taxRates: Path<PathBuilder.Component<String>> { Path {
         "tax_rates"
-    }
+    } }
 }

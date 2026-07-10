@@ -10,32 +10,27 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Products.Prices {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Stripe.Products.Prices.Create.Request) async throws ->
+            @Sendable (_ request: Stripe.Products.Prices.Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Products.Price
 
-        @DependencyEndpoint
         public var update:
             @Sendable (
                 _ id: Stripe.Products.Price.ID, _ request: Stripe.Products.Prices.Update.Request
             )
-                async throws -> Stripe.Products.Price
+                async throws(Witness.Unimplemented.Error) -> Stripe.Products.Price
 
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.Products.Price.ID) async throws -> Stripe.Products.Price
+            @Sendable (_ id: Stripe.Products.Price.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Products.Price
 
-        @DependencyEndpoint
         public var list:
-            @Sendable (_ request: Stripe.Products.Prices.List.Request) async throws ->
+            @Sendable (_ request: Stripe.Products.Prices.List.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Products.Prices.List.Response
 
-        @DependencyEndpoint
         public var search:
-            @Sendable (_ request: Stripe.Products.Prices.Search.Request) async throws ->
+            @Sendable (_ request: Stripe.Products.Prices.Search.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Products.Prices.Search.Response
     }
 }

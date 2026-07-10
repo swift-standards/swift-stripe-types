@@ -119,10 +119,10 @@ extension Stripe.Refunds.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let refunds = Path {
+    public static var refunds: Path<PathBuilder.Component<String>> { Path {
         "refunds"
-    }
-    public static let cancel = Path {
+    } }
+    public static var cancel: Path<PathBuilder.Component<String>> { Path {
         "cancel"
-    }
+    } }
 }

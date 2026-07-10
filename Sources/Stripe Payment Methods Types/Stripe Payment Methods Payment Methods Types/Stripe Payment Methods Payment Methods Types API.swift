@@ -173,16 +173,16 @@ extension Stripe.PaymentMethods.PaymentMethods.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let payment_methods = Path {
+    public static var payment_methods: Path<PathBuilder.Component<String>> { Path {
         "payment_methods"
-    }
-    public static let customers = Path {
+    } }
+    public static var customers: Path<PathBuilder.Component<String>> { Path {
         "customers"
-    }
-    public static let attach = Path {
+    } }
+    public static var attach: Path<PathBuilder.Component<String>> { Path {
         "attach"
-    }
-    public static let detach = Path {
+    } }
+    public static var detach: Path<PathBuilder.Component<String>> { Path {
         "detach"
-    }
+    } }
 }

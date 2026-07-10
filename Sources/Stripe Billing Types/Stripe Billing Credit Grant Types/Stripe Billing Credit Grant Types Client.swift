@@ -4,37 +4,31 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Billing.Credit.Grant {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/billing/credit-grant/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Create.Request) async throws -> Stripe.Billing.Credit.Grant
+            @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Credit.Grant
 
         // https://docs.stripe.com/api/billing/credit-grant/retrieve.md
-        @DependencyEndpoint
-        public var retrieve: @Sendable (_ id: ID) async throws -> Stripe.Billing.Credit.Grant
+        public var retrieve: @Sendable (_ id: ID) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Credit.Grant
 
         // https://docs.stripe.com/api/billing/credit-grant/update.md
-        @DependencyEndpoint
         public var update:
-            @Sendable (_ id: ID, _ request: Update.Request) async throws ->
+            @Sendable (_ id: ID, _ request: Update.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Credit.Grant
 
         // https://docs.stripe.com/api/billing/credit-grant/list.md
-        @DependencyEndpoint
-        public var list: @Sendable (_ request: List.Request) async throws -> List.Response
+        public var list: @Sendable (_ request: List.Request) async throws(Witness.Unimplemented.Error) -> List.Response
 
         // https://docs.stripe.com/api/billing/credit-grant/expire.md
-        @DependencyEndpoint
         public var expire:
-            @Sendable (_ id: ID, _ request: Expire.Request) async throws ->
+            @Sendable (_ id: ID, _ request: Expire.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Credit.Grant
 
         // https://docs.stripe.com/api/billing/credit-grant/void.md
-        @DependencyEndpoint
         public var void:
-            @Sendable (_ id: ID, _ request: Void.Request) async throws ->
+            @Sendable (_ id: ID, _ request: Void.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Credit.Grant
     }
 }

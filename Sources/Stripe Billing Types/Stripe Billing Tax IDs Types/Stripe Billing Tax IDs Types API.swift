@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.TaxIDs {
@@ -85,5 +85,5 @@ extension Stripe.Billing.TaxIDs.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    package static let tax_ids = Path { "tax_ids" }
+    package static var tax_ids: Path<PathBuilder.Component<String>> { Path { "tax_ids" } }
 }

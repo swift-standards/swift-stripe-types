@@ -1,6 +1,6 @@
 import Foundation
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import Testing
 import URLRouting
 
@@ -30,7 +30,7 @@ struct PaymentMethodsSourcesRouterTests {
 
     @Test("Retrieve source")
     func retrieveSource() throws {
-        let sourceId: Source.ID = "src_123"
+        let sourceId: Stripe_Types_Models.Source.ID = "src_123"
         let api = Stripe.PaymentMethods.Sources.API.retrieve(id: sourceId)
 
         let url = router.url(for: api)
@@ -49,7 +49,7 @@ struct PaymentMethodsSourcesRouterTests {
 
     @Test("Update source")
     func updateSource() throws {
-        let sourceId: Source.ID = "src_123"
+        let sourceId: Stripe_Types_Models.Source.ID = "src_123"
         let request = Stripe.PaymentMethods.Sources.Update.Request(
             amount: 2000,
             metadata: ["key": "value"]
@@ -73,7 +73,7 @@ struct PaymentMethodsSourcesRouterTests {
     @Test("Attach source to customer")
     func attachSource() throws {
         let customerId: Stripe.Customers.Customer.ID = "cus_123"
-        let sourceId: Source.ID = "src_456"
+        let sourceId: Stripe_Types_Models.Source.ID = "src_456"
         let api = Stripe.PaymentMethods.Sources.API.attach(customerId: customerId, source: sourceId)
 
         let url = router.url(for: api)
@@ -95,7 +95,7 @@ struct PaymentMethodsSourcesRouterTests {
     @Test("Detach source from customer")
     func detachSource() throws {
         let customerId: Stripe.Customers.Customer.ID = "cus_123"
-        let sourceId: Source.ID = "src_456"
+        let sourceId: Stripe_Types_Models.Source.ID = "src_456"
         let api = Stripe.PaymentMethods.Sources.API.detach(
             customerId: customerId,
             sourceId: sourceId

@@ -110,7 +110,7 @@ extension Stripe.Billing.SubscriptionItems.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let subscription_items = Path {
+    public static var subscription_items: Path<PathBuilder.Component<String>> { Path {
         "subscription_items"
-    }
+    } }
 }

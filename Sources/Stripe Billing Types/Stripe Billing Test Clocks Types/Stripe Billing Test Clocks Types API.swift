@@ -111,15 +111,15 @@ extension Stripe.Billing.TestClocks.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let test_helpers = Path {
+    public static var test_helpers: Path<PathBuilder.Component<String>> { Path {
         "test_helpers"
-    }
+    } }
 
-    public static let test_clocks = Path {
+    public static var test_clocks: Path<PathBuilder.Component<String>> { Path {
         "test_clocks"
-    }
+    } }
 
-    public static let advance = Path {
+    public static var advance: Path<PathBuilder.Component<String>> { Path {
         "advance"
-    }
+    } }
 }

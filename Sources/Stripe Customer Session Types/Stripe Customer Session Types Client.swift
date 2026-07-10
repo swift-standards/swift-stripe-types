@@ -4,12 +4,11 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Customers.Customer.Sessions {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/customer_sessions/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Stripe.Customers.Customer.Sessions.Create.Request) async throws ->
+            @Sendable (_ request: Stripe.Customers.Customer.Sessions.Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Customers.Customer.Session
     }
 }

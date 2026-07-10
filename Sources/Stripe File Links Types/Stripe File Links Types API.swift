@@ -9,7 +9,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.FileLinks {
@@ -106,7 +106,7 @@ extension Stripe.FileLinks.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let fileLinks = Path {
+    public static var fileLinks: Path<PathBuilder.Component<String>> { Path {
         "file_links"
-    }
+    } }
 }

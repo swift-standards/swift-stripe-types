@@ -144,6 +144,6 @@ extension Stripe.Customers.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    package static let customers = Path { "customers" }
-    package static let search = Path { "search" }
+    package static var customers: Path<PathBuilder.Component<String>> { Path { "customers" } }
+    package static var search: Path<PathBuilder.Component<String>> { Path { "search" } }
 }

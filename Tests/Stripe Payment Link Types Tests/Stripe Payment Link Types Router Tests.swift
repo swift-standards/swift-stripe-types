@@ -40,7 +40,7 @@ struct PaymentLinkRouterTests {
     func testUpdatePaymentLinkURL() throws {
         let router: Stripe.PaymentLinks.API.Router = .init()
 
-        let id = Stripe.PaymentLink.ID(rawValue: "plink_123")
+        let id = try #require(Stripe.PaymentLink.ID(rawValue: "plink_123"))
         let updateRequest = Stripe.PaymentLinks.Update.Request(
             active: true,
             afterCompletion: nil,
@@ -71,7 +71,7 @@ struct PaymentLinkRouterTests {
     func testRetrievePaymentLinkURL() throws {
         let router: Stripe.PaymentLinks.API.Router = .init()
 
-        let id = Stripe.PaymentLink.ID(rawValue: "plink_123")
+        let id = try #require(Stripe.PaymentLink.ID(rawValue: "plink_123"))
         let url = router.url(for: .retrieve(id: id))
         #expect(url.path == "/v1/payment_links/plink_123")
     }
@@ -102,7 +102,7 @@ struct PaymentLinkRouterTests {
     func testLineItemsURL() throws {
         let router: Stripe.PaymentLinks.API.Router = .init()
 
-        let id = Stripe.PaymentLink.ID(rawValue: "plink_123")
+        let id = try #require(Stripe.PaymentLink.ID(rawValue: "plink_123"))
         let lineItemsRequest = Stripe.PaymentLinks.LineItems.Request(
             limit: 5
         )

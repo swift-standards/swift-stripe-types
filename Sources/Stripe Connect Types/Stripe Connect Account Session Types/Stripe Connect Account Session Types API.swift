@@ -9,7 +9,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Connect.Account.Session {
@@ -45,7 +45,7 @@ extension Stripe.Connect.Account.Session.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let accountSessions = Path {
+    public static var accountSessions: Path<PathBuilder.Component<String>> { Path {
         "account_sessions"
-    }
+    } }
 }

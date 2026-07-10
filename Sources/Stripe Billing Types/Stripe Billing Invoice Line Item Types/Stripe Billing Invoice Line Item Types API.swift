@@ -136,19 +136,19 @@ extension Stripe.Billing.Invoice.LineItems.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let lines = Path {
+    public static var lines: Path<PathBuilder.Component<String>> { Path {
         "lines"
-    }
+    } }
 
-    public static let add_lines = Path {
+    public static var add_lines: Path<PathBuilder.Component<String>> { Path {
         "add_lines"
-    }
+    } }
 
-    public static let update_lines = Path {
+    public static var update_lines: Path<PathBuilder.Component<String>> { Path {
         "update_lines"
-    }
+    } }
 
-    public static let remove_lines = Path {
+    public static var remove_lines: Path<PathBuilder.Component<String>> { Path {
         "remove_lines"
-    }
+    } }
 }

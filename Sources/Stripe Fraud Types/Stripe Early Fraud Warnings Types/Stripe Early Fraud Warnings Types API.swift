@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 import URLRouting
 
@@ -67,11 +67,11 @@ extension Stripe.Fraud.EarlyFraudWarnings.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let radar = Path {
+    public static var radar: Path<PathBuilder.Component<String>> { Path {
         "radar"
-    }
+    } }
 
-    public static let earlyFraudWarnings = Path {
+    public static var earlyFraudWarnings: Path<PathBuilder.Component<String>> { Path {
         "early_fraud_warnings"
-    }
+    } }
 }

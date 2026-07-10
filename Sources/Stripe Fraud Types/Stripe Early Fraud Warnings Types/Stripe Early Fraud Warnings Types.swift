@@ -1,7 +1,7 @@
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 
 extension Stripe.Fraud.EarlyFraudWarnings.API {
     // https://docs.stripe.com/api/radar/early_fraud_warnings/list.md

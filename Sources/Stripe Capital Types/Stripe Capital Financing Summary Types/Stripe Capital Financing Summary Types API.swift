@@ -31,7 +31,7 @@ extension Stripe.Capital.FinancingSummary.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let financingSummary = Path {
+    public static var financingSummary: Path<PathBuilder.Component<String>> { Path {
         "financing_summary"
-    }
+    } }
 }

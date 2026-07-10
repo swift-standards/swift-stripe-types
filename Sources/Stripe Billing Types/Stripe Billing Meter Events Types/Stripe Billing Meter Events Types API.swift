@@ -45,7 +45,7 @@ extension Stripe.Billing.MeterEvents.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let meter_events = Path {
+    public static var meter_events: Path<PathBuilder.Component<String>> { Path {
         "meter_events"
-    }
+    } }
 }

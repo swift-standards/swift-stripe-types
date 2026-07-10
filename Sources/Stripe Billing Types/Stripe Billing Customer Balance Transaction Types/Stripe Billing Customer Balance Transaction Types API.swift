@@ -107,6 +107,6 @@ extension Stripe.Billing.Customer.Balance.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    package static let customers = Path { "customers" }
-    package static let balance_transactions = Path { "balance_transactions" }
+    package static var customers: Path<PathBuilder.Component<String>> { Path { "customers" } }
+    package static var balance_transactions: Path<PathBuilder.Component<String>> { Path { "balance_transactions" } }
 }

@@ -135,15 +135,15 @@ extension Stripe.Payouts.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let payouts = Path {
+    public static var payouts: Path<PathBuilder.Component<String>> { Path {
         "payouts"
-    }
+    } }
 
-    public static let cancel = Path {
+    public static var cancel: Path<PathBuilder.Component<String>> { Path {
         "cancel"
-    }
+    } }
 
-    public static let reverse = Path {
+    public static var reverse: Path<PathBuilder.Component<String>> { Path {
         "reverse"
-    }
+    } }
 }

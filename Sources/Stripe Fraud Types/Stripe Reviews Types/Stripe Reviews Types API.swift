@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 import URLRouting
 
@@ -73,11 +73,11 @@ extension Stripe.Fraud.Reviews.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let reviews = Path {
+    public static var reviews: Path<PathBuilder.Component<String>> { Path {
         "reviews"
-    }
+    } }
 
-    public static let approve = Path {
+    public static var approve: Path<PathBuilder.Component<String>> { Path {
         "approve"
-    }
+    } }
 }

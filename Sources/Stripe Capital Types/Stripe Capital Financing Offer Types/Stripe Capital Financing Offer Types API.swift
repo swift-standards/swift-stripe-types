@@ -2,7 +2,7 @@ import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import Tagged
+import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Capital.FinancingOffer {
@@ -75,13 +75,13 @@ extension Stripe.Capital.FinancingOffer.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let capital = Path {
+    public static var capital: Path<PathBuilder.Component<String>> { Path {
         "capital"
-    }
-    public static let financingOffers = Path {
+    } }
+    public static var financingOffers: Path<PathBuilder.Component<String>> { Path {
         "financing_offers"
-    }
-    public static let markDelivered = Path {
+    } }
+    public static var markDelivered: Path<PathBuilder.Component<String>> { Path {
         "mark_delivered"
-    }
+    } }
 }

@@ -122,15 +122,15 @@ extension Stripe.Billing.Alerts.API {
 
 // MARK: - Path Extensions
 extension Path<PathBuilder.Component<String>> {
-    public static let alerts = Path {
+    public static var alerts: Path<PathBuilder.Component<String>> { Path {
         "alerts"
-    }
+    } }
 
-    public static let activate = Path {
+    public static var activate: Path<PathBuilder.Component<String>> { Path {
         "activate"
-    }
+    } }
 
-    public static let archive = Path {
+    public static var archive: Path<PathBuilder.Component<String>> { Path {
         "archive"
-    }
+    } }
 }

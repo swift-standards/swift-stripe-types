@@ -10,7 +10,6 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Billing {
-    @DependencyClient
     public struct Client: Sendable {
         //    public let credit_Note: Billing_Credit_Note.Client
         //    public let customer_Balance_Transaction: Billing_Customer_Balance_Transaction.Client

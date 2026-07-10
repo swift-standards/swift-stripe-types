@@ -4,12 +4,11 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Billing.Customer.Portal.Session {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/customer_portal/sessions/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Create.Request) async throws ->
+            @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Customer.Portal.Session
 
     }

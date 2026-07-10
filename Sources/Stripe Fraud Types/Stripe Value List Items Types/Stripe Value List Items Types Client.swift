@@ -4,23 +4,19 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Fraud.ValueListItems {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/radar/value_list_items/create.md
-        @DependencyEndpoint
-        public var create: @Sendable (_ request: API.Create.Request) async throws -> ValueListItem
+        public var create: @Sendable (_ request: API.Create.Request) async throws(Witness.Unimplemented.Error) -> ValueListItem
 
         // https://docs.stripe.com/api/radar/value_list_items/retrieve.md
-        @DependencyEndpoint
-        public var retrieve: @Sendable (_ id: ValueListItem.ID) async throws -> ValueListItem
+        public var retrieve: @Sendable (_ id: ValueListItem.ID) async throws(Witness.Unimplemented.Error) -> ValueListItem
 
         // https://docs.stripe.com/api/radar/value_list_items/list.md
-        @DependencyEndpoint
-        public var list: @Sendable (_ request: API.List.Request) async throws -> API.List.Response
+        public var list: @Sendable (_ request: API.List.Request) async throws(Witness.Unimplemented.Error) -> API.List.Response
 
         // https://docs.stripe.com/api/radar/value_list_items/delete.md
-        @DependencyEndpoint
         public var delete:
-            @Sendable (_ id: ValueListItem.ID) async throws -> DeletedObject<ValueListItem>
+            @Sendable (_ id: ValueListItem.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<ValueListItem>
     }
 }

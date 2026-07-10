@@ -11,38 +11,33 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Billing.SubscriptionItems {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/subscription_items/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Stripe.Billing.SubscriptionItems.Create.Request) async throws ->
+            @Sendable (_ request: Stripe.Billing.SubscriptionItems.Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Subscription.Item
 
         // https://docs.stripe.com/api/subscription_items/update.md
-        @DependencyEndpoint
         public var update:
             @Sendable (
                 _ id: Stripe.Billing.Subscription.Item.ID,
                 _ request: Stripe.Billing.SubscriptionItems.Update.Request
-            ) async throws -> Stripe.Billing.Subscription.Item
+            ) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Subscription.Item
 
         // https://docs.stripe.com/api/subscription_items/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.Billing.Subscription.Item.ID) async throws ->
+            @Sendable (_ id: Stripe.Billing.Subscription.Item.ID) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Subscription.Item
 
         // https://docs.stripe.com/api/subscription_items/list.md
-        @DependencyEndpoint
         public var list:
-            @Sendable (_ request: Stripe.Billing.SubscriptionItems.List.Request) async throws ->
+            @Sendable (_ request: Stripe.Billing.SubscriptionItems.List.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.SubscriptionItems.List.Response
 
         // https://docs.stripe.com/api/subscription_items/delete.md
-        @DependencyEndpoint
         public var delete:
-            @Sendable (_ id: Stripe.Billing.Subscription.Item.ID) async throws -> DeletedObject<
+            @Sendable (_ id: Stripe.Billing.Subscription.Item.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<
                 Stripe.Billing.Subscription.Item
             >
     }

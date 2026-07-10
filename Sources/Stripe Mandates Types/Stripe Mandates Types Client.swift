@@ -11,11 +11,10 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Mandates {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/mandates/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.Mandates.Mandate.ID) async throws -> Stripe.Mandates.Mandate
+            @Sendable (_ id: Stripe.Mandates.Mandate.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Mandates.Mandate
     }
 }

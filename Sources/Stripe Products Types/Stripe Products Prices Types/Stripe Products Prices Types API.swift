@@ -3,7 +3,6 @@ import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
-import UnixEpochParsing
 
 extension Stripe.Products.Prices {
     @CasePathable
@@ -131,7 +130,7 @@ extension Stripe.Products.Prices.API {
 
 // Add path extensions for Prices
 extension Path<PathBuilder.Component<String>> {
-    public static let prices = Path {
+    public static var prices: Path<PathBuilder.Component<String>> { Path {
         "prices"
-    }
+    } }
 }

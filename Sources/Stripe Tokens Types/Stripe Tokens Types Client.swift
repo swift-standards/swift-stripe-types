@@ -11,16 +11,14 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Tokens {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/tokens/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Stripe.Tokens.Create.Request) async throws -> Stripe.Tokens.Token
+            @Sendable (_ request: Stripe.Tokens.Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.Tokens.Token
 
         // https://docs.stripe.com/api/tokens/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.Tokens.Token.ID) async throws -> Stripe.Tokens.Token
+            @Sendable (_ id: Stripe.Tokens.Token.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Tokens.Token
     }
 }

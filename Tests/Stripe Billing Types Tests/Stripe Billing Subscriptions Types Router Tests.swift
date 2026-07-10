@@ -36,7 +36,7 @@ struct SubscriptionRouterTests {
     func testRetrieveSubscriptionURL() throws {
         let router: Stripe.Billing.Subscriptions.API.Router = .init()
 
-        let id = Stripe.Billing.Subscription.ID(rawValue: "sub_123")
+        let id = try #require(Stripe.Billing.Subscription.ID(rawValue: "sub_123"))
         let api: Stripe.Billing.Subscriptions.API = .retrieve(id: id)
 
         let url = router.url(for: api)
@@ -54,7 +54,7 @@ struct SubscriptionRouterTests {
     func testUpdateSubscriptionURL() throws {
         let router: Stripe.Billing.Subscriptions.API.Router = .init()
 
-        let id = Stripe.Billing.Subscription.ID(rawValue: "sub_123")
+        let id = try #require(Stripe.Billing.Subscription.ID(rawValue: "sub_123"))
         let updateRequest = Stripe.Billing.Subscriptions.Update.Request(
             description: "Updated subscription",
             metadata: ["updated": "true"]
@@ -96,7 +96,7 @@ struct SubscriptionRouterTests {
     func testCancelSubscriptionURL() throws {
         let router: Stripe.Billing.Subscriptions.API.Router = .init()
 
-        let id = Stripe.Billing.Subscription.ID(rawValue: "sub_123")
+        let id = try #require(Stripe.Billing.Subscription.ID(rawValue: "sub_123"))
         let cancelRequest = Stripe.Billing.Subscriptions.Cancel.Request(
             invoiceNow: true,
             prorate: true

@@ -42,7 +42,7 @@ extension Stripe.PaymentMethods.API {
 }
 
 extension Path<PathBuilder.Component<String>> {
-    public static let paymentMethods = Path {
+    public static var paymentMethods: Path<PathBuilder.Component<String>> { Path {
         "payment_methods"
-    }
+    } }
 }

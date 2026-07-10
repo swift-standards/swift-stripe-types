@@ -11,38 +11,33 @@ import Stripe_Types_Models
 import Stripe_Types_Shared
 
 extension Stripe.Billing.InvoiceItems {
-    @DependencyClient
+    @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/invoiceitems/create.md
-        @DependencyEndpoint
         public var create:
-            @Sendable (_ request: Stripe.Billing.InvoiceItems.Create.Request) async throws ->
+            @Sendable (_ request: Stripe.Billing.InvoiceItems.Create.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Invoice.Item
 
         // https://docs.stripe.com/api/invoiceitems/retrieve.md
-        @DependencyEndpoint
         public var retrieve:
-            @Sendable (_ id: Stripe.Billing.Invoice.Item.ID) async throws ->
+            @Sendable (_ id: Stripe.Billing.Invoice.Item.ID) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.Invoice.Item
 
         // https://docs.stripe.com/api/invoiceitems/update.md
-        @DependencyEndpoint
         public var update:
             @Sendable (
                 _ id: Stripe.Billing.Invoice.Item.ID,
                 _ request: Stripe.Billing.InvoiceItems.Update.Request
-            ) async throws -> Stripe.Billing.Invoice.Item
+            ) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice.Item
 
         // https://docs.stripe.com/api/invoiceitems/list.md
-        @DependencyEndpoint
         public var list:
-            @Sendable (_ request: Stripe.Billing.InvoiceItems.List.Request) async throws ->
+            @Sendable (_ request: Stripe.Billing.InvoiceItems.List.Request) async throws(Witness.Unimplemented.Error) ->
                 Stripe.Billing.InvoiceItems.List.Response
 
         // https://docs.stripe.com/api/invoiceitems/delete.md
-        @DependencyEndpoint
         public var delete:
-            @Sendable (_ id: Stripe.Billing.Invoice.Item.ID) async throws -> DeletedObject<
+            @Sendable (_ id: Stripe.Billing.Invoice.Item.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<
                 Stripe.Billing.Invoice.Item
             >
     }
