@@ -167,9 +167,9 @@ let package = Package(
         .package(url: "https://github.com/swift-foundations/swift-dependencies.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-tagged-primitives.git", branch: "main"),
         // TRANSITIONAL — third-party debt retained this wave (see swift-stripe-types port report):
-        .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.7.1"),
+        .package(url: "https://github.com/pointfreeco/swift-case-paths.git", from: "1.7.1"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing.git", from: "0.6.2"),
-        .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.14.1"),
+        .package(url: "https://github.com/pointfreeco/swift-parsing.git", from: "0.14.1"),
         .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main")
     ],
     targets: [
