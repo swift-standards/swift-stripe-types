@@ -99,12 +99,8 @@ extension Target.Dependency {
     static var dependencies: Self { .product(name: "Dependencies", package: "swift-dependencies") }
     static var dependenciesTestSupport: Self { .product(name: "Dependencies Test Support", package: "swift-dependencies") }
     static var tagged: Self { .product(name: "Tagged Primitives", package: "swift-tagged-primitives") }
-    // TRANSITIONAL — retained third-party debt (pointfreeco + coenttb), not yet ported to institute
-    // equivalents this wave. swift-types-foundation used to funnel these transitively; now declared
-    // precisely. See swift-stripe-types port report for the gap analysis on each.
-    static var casePaths: Self { .product(name: "CasePaths", package: "swift-case-paths") }
+    static var dual: Self { .product(name: "Dual", package: "swift-dual") }
     static var urlRouting: Self { .product(name: "URLRouting", package: "swift-url-routing") }
-    static var parsing: Self { .product(name: "Parsing", package: "swift-parsing") }
     static var urlFormCoding: Self { .product(name: "URLFormCoding", package: "swift-url-form-coding") }
     static var urlFormCodingURLRouting: Self { .product(name: "URLFormCodingURLRouting", package: "swift-url-form-coding") }
 }
@@ -166,10 +162,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/swift-foundations/swift-dependencies.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-tagged-primitives.git", branch: "main"),
-        // TRANSITIONAL — third-party debt retained this wave (see swift-stripe-types port report):
-        .package(url: "https://github.com/pointfreeco/swift-case-paths.git", from: "1.7.1"),
-        .package(url: "https://github.com/swift-foundations/swift-url-routing.git", from: "0.6.2"),
-        .package(url: "https://github.com/pointfreeco/swift-parsing.git", from: "0.14.1"),
+        .package(url: "https://github.com/swift-foundations/swift-dual.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-url-routing.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main")
     ],
     targets: [
@@ -177,9 +171,8 @@ let package = Package(
             name: .stripeTypesShared,
             dependencies: [
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
             ]
@@ -188,9 +181,8 @@ let package = Package(
             name: .stripeTypesModels,
             dependencies: [
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged,
@@ -203,9 +195,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged,
@@ -279,9 +270,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -300,9 +290,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -321,9 +310,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -342,9 +330,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -363,9 +350,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -384,9 +370,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -405,9 +390,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -426,9 +410,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -447,9 +430,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -468,9 +450,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -489,9 +470,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -510,9 +490,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -531,9 +510,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -552,9 +530,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -573,9 +550,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -594,9 +570,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -615,9 +590,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -636,9 +610,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -657,9 +630,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -678,9 +650,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -699,9 +670,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -720,9 +690,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -741,9 +710,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -762,9 +730,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -783,9 +750,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -804,9 +770,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -825,9 +790,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -846,9 +810,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -867,9 +830,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -888,9 +850,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -909,9 +870,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -930,9 +890,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -951,9 +910,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -972,9 +930,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -993,9 +950,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -1014,9 +970,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -1035,9 +990,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -1056,9 +1010,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -1077,9 +1030,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged
@@ -1098,9 +1050,8 @@ let package = Package(
                 .stripeTypesModels,
                 .stripeTypesShared,
                 .dependencies,
-                .casePaths,
+                .dual,
                 .urlRouting,
-                .parsing,
                 .urlFormCoding,
                 .urlFormCodingURLRouting,
                 .tagged

@@ -5,7 +5,6 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Disputes {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/disputes/retrieve.md
         case retrieve(id: Stripe.Disputes.Dispute.ID)
@@ -34,7 +32,7 @@ extension Stripe.Disputes.API {
         public var body: some URLRouting.Router<Stripe.Disputes.API> {
             OneOf {
                 // https://docs.stripe.com/api/disputes/retrieve.md
-                URLRouting.Route(.case(Stripe.Disputes.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Disputes.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.disputes
@@ -42,12 +40,16 @@ extension Stripe.Disputes.API {
                 }
 
                 // https://docs.stripe.com/api/disputes/update.md
-                URLRouting.Route(.case(Stripe.Disputes.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Disputes.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.disputes
                     Path { Parse(.string.representing(Stripe.Disputes.Dispute.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Disputes.Update.Request.self,
                             decoder: .stripe,
@@ -57,11 +59,22 @@ extension Stripe.Disputes.API {
                 }
 
                 // https://docs.stripe.com/api/disputes/list.md
-                URLRouting.Route(.case(Stripe.Disputes.API.list)) {
+                URLRouting.Route(.case(Stripe.Disputes.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.disputes
-                    Parse(.memberwise(Stripe.Disputes.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Disputes.List.Request.init,
+                                { ($0.charge, $0.paymentIntent, $0.created, $0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("charge") {
@@ -86,7 +99,7 @@ extension Stripe.Disputes.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -96,7 +109,7 @@ extension Stripe.Disputes.API {
                 }
 
                 // https://docs.stripe.com/api/disputes/close.md
-                URLRouting.Route(.case(Stripe.Disputes.API.close)) {
+                URLRouting.Route(.case(Stripe.Disputes.API.cases.close)) {
                     Method.post
                     Path.v1
                     Path.disputes

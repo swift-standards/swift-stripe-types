@@ -5,7 +5,6 @@
 //  Created for swift-stripe-types on 14/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.PaymentMethodConfigurations {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/payment_method_configurations/create.md
         case create(request: Create.Request)
@@ -36,11 +34,11 @@ extension Stripe.PaymentMethodConfigurations.API {
 
         public var body: some URLRouting.Router<Stripe.PaymentMethodConfigurations.API> {
             OneOf {
-                Route(.case(Stripe.PaymentMethodConfigurations.API.create)) {
+                Route(.case(Stripe.PaymentMethodConfigurations.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.paymentMethodConfigurations
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.PaymentMethodConfigurations.Create.Request.self,
                             decoder: .stripe,
@@ -49,7 +47,7 @@ extension Stripe.PaymentMethodConfigurations.API {
                     )
                 }
 
-                Route(.case(Stripe.PaymentMethodConfigurations.API.retrieve)) {
+                Route(.case(Stripe.PaymentMethodConfigurations.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.paymentMethodConfigurations
@@ -62,7 +60,11 @@ extension Stripe.PaymentMethodConfigurations.API {
                     }
                 }
 
-                Route(.case(Stripe.PaymentMethodConfigurations.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.PaymentMethodConfigurations.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.paymentMethodConfigurations
@@ -73,7 +75,7 @@ extension Stripe.PaymentMethodConfigurations.API {
                             )
                         )
                     }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.PaymentMethodConfigurations.Update.Request.self,
                             decoder: .stripe,
@@ -88,7 +90,7 @@ extension Stripe.PaymentMethodConfigurations.API {
                 //     Method.get
                 //     Path.v1
                 //     Path.paymentMethodConfigurations
-                //     Parse(.memberwise(Stripe.PaymentMethodConfigurations.List.Request.init)) {
+                //     Parse(.memberwise(Stripe.PaymentMethodConfigurations.List.Request.init, { ($0.application, $0.endingBefore, $0.limit, $0.startingAfter) })) {
                 //         Query {
                 //             Optionally {
                 //                 Field("application") { Parse(.string) }
@@ -97,7 +99,7 @@ extension Stripe.PaymentMethodConfigurations.API {
                 //                 Field("ending_before") { Parse(.string) }
                 //             }
                 //             Optionally {
-                //                 Field("limit") { Digits() }
+                //                 Field("limit") { Int.parser() }
                 //             }
                 //             Optionally {
                 //                 Field("starting_after") { Parse(.string) }

@@ -46,6 +46,7 @@ import Stripe_Webhooks_Types
 import URLRouting
 
 extension Stripe {
+    @Cases
     public enum API: Equatable, Sendable {
         case balance(Stripe.Balance.API)
         case balanceTransactions(Stripe.BalanceTransactions.API)
@@ -96,70 +97,70 @@ extension Stripe.API {
         public var body: some URLRouting.Router<Stripe.API> {
             OneOf {
 
-                URLRouting.Route(.case(Stripe.API.balance)) {
+                URLRouting.Route(.case(Stripe.API.cases.balance)) {
                     Stripe.Balance.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.balanceTransactions)) {
+                URLRouting.Route(.case(Stripe.API.cases.balanceTransactions)) {
                     Stripe.BalanceTransactions.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.charges)) {
+                URLRouting.Route(.case(Stripe.API.cases.charges)) {
                     Stripe.Charges.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.customers)) {
+                URLRouting.Route(.case(Stripe.API.cases.customers)) {
                     Stripe.Customers.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.customerSessions)) {
+                URLRouting.Route(.case(Stripe.API.cases.customerSessions)) {
                     Stripe.Customers.Customer.Sessions.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.disputes)) {
+                URLRouting.Route(.case(Stripe.API.cases.disputes)) {
                     Stripe.Disputes.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.events)) {
+                URLRouting.Route(.case(Stripe.API.cases.events)) {
                     Stripe.Events.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.files)) {
+                URLRouting.Route(.case(Stripe.API.cases.files)) {
                     Stripe.Files.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.fileLinks)) {
+                URLRouting.Route(.case(Stripe.API.cases.fileLinks)) {
                     Stripe.FileLinks.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.mandates)) {
+                URLRouting.Route(.case(Stripe.API.cases.mandates)) {
                     Stripe.Mandates.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.paymentIntents)) {
+                URLRouting.Route(.case(Stripe.API.cases.paymentIntents)) {
                     Stripe.PaymentIntents.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.setupIntents)) {
+                URLRouting.Route(.case(Stripe.API.cases.setupIntents)) {
                     Stripe.Setup.Intents.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.setupAttempts)) {
+                URLRouting.Route(.case(Stripe.API.cases.setupAttempts)) {
                     Stripe.Setup.Attempts.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.payouts)) {
+                URLRouting.Route(.case(Stripe.API.cases.payouts)) {
                     Stripe.Payouts.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.refunds)) {
+                URLRouting.Route(.case(Stripe.API.cases.refunds)) {
                     Stripe.Refunds.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.confirmationToken)) {
+                URLRouting.Route(.case(Stripe.API.cases.confirmationToken)) {
                     Stripe.ConfirmationToken.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.tokens)) {
+                URLRouting.Route(.case(Stripe.API.cases.tokens)) {
                     Stripe.Tokens.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.paymentMethods)) {
+                URLRouting.Route(.case(Stripe.API.cases.paymentMethods)) {
                     Stripe.PaymentMethods.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.products)) {
+                URLRouting.Route(.case(Stripe.API.cases.products)) {
                     Stripe.Products.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.checkout)) {
+                URLRouting.Route(.case(Stripe.API.cases.checkout)) {
                     Stripe.Checkout.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.paymentLinks)) {
+                URLRouting.Route(.case(Stripe.API.cases.paymentLinks)) {
                     Stripe.PaymentLinks.API.Router()
                 }
-                URLRouting.Route(.case(Stripe.API.billing)) {
+                URLRouting.Route(.case(Stripe.API.cases.billing)) {
                     Stripe.Billing.API.Router()
                 }
                 //                URLRouting.Route(.case(Stripe.API.capital)) {

@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -6,8 +5,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Capital.FinancingOffer {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/capital/financing_offers/retrieve.md
         case retrieve(id: Stripe.Capital.FinancingOffer.ID)
@@ -24,7 +22,7 @@ extension Stripe.Capital.FinancingOffer.API {
 
         public var body: some URLRouting.Router<Stripe.Capital.FinancingOffer.API> {
             OneOf {
-                Route(.case(Stripe.Capital.FinancingOffer.API.retrieve)) {
+                Route(.case(Stripe.Capital.FinancingOffer.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.capital
@@ -32,12 +30,23 @@ extension Stripe.Capital.FinancingOffer.API {
                     Path { Parse(.string.representing(Stripe.Capital.FinancingOffer.ID.self)) }
                 }
 
-                Route(.case(Stripe.Capital.FinancingOffer.API.list)) {
+                Route(.case(Stripe.Capital.FinancingOffer.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.capital
                     Path.financingOffers
-                    Parse(.memberwise(Stripe.Capital.FinancingOffer.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Capital.FinancingOffer.List.Request.init,
+                                { ($0.connectedAccount, $0.created, $0.status, $0.limit, $0.startingAfter, $0.endingBefore) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("connected_account") { Parse(.string) }
@@ -50,7 +59,7 @@ extension Stripe.Capital.FinancingOffer.API {
                             Optionally {
                                 Field("status") { Parse(.string) }
                             }
-                            Field("limit", default: 10) { Digits() }
+                            Field("limit", default: 10) { Int.parser() }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
                             }
@@ -61,7 +70,7 @@ extension Stripe.Capital.FinancingOffer.API {
                     }
                 }
 
-                Route(.case(Stripe.Capital.FinancingOffer.API.markDelivered)) {
+                Route(.case(Stripe.Capital.FinancingOffer.API.cases.markDelivered)) {
                     Method.post
                     Path.v1
                     Path.capital

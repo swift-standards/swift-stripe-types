@@ -14,7 +14,7 @@ import URLRouting
 @testable import Stripe_Tax_Types
 @testable import Stripe_Types_Models
 
-@Suite("Tax Calculations Router Tests")
+@Suite("Tax Calculations Router Tests", .disabled(if: taggedMetadataSIGSEGV, "catalog §A9: Tagged metadata SIGSEGV on Swift <6.4"))
 struct TaxCalculationsRouterTests {
     let router = Stripe.Tax.Calculations.API.Router()
 
@@ -97,3 +97,16 @@ struct TaxCalculationsRouterTests {
         #expect(parsed.is(\.listLineItems))
     }
 }
+
+// §A9 toolchain gate (swift-institute/Research/swift-compiler-bug-catalog.md §A9):
+// institute `Tagged` materialized inside this router's deep generic parser chains
+// forces its value-witness table at first parse/print; on Swift 6.3.x
+// `swift_getTypeByMangledName` returns null metadata and the test runner SIGSEGVs.
+// Fixed in Swift 6.4; no source fix exists (graph-package ratified pattern —
+// `.disabled(if:)`, not `withKnownIssue`, because the crash kills the runner).
+// Auto-retires at the 6.4 toolchain move.
+#if compiler(<6.4)
+private let taggedMetadataSIGSEGV = true
+#else
+private let taggedMetadataSIGSEGV = false
+#endif

@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Products.Prices {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case create(request: Stripe.Products.Prices.Create.Request)
         case update(id: Stripe.Products.Price.ID, request: Stripe.Products.Prices.Update.Request)
@@ -22,11 +20,11 @@ extension Stripe.Products.Prices.API {
 
         public var body: some URLRouting.Router<Stripe.Products.Prices.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Products.Prices.API.create)) {
+                URLRouting.Route(.case(Stripe.Products.Prices.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.prices
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Products.Prices.Create.Request.self,
                             decoder: .stripe,
@@ -35,19 +33,23 @@ extension Stripe.Products.Prices.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Products.Prices.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Products.Prices.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.prices
                     Path { Parse(.string.representing(Stripe.Products.Price.ID.self)) }
                 }
 
-                URLRouting.Route(.case(Stripe.Products.Prices.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Products.Prices.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.prices
                     Path { Parse(.string.representing(Stripe.Products.Price.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Products.Prices.Update.Request.self,
                             decoder: .stripe,
@@ -56,11 +58,22 @@ extension Stripe.Products.Prices.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Products.Prices.API.list)) {
+                URLRouting.Route(.case(Stripe.Products.Prices.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.prices
-                    Parse(.memberwise(Stripe.Products.Prices.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0.0.0.0.0, $0.0.0.0.0.0.0.0.0.1, $0.0.0.0.0.0.0.0.1, $0.0.0.0.0.0.0.1, $0.0.0.0.0.0.1, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((((((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6), $0.7), $0.8), $0.9) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Products.Prices.List.Request.init,
+                                { ($0.active, $0.currency, $0.created, $0.endingBefore, $0.limit, $0.lookupKeys, $0.product, $0.recurring, $0.startingAfter, $0.type) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("active") { Bool.parser() }
@@ -79,13 +92,15 @@ extension Stripe.Products.Prices.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("lookup_keys") {
-                                    Many {
-                                        Parse(.string)
-                                    }
+                                    // swift-parsing `Many` dissolved onto the vended conversion seam:
+                                    // parse wraps the whole field value as a single element; print joins
+                                    // (identical to the original `Many { Parse(.string) }` degenerate
+                                    // no-separator behavior over a field value).
+                                    Parse(.string).map(.convert(apply: { [$0] }, unapply: { $0.joined() }))
                                 }
                             }
                             Optionally {
@@ -106,16 +121,27 @@ extension Stripe.Products.Prices.API {
                     }
                 }
 
-                URLRouting.Route(.case(Stripe.Products.Prices.API.search)) {
+                URLRouting.Route(.case(Stripe.Products.Prices.API.cases.search)) {
                     Method.get
                     Path.v1
                     Path.prices
                     Path { "search" }
-                    Parse(.memberwise(Stripe.Products.Prices.Search.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Products.Prices.Search.Request.init,
+                                { ($0.query, $0.limit, $0.page) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Field("query") { Parse(.string) }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("page") { Parse(.string) }

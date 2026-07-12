@@ -13,7 +13,7 @@ import URLRouting
 @testable import Stripe_Customers_Types
 @testable import Stripe_Types_Models
 
-@Suite("Customer Router Tests")
+@Suite("Customer Router Tests", .disabled(if: taggedMetadataSIGSEGV, "catalog §A9: Tagged metadata SIGSEGV on Swift <6.4"))
 struct CustomerRouterTests {
 
     @Test("Creates correct URL for customer creation")
@@ -44,7 +44,7 @@ struct CustomerRouterTests {
         // Round-trip test
         let match: Stripe.Customers.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.retrieve))
-        #expect(match.retrieve == id)
+        #expect(Stripe.Customers.API.cases.retrieve.extract(match) == id)
     }
 
     @Test("Creates correct URL for customer update")
@@ -96,7 +96,7 @@ struct CustomerRouterTests {
         // Round-trip test
         let match: Stripe.Customers.API = try router.match(request: try router.request(for: api))
         #expect(match.is(\.delete))
-        #expect(match.delete == id)
+        #expect(Stripe.Customers.API.cases.delete.extract(match) == id)
     }
 
     @Test("Creates correct URL for searching customers")
@@ -121,3 +121,16 @@ struct CustomerRouterTests {
         #expect(queryDict["limit"] == "10")
     }
 }
+
+// §A9 toolchain gate (swift-institute/Research/swift-compiler-bug-catalog.md §A9):
+// institute `Tagged` materialized inside this router's deep generic parser chains
+// forces its value-witness table at first parse/print; on Swift 6.3.x
+// `swift_getTypeByMangledName` returns null metadata and the test runner SIGSEGVs.
+// Fixed in Swift 6.4; no source fix exists (graph-package ratified pattern —
+// `.disabled(if:)`, not `withKnownIssue`, because the crash kills the runner).
+// Auto-retires at the 6.4 toolchain move.
+#if compiler(<6.4)
+private let taggedMetadataSIGSEGV = true
+#else
+private let taggedMetadataSIGSEGV = false
+#endif

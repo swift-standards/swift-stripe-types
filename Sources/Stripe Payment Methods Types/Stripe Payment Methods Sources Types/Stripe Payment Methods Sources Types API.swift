@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -6,8 +5,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.PaymentMethods.Sources {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/sources/create.md
         case create(request: Create.Request)
@@ -28,11 +26,11 @@ extension Stripe.PaymentMethods.Sources.API {
 
         public var body: some URLRouting.Router<Stripe.PaymentMethods.Sources.API> {
             OneOf {
-                Route(.case(Stripe.PaymentMethods.Sources.API.create)) {
+                Route(.case(Stripe.PaymentMethods.Sources.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.sources
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.PaymentMethods.Sources.Create.Request.self,
                             decoder: .stripe,
@@ -41,19 +39,23 @@ extension Stripe.PaymentMethods.Sources.API {
                     )
                 }
 
-                Route(.case(Stripe.PaymentMethods.Sources.API.retrieve)) {
+                Route(.case(Stripe.PaymentMethods.Sources.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.sources
                     Path { Parse(.string.representing(Stripe_Types_Models.Source.ID.self)) }
                 }
 
-                Route(.case(Stripe.PaymentMethods.Sources.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.PaymentMethods.Sources.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.sources
                     Path { Parse(.string.representing(Stripe_Types_Models.Source.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.PaymentMethods.Sources.Update.Request.self,
                             decoder: .stripe,
@@ -62,7 +64,11 @@ extension Stripe.PaymentMethods.Sources.API {
                     )
                 }
 
-                Route(.case(Stripe.PaymentMethods.Sources.API.attach)) {
+                Route(.convert(
+                        apply: { (customerId: $0.0, source: $0.1) },
+                        unapply: { ($0.customerId, $0.source) }
+                    )
+                    .map(.case(Stripe.PaymentMethods.Sources.API.cases.attach))) {
                     Method.post
                     Path.v1
                     Path.customers
@@ -73,7 +79,11 @@ extension Stripe.PaymentMethods.Sources.API {
                     }
                 }
 
-                Route(.case(Stripe.PaymentMethods.Sources.API.detach)) {
+                Route(.convert(
+                        apply: { (customerId: $0.0, sourceId: $0.1) },
+                        unapply: { ($0.customerId, $0.sourceId) }
+                    )
+                    .map(.case(Stripe.PaymentMethods.Sources.API.cases.detach))) {
                     Method.delete
                     Path.v1
                     Path.customers

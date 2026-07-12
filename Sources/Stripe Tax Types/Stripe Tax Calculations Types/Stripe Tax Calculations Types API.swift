@@ -5,7 +5,6 @@
 //  Created on 2025-01-14.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Tax.Calculations {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/tax/calculations/create.md
         case create(request: Create.Request)
@@ -31,12 +29,12 @@ extension Stripe.Tax.Calculations.API {
 
         public var body: some URLRouting.Router<Stripe.Tax.Calculations.API> {
             OneOf {
-                Route(.case(Stripe.Tax.Calculations.API.create)) {
+                Route(.case(Stripe.Tax.Calculations.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.tax
                     Path.calculations
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Tax.Calculations.Create.Request.self,
                             decoder: .stripe,
@@ -45,7 +43,7 @@ extension Stripe.Tax.Calculations.API {
                     )
                 }
 
-                Route(.case(Stripe.Tax.Calculations.API.retrieve)) {
+                Route(.case(Stripe.Tax.Calculations.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.tax
@@ -53,20 +51,35 @@ extension Stripe.Tax.Calculations.API {
                     Path { Parse(.string.representing(Stripe.Tax.Calculation.ID.self)) }
                 }
 
-                Route(.case(Stripe.Tax.Calculations.API.listLineItems)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Tax.Calculations.API.cases.listLineItems))) {
                     Method.get
                     Path.v1
                     Path.tax
                     Path.calculations
                     Path { Parse(.string.representing(Stripe.Tax.Calculation.ID.self)) }
                     Path.lineItems
-                    Parse(.memberwise(Stripe.Tax.Calculations.List.LineItems.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Tax.Calculations.List.LineItems.Request.init,
+                                { ($0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }

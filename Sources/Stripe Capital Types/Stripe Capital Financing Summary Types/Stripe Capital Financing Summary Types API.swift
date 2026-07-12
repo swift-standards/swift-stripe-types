@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Capital.FinancingSummary {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/capital/financing_summary/retrieve.md
         case retrieve
@@ -19,7 +17,7 @@ extension Stripe.Capital.FinancingSummary.API {
 
         public var body: some URLRouting.Router<Stripe.Capital.FinancingSummary.API> {
             OneOf {
-                Route(.case(Stripe.Capital.FinancingSummary.API.retrieve)) {
+                Route(.case(Stripe.Capital.FinancingSummary.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.capital

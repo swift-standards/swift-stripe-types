@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Refunds {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/refunds/create.md
         case create(request: Stripe.Refunds.Create.Request)
@@ -34,11 +32,11 @@ extension Stripe.Refunds.API {
 
         public var body: some URLRouting.Router<Stripe.Refunds.API> {
             OneOf {
-                Route(.case(Stripe.Refunds.API.create)) {
+                Route(.case(Stripe.Refunds.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.refunds
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Refunds.Create.Request.self,
                             decoder: .stripe,
@@ -47,19 +45,23 @@ extension Stripe.Refunds.API {
                     )
                 }
 
-                Route(.case(Stripe.Refunds.API.retrieve)) {
+                Route(.case(Stripe.Refunds.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.refunds
                     Path { Parse(.string.representing(Stripe.Refunds.Refund.ID.self)) }
                 }
 
-                Route(.case(Stripe.Refunds.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Refunds.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.refunds
                     Path { Parse(.string.representing(Stripe.Refunds.Refund.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Refunds.Update.Request.self,
                             decoder: .stripe,
@@ -68,11 +70,22 @@ extension Stripe.Refunds.API {
                     )
                 }
 
-                Route(.case(Stripe.Refunds.API.list)) {
+                Route(.case(Stripe.Refunds.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.refunds
-                    Parse(.memberwise(Stripe.Refunds.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Refunds.List.Request.init,
+                                { ($0.charge, $0.created, $0.endingBefore, $0.limit, $0.paymentIntent, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("charge") {
@@ -88,7 +101,7 @@ extension Stripe.Refunds.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("payment_intent") {
@@ -106,7 +119,7 @@ extension Stripe.Refunds.API {
                     }
                 }
 
-                Route(.case(Stripe.Refunds.API.cancel)) {
+                Route(.case(Stripe.Refunds.API.cases.cancel)) {
                     Method.post
                     Path.v1
                     Path.refunds

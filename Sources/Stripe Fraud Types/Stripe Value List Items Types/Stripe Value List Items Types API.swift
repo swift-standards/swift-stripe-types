@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -7,8 +6,7 @@ import URLFormCodingURLRouting
 import URLRouting
 
 extension Stripe.Fraud.ValueListItems {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/radar/value_list_items/create.md
         case create(request: Create.Request)
@@ -27,12 +25,12 @@ extension Stripe.Fraud.ValueListItems.API {
 
         public var body: some URLRouting.Router<Stripe.Fraud.ValueListItems.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Fraud.ValueListItems.API.create)) {
+                URLRouting.Route(.case(Stripe.Fraud.ValueListItems.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.radar
                     Path.valueListItems
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Fraud.ValueListItems.API.Create.Request.self,
                             decoder: .stripe,
@@ -41,7 +39,7 @@ extension Stripe.Fraud.ValueListItems.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Fraud.ValueListItems.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Fraud.ValueListItems.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.radar
@@ -69,7 +67,7 @@ extension Stripe.Fraud.ValueListItems.API {
                 //                            Field("ending_before") { Parse(.string) }
                 //                        }
                 //                        Optionally {
-                //                            Field("limit") { Digits() }
+                //                            Field("limit") { Int.parser() }
                 //                        }
                 //                        Optionally {
                 //                            Field("starting_after") { Parse(.string) }
@@ -81,7 +79,7 @@ extension Stripe.Fraud.ValueListItems.API {
                 //                    .query(Stripe.Fraud.ValueListItems.API.List.Request?.self)
                 //                }
 
-                URLRouting.Route(.case(Stripe.Fraud.ValueListItems.API.delete)) {
+                URLRouting.Route(.case(Stripe.Fraud.ValueListItems.API.cases.delete)) {
                     Method.delete
                     Path.v1
                     Path.radar

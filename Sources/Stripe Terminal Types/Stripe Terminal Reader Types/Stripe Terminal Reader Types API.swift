@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -7,8 +6,7 @@ import URLFormCodingURLRouting
 import URLRouting
 
 extension Stripe.Terminal.Readers {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/terminal/readers/create.md
         case create(request: Create.Request)
@@ -47,12 +45,12 @@ extension Stripe.Terminal.Readers.API {
 
         public var body: some URLRouting.Router<Stripe.Terminal.Readers.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.create)) {
+                URLRouting.Route(.case(Stripe.Terminal.Readers.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.readers
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.Create.Request.self,
                             decoder: .stripe,
@@ -61,7 +59,7 @@ extension Stripe.Terminal.Readers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Terminal.Readers.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.terminal
@@ -69,13 +67,17 @@ extension Stripe.Terminal.Readers.API {
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Readers.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.readers
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.Update.Request.self,
                             decoder: .stripe,
@@ -92,7 +94,7 @@ extension Stripe.Terminal.Readers.API {
                 //     Path.readers
                 // }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.delete)) {
+                URLRouting.Route(.case(Stripe.Terminal.Readers.API.cases.delete)) {
                     Method.delete
                     Path.v1
                     Path.terminal
@@ -100,7 +102,7 @@ extension Stripe.Terminal.Readers.API {
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.cancelAction)) {
+                URLRouting.Route(.case(Stripe.Terminal.Readers.API.cases.cancelAction)) {
                     Method.post
                     Path.v1
                     Path.terminal
@@ -109,14 +111,18 @@ extension Stripe.Terminal.Readers.API {
                     Path.cancelAction
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.processPaymentIntent)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Readers.API.cases.processPaymentIntent))) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.readers
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                     Path.processPaymentIntent
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.ProcessPaymentIntent.Request.self,
                             decoder: .stripe,
@@ -125,14 +131,18 @@ extension Stripe.Terminal.Readers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.processSetupIntent)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Readers.API.cases.processSetupIntent))) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.readers
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                     Path.processSetupIntent
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.ProcessSetupIntent.Request.self,
                             decoder: .stripe,
@@ -141,14 +151,18 @@ extension Stripe.Terminal.Readers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.collectInputs)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Readers.API.cases.collectInputs))) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.readers
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                     Path.collectInputs
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.CollectInputs.Request.self,
                             decoder: .stripe,
@@ -157,14 +171,18 @@ extension Stripe.Terminal.Readers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.confirmPaymentIntent)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Readers.API.cases.confirmPaymentIntent))) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.readers
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                     Path.confirmPaymentIntent
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.ConfirmPaymentIntent.Request.self,
                             decoder: .stripe,
@@ -173,14 +191,18 @@ extension Stripe.Terminal.Readers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.collectPaymentMethod)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Readers.API.cases.collectPaymentMethod))) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.readers
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                     Path.collectPaymentMethod
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.CollectPaymentMethod.Request.self,
                             decoder: .stripe,
@@ -189,14 +211,18 @@ extension Stripe.Terminal.Readers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.refundPayment)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Readers.API.cases.refundPayment))) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.readers
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                     Path.refundPayment
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.RefundPayment.Request.self,
                             decoder: .stripe,
@@ -205,14 +231,18 @@ extension Stripe.Terminal.Readers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.setReaderDisplay)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Readers.API.cases.setReaderDisplay))) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.readers
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                     Path.setReaderDisplay
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.SetReaderDisplay.Request.self,
                             decoder: .stripe,
@@ -221,7 +251,11 @@ extension Stripe.Terminal.Readers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Readers.API.presentPaymentMethod)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Readers.API.cases.presentPaymentMethod))) {
                     Method.post
                     Path.v1
                     Path.testHelpers
@@ -229,7 +263,7 @@ extension Stripe.Terminal.Readers.API {
                     Path.readers
                     Path { Parse(.string.representing(Stripe.Terminal.Readers.Reader.ID.self)) }
                     Path.presentPaymentMethod
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Readers.PresentPaymentMethod.Request.self,
                             decoder: .stripe,

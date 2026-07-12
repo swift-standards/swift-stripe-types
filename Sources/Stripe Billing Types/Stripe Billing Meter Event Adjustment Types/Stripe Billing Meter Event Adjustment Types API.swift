@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.MeterEventAdjustments {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/billing/meter-event-adjustment/create.md
         case create(request: Create.Request)
@@ -26,12 +24,12 @@ extension Stripe.Billing.MeterEventAdjustments.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.MeterEventAdjustments.API> {
             OneOf {
-                Route(.case(Stripe.Billing.MeterEventAdjustments.API.create)) {
+                Route(.case(Stripe.Billing.MeterEventAdjustments.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.billing
                     Path.meter_event_adjustments
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.MeterEventAdjustments.Create.Request.self,
                             decoder: .stripe,

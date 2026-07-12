@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -7,8 +6,7 @@ import URLFormCodingURLRouting
 import URLRouting
 
 extension Stripe.Fraud.Reviews {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/radar/reviews/retrieve.md
         case retrieve(id: Review.ID)
@@ -25,7 +23,7 @@ extension Stripe.Fraud.Reviews.API {
 
         public var body: some URLRouting.Router<Stripe.Fraud.Reviews.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Fraud.Reviews.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Fraud.Reviews.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path { "reviews" }
@@ -41,7 +39,7 @@ extension Stripe.Fraud.Reviews.API {
                 //                            Field("ending_before") { Parse(.string) }
                 //                        }
                 //                        Optionally {
-                //                            Field("limit") { Digits() }
+                //                            Field("limit") { Int.parser() }
                 //                        }
                 //                        Optionally {
                 //                            Field("starting_after") { Parse(.string) }
@@ -53,13 +51,17 @@ extension Stripe.Fraud.Reviews.API {
                 //                    .query(Stripe.Fraud.Reviews.API.List.Request?.self)
                 //                }
 
-                URLRouting.Route(.case(Stripe.Fraud.Reviews.API.approve)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Fraud.Reviews.API.cases.approve))) {
                     Method.post
                     Path.v1
                     Path { "reviews" }
                     Path { Parse(.string.representing(Stripe.Fraud.Reviews.Review.ID.self)) }
                     Path.approve
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Fraud.Reviews.API.Approve.Request.self,
                             decoder: .stripe,

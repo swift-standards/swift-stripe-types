@@ -5,7 +5,6 @@
 //  Created by coenttb on 2025-01-14.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Connect.Accounts {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/accounts/create.md
         case create(request: Create.Request)
@@ -35,11 +33,11 @@ extension Stripe.Connect.Accounts.API {
     public struct Router: ParserPrinter, Sendable {
         public var body: some URLRouting.Router<Stripe.Connect.Accounts.API> {
             OneOf {
-                Route(.case(Stripe.Connect.Accounts.API.create)) {
+                Route(.case(Stripe.Connect.Accounts.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.accounts
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Connect.Accounts.Create.Request.self,
                             decoder: .stripe,
@@ -48,19 +46,23 @@ extension Stripe.Connect.Accounts.API {
                     )
                 }
 
-                Route(.case(Stripe.Connect.Accounts.API.retrieve)) {
+                Route(.case(Stripe.Connect.Accounts.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.accounts
                     Path { Parse(.string.representing(Stripe.Connect.Account.ID.self)) }
                 }
 
-                Route(.case(Stripe.Connect.Accounts.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Connect.Accounts.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.accounts
                     Path { Parse(.string.representing(Stripe.Connect.Account.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Connect.Accounts.Update.Request.self,
                             decoder: .stripe,
@@ -69,11 +71,22 @@ extension Stripe.Connect.Accounts.API {
                     )
                 }
 
-                Route(.case(Stripe.Connect.Accounts.API.list)) {
+                Route(.case(Stripe.Connect.Accounts.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.accounts
-                    Parse(.memberwise(Stripe.Connect.Accounts.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((($0.0, $0.1), $0.2), $0.3), $0.4) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Connect.Accounts.List.Request.init,
+                                { ($0.created, $0.endingBefore, $0.expand, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("created") {
@@ -85,11 +98,15 @@ extension Stripe.Connect.Accounts.API {
                             }
                             Optionally {
                                 Field("expand") {
-                                    Many { Parse(.string) }
+                                    // swift-parsing `Many` dissolved onto the vended conversion seam:
+                                    // parse wraps the whole field value as a single element; print joins
+                                    // (identical to the original `Many { Parse(.string) }` degenerate
+                                    // no-separator behavior over a field value).
+                                    Parse(.string).map(.convert(apply: { [$0] }, unapply: { $0.joined() }))
                                 }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -98,20 +115,24 @@ extension Stripe.Connect.Accounts.API {
                     }
                 }
 
-                Route(.case(Stripe.Connect.Accounts.API.delete)) {
+                Route(.case(Stripe.Connect.Accounts.API.cases.delete)) {
                     Method.delete
                     Path.v1
                     Path.accounts
                     Path { Parse(.string.representing(Stripe.Connect.Account.ID.self)) }
                 }
 
-                Route(.case(Stripe.Connect.Accounts.API.reject)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Connect.Accounts.API.cases.reject))) {
                     Method.post
                     Path.v1
                     Path.accounts
                     Path { Parse(.string.representing(Stripe.Connect.Account.ID.self)) }
                     Path.reject
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Connect.Accounts.Reject.Request.self,
                             decoder: .stripe,

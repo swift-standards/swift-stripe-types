@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -6,8 +5,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.PaymentMethodDomains {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/payment_method_domains/create.md
         case create(request: Create.Request)
@@ -28,11 +26,11 @@ extension Stripe.PaymentMethodDomains.API {
 
         public var body: some URLRouting.Router<Stripe.PaymentMethodDomains.API> {
             OneOf {
-                Route(.case(Stripe.PaymentMethodDomains.API.create)) {
+                Route(.case(Stripe.PaymentMethodDomains.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.paymentMethodDomains
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.PaymentMethodDomains.Create.Request.self,
                             decoder: .stripe,
@@ -41,19 +39,23 @@ extension Stripe.PaymentMethodDomains.API {
                     )
                 }
 
-                Route(.case(Stripe.PaymentMethodDomains.API.retrieve)) {
+                Route(.case(Stripe.PaymentMethodDomains.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.paymentMethodDomains
                     Path { Parse(.string.representing(Stripe.PaymentMethodDomain.ID.self)) }
                 }
 
-                Route(.case(Stripe.PaymentMethodDomains.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.PaymentMethodDomains.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.paymentMethodDomains
                     Path { Parse(.string.representing(Stripe.PaymentMethodDomain.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.PaymentMethodDomains.Update.Request.self,
                             decoder: .stripe,
@@ -62,11 +64,22 @@ extension Stripe.PaymentMethodDomains.API {
                     )
                 }
 
-                Route(.case(Stripe.PaymentMethodDomains.API.list)) {
+                Route(.case(Stripe.PaymentMethodDomains.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.paymentMethodDomains
-                    Parse(.memberwise(Stripe.PaymentMethodDomains.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((($0.0, $0.1), $0.2), $0.3), $0.4) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.PaymentMethodDomains.List.Request.init,
+                                { ($0.domainName, $0.enabled, $0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("domain_name") { Parse(.string) }
@@ -78,7 +91,7 @@ extension Stripe.PaymentMethodDomains.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -87,7 +100,7 @@ extension Stripe.PaymentMethodDomains.API {
                     }
                 }
 
-                Route(.case(Stripe.PaymentMethodDomains.API.validate)) {
+                Route(.case(Stripe.PaymentMethodDomains.API.cases.validate)) {
                     Method.post
                     Path.v1
                     Path.paymentMethodDomains

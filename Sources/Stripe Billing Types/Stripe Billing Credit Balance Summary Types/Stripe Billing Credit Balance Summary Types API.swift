@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.CreditBalanceSummary {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/billing/credit-balance-summary/retrieve.md
         case retrieve(request: Retrieve.Request)
@@ -19,7 +17,7 @@ extension Stripe.Billing.CreditBalanceSummary.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.CreditBalanceSummary.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Billing.CreditBalanceSummary.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Billing.CreditBalanceSummary.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.billing

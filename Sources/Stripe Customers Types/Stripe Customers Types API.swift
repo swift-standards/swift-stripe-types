@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 05/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Customers {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case create(request: Stripe.Customers.Create.Request)
         case update(id: Stripe.Customers.Customer.ID, request: Stripe.Customers.Update.Request)
@@ -34,11 +32,11 @@ extension Stripe.Customers.API {
 
         public var body: some URLRouting.Router<Stripe.Customers.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Customers.API.create)) {
+                URLRouting.Route(.case(Stripe.Customers.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.customers
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Customers.Create.Request.self,
                             decoder: .stripe,
@@ -47,19 +45,23 @@ extension Stripe.Customers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Customers.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Customers.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.customers
                     Path { Parse(.string.representing(Stripe.Customers.Customer.ID.self)) }
                 }
 
-                URLRouting.Route(.case(Stripe.Customers.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Customers.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.customers
                     Path { Parse(.string.representing(Stripe.Customers.Customer.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Customers.Update.Request.self,
                             decoder: .stripe,
@@ -68,11 +70,22 @@ extension Stripe.Customers.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Customers.API.list)) {
+                URLRouting.Route(.case(Stripe.Customers.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.customers
-                    Parse(.memberwise(Stripe.Customers.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Customers.List.Request.init,
+                                { ($0.created, $0.email, $0.endingBefore, $0.limit, $0.startingAfter, $0.testClock) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("created") {
@@ -86,7 +99,7 @@ extension Stripe.Customers.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -98,23 +111,34 @@ extension Stripe.Customers.API {
                     }
                 }
 
-                URLRouting.Route(.case(Stripe.Customers.API.delete)) {
+                URLRouting.Route(.case(Stripe.Customers.API.cases.delete)) {
                     Method.delete
                     Path.v1
                     Path.customers
                     Path { Parse(.string.representing(Stripe.Customers.Customer.ID.self)) }
                 }
 
-                URLRouting.Route(.case(Stripe.Customers.API.search)) {
+                URLRouting.Route(.case(Stripe.Customers.API.cases.search)) {
                     Method.get
                     Path.v1
                     Path.customers
                     Path.search
-                    Parse(.memberwise(Stripe.Customers.Search.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Customers.Search.Request.init,
+                                { ($0.query, $0.limit, $0.page) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Field("query") { Parse(.string) }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("page") { Parse(.string) }
@@ -123,19 +147,19 @@ extension Stripe.Customers.API {
                     }
                 }
 
-                URLRouting.Route(.case(Stripe.Customers.API.bankAccounts)) {
+                URLRouting.Route(.case(Stripe.Customers.API.cases.bankAccounts)) {
                     Stripe.Customers.BankAccounts.API.Router()
                 }
 
-                URLRouting.Route(.case(Stripe.Customers.API.cards)) {
+                URLRouting.Route(.case(Stripe.Customers.API.cases.cards)) {
                     Stripe.Customers.Cards.API.Router()
                 }
 
-                URLRouting.Route(.case(Stripe.Customers.API.cashBalance)) {
+                URLRouting.Route(.case(Stripe.Customers.API.cases.cashBalance)) {
                     Stripe.Customers.CashBalance.API.Router()
                 }
 
-                URLRouting.Route(.case(Stripe.Customers.API.cashBalanceTransactions)) {
+                URLRouting.Route(.case(Stripe.Customers.API.cases.cashBalanceTransactions)) {
                     Stripe.Customers.CashBalanceTransactions.API.Router()
                 }
             }

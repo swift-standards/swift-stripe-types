@@ -35,7 +35,10 @@ struct BillingMeterEventsRouterTests {
         let request = Stripe.Billing.MeterEvents.Create.Request(
             eventName: "api_request",
             identifier: "unique_123",
-            timestamp: Date(),
+            // Whole-second timestamp: the `.stripe` form coder encodes dates as
+            // integer seconds (`String(Int(timeIntervalSince1970))`), so a
+            // fractional `Date()` can never round-trip to exact equality.
+            timestamp: Date(timeIntervalSince1970: 1_700_000_000),
             payload: ["customer_id": "cus_123"]
         )
         let original = Stripe.Billing.MeterEvents.API.create(request: request)

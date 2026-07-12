@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Customer.Portal.Session {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/customer_portal/sessions/create.md
         case create(request: Create.Request)
@@ -19,12 +17,12 @@ extension Stripe.Billing.Customer.Portal.Session.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.Customer.Portal.Session.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Billing.Customer.Portal.Session.API.create)) {
+                URLRouting.Route(.case(Stripe.Billing.Customer.Portal.Session.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.billing_portal
                     Path.sessions
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Customer.Portal.Session.Create.Request.self,
                             decoder: .stripe,

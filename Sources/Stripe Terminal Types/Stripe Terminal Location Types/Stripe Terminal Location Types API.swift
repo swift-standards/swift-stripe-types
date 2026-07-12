@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -7,8 +6,7 @@ import URLFormCodingURLRouting
 import URLRouting
 
 extension Stripe.Terminal.Locations {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/terminal/locations/create.md
         case create(request: Create.Request)
@@ -29,12 +27,12 @@ extension Stripe.Terminal.Locations.API {
 
         public var body: some URLRouting.Router<Stripe.Terminal.Locations.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Terminal.Locations.API.create)) {
+                URLRouting.Route(.case(Stripe.Terminal.Locations.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.locations
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Locations.Create.Request.self,
                             decoder: .stripe,
@@ -43,7 +41,7 @@ extension Stripe.Terminal.Locations.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Locations.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Terminal.Locations.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.terminal
@@ -51,13 +49,17 @@ extension Stripe.Terminal.Locations.API {
                     Path { Parse(.string.representing(Stripe.Terminal.Locations.Location.ID.self)) }
                 }
 
-                URLRouting.Route(.case(Stripe.Terminal.Locations.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Terminal.Locations.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.terminal
                     Path.locations
                     Path { Parse(.string.representing(Stripe.Terminal.Locations.Location.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Terminal.Locations.Update.Request.self,
                             decoder: .stripe,
@@ -74,7 +76,7 @@ extension Stripe.Terminal.Locations.API {
                 //     Path.locations
                 // }
 
-                URLRouting.Route(.case(Stripe.Terminal.Locations.API.delete)) {
+                URLRouting.Route(.case(Stripe.Terminal.Locations.API.cases.delete)) {
                     Method.delete
                     Path.v1
                     Path.terminal

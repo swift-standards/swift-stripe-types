@@ -5,7 +5,6 @@
 //  Created on 2025-01-14.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Connect.Account.Session {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/account_sessions/create.md
         case create(request: Create.Request)
@@ -27,11 +25,11 @@ extension Stripe.Connect.Account.Session.API {
 
         public var body: some URLRouting.Router<Stripe.Connect.Account.Session.API> {
             OneOf {
-                Route(.case(Stripe.Connect.Account.Session.API.create)) {
+                Route(.case(Stripe.Connect.Account.Session.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.accountSessions
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Connect.Account.Session.Create.Request.self,
                             decoder: .stripe,

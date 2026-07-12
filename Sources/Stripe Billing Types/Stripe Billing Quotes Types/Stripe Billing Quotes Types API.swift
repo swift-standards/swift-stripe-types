@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Quotes {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/quotes/create.md
         case create(request: Create.Request)
@@ -56,11 +54,11 @@ extension Stripe.Billing.Quotes.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.Quotes.API> {
             OneOf {
-                Route(.case(Stripe.Billing.Quotes.API.create)) {
+                Route(.case(Stripe.Billing.Quotes.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.quotes
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Quotes.Create.Request.self,
                             decoder: .stripe,
@@ -69,19 +67,23 @@ extension Stripe.Billing.Quotes.API {
                     )
                 }
 
-                Route(.case(Stripe.Billing.Quotes.API.retrieve)) {
+                Route(.case(Stripe.Billing.Quotes.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.quotes
                     Path { Parse(.string.representing(Stripe.Billing.Quotes.Quote.ID.self)) }
                 }
 
-                Route(.case(Stripe.Billing.Quotes.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Quotes.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.quotes
                     Path { Parse(.string.representing(Stripe.Billing.Quotes.Quote.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Quotes.Update.Request.self,
                             decoder: .stripe,
@@ -90,11 +92,22 @@ extension Stripe.Billing.Quotes.API {
                     )
                 }
 
-                Route(.case(Stripe.Billing.Quotes.API.list)) {
+                Route(.case(Stripe.Billing.Quotes.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.quotes
-                    Parse(.memberwise(Stripe.Billing.Quotes.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.Quotes.List.Request.init,
+                                { ($0.customer, $0.status, $0.testClock, $0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("customer") {
@@ -113,7 +126,7 @@ extension Stripe.Billing.Quotes.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -122,13 +135,17 @@ extension Stripe.Billing.Quotes.API {
                     }
                 }
 
-                Route(.case(Stripe.Billing.Quotes.API.accept)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Quotes.API.cases.accept))) {
                     Method.post
                     Path.v1
                     Path.quotes
                     Path { Parse(.string.representing(Stripe.Billing.Quotes.Quote.ID.self)) }
                     Path.accept
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Quotes.Accept.Request.self,
                             decoder: .stripe,
@@ -137,13 +154,17 @@ extension Stripe.Billing.Quotes.API {
                     )
                 }
 
-                Route(.case(Stripe.Billing.Quotes.API.cancel)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Quotes.API.cases.cancel))) {
                     Method.post
                     Path.v1
                     Path.quotes
                     Path { Parse(.string.representing(Stripe.Billing.Quotes.Quote.ID.self)) }
                     Path.quotes_cancel
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Quotes.Cancel.Request.self,
                             decoder: .stripe,
@@ -152,13 +173,17 @@ extension Stripe.Billing.Quotes.API {
                     )
                 }
 
-                Route(.case(Stripe.Billing.Quotes.API.finalize)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Quotes.API.cases.finalize))) {
                     Method.post
                     Path.v1
                     Path.quotes
                     Path { Parse(.string.representing(Stripe.Billing.Quotes.Quote.ID.self)) }
                     Path.quotes_finalize
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Quotes.Finalize.Request.self,
                             decoder: .stripe,
@@ -167,7 +192,7 @@ extension Stripe.Billing.Quotes.API {
                     )
                 }
 
-                Route(.case(Stripe.Billing.Quotes.API.pdf)) {
+                Route(.case(Stripe.Billing.Quotes.API.cases.pdf)) {
                     Method.get
                     Path.v1
                     Path.quotes
@@ -175,19 +200,34 @@ extension Stripe.Billing.Quotes.API {
                     Path.pdf
                 }
 
-                Route(.case(Stripe.Billing.Quotes.API.listLineItems)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Quotes.API.cases.listLineItems))) {
                     Method.get
                     Path.v1
                     Path.quotes
                     Path { Parse(.string.representing(Stripe.Billing.Quotes.Quote.ID.self)) }
                     Path.line_items
-                    Parse(.memberwise(Stripe.Billing.Quotes.List.LineItems.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.Quotes.List.LineItems.Request.init,
+                                { ($0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -196,15 +236,23 @@ extension Stripe.Billing.Quotes.API {
                     }
                 }
 
-                Route(.case(Stripe.Billing.Quotes.API.listComputedUpfrontLineItems)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Quotes.API.cases.listComputedUpfrontLineItems))) {
                     Method.get
                     Path.v1
                     Path.quotes
                     Path { Parse(.string.representing(Stripe.Billing.Quotes.Quote.ID.self)) }
                     Path.computed_upfront_line_items
                     Parse(
-                        .memberwise(
-                            Stripe.Billing.Quotes.List.ComputedUpfrontLineItems.Request.init
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(Stripe.Billing.Quotes.List.ComputedUpfrontLineItems.Request.init, { ($0.endingBefore, $0.limit, $0.startingAfter) })
                         )
                     ) {
                         Query {
@@ -212,7 +260,7 @@ extension Stripe.Billing.Quotes.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }

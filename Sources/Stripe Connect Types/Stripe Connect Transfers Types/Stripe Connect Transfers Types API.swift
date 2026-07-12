@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -6,8 +5,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Connect.Transfers {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/transfers/create.md
         case create(request: Create.Request)
@@ -26,11 +24,11 @@ extension Stripe.Connect.Transfers.API {
 
         public var body: some URLRouting.Router<Stripe.Connect.Transfers.API> {
             OneOf {
-                Route(.case(Stripe.Connect.Transfers.API.create)) {
+                Route(.case(Stripe.Connect.Transfers.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.transfers
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Connect.Transfers.Create.Request.self,
                             decoder: .stripe,
@@ -39,19 +37,23 @@ extension Stripe.Connect.Transfers.API {
                     )
                 }
 
-                Route(.case(Stripe.Connect.Transfers.API.retrieve)) {
+                Route(.case(Stripe.Connect.Transfers.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.transfers
                     Path { Parse(.string.representing(Stripe.Connect.Transfer.ID.self)) }
                 }
 
-                Route(.case(Stripe.Connect.Transfers.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Connect.Transfers.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.transfers
                     Path { Parse(.string.representing(Stripe.Connect.Transfer.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Connect.Transfers.Update.Request.self,
                             decoder: .stripe,
@@ -60,11 +62,22 @@ extension Stripe.Connect.Transfers.API {
                     )
                 }
 
-                Route(.case(Stripe.Connect.Transfers.API.list)) {
+                Route(.case(Stripe.Connect.Transfers.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.transfers
-                    Parse(.memberwise(Stripe.Connect.Transfers.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Connect.Transfers.List.Request.init,
+                                { ($0.created, $0.destination, $0.endingBefore, $0.limit, $0.startingAfter, $0.transferGroup) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("created") {
@@ -80,7 +93,7 @@ extension Stripe.Connect.Transfers.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }

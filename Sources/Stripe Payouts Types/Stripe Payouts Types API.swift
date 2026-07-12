@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Payouts {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/payouts/create.md
         case create(request: Stripe.Payouts.Create.Request)
@@ -36,11 +34,11 @@ extension Stripe.Payouts.API {
 
         public var body: some URLRouting.Router<Stripe.Payouts.API> {
             OneOf {
-                Route(.case(Stripe.Payouts.API.create)) {
+                Route(.case(Stripe.Payouts.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.payouts
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Payouts.Create.Request.self,
                             decoder: .stripe,
@@ -49,19 +47,23 @@ extension Stripe.Payouts.API {
                     )
                 }
 
-                Route(.case(Stripe.Payouts.API.retrieve)) {
+                Route(.case(Stripe.Payouts.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.payouts
                     Path { Parse(.string.representing(Stripe.Payouts.Payout.ID.self)) }
                 }
 
-                Route(.case(Stripe.Payouts.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Payouts.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.payouts
                     Path { Parse(.string.representing(Stripe.Payouts.Payout.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Payouts.Update.Request.self,
                             decoder: .stripe,
@@ -70,11 +72,22 @@ extension Stripe.Payouts.API {
                     )
                 }
 
-                Route(.case(Stripe.Payouts.API.list)) {
+                Route(.case(Stripe.Payouts.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.payouts
-                    Parse(.memberwise(Stripe.Payouts.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0.0, $0.0.0.0.0.0.1, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Payouts.List.Request.init,
+                                { ($0.arrivalDate, $0.created, $0.destination, $0.endingBefore, $0.limit, $0.startingAfter, $0.status) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("arrival_date") {
@@ -93,7 +106,7 @@ extension Stripe.Payouts.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -107,7 +120,7 @@ extension Stripe.Payouts.API {
                     }
                 }
 
-                Route(.case(Stripe.Payouts.API.cancel)) {
+                Route(.case(Stripe.Payouts.API.cases.cancel)) {
                     Method.post
                     Path.v1
                     Path.payouts
@@ -115,13 +128,17 @@ extension Stripe.Payouts.API {
                     Path.cancel
                 }
 
-                Route(.case(Stripe.Payouts.API.reverse)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Payouts.API.cases.reverse))) {
                     Method.post
                     Path.v1
                     Path.payouts
                     Path { Parse(.string.representing(Stripe.Payouts.Payout.ID.self)) }
                     Path.reverse
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Payouts.Reverse.Request.self,
                             decoder: .stripe,

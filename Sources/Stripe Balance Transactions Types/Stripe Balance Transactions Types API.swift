@@ -5,7 +5,6 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.BalanceTransactions {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/balance_transactions/retrieve.md
         case retrieve(id: Stripe.Balance.Transaction.ID)
@@ -30,7 +28,7 @@ extension Stripe.BalanceTransactions.API {
         public var body: some URLRouting.Router<Stripe.BalanceTransactions.API> {
             OneOf {
                 // https://docs.stripe.com/api/balance_transactions/retrieve.md
-                URLRouting.Route(.case(Stripe.BalanceTransactions.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.BalanceTransactions.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.balanceTransactions
@@ -38,11 +36,22 @@ extension Stripe.BalanceTransactions.API {
                 }
 
                 // https://docs.stripe.com/api/balance_transactions/list.md
-                URLRouting.Route(.case(Stripe.BalanceTransactions.API.list)) {
+                URLRouting.Route(.case(Stripe.BalanceTransactions.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.balanceTransactions
-                    Parse(.memberwise(Stripe.BalanceTransactions.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0.0, $0.0.0.0.0.0.1, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.BalanceTransactions.List.Request.init,
+                                { ($0.payout, $0.type, $0.created, $0.currency, $0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("payout") {
@@ -66,7 +75,7 @@ extension Stripe.BalanceTransactions.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }

@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Forwarding.Request {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/forwarding/request/create.md
         case create(request: Create.Request)
@@ -23,12 +21,12 @@ extension Stripe.Forwarding.Request.API {
 
         public var body: some URLRouting.Router<Stripe.Forwarding.Request.API> {
             OneOf {
-                Route(.case(Stripe.Forwarding.Request.API.create)) {
+                Route(.case(Stripe.Forwarding.Request.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.forwarding
                     Path.requests
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Forwarding.Request.Create.Request.self,
                             decoder: .stripe,
@@ -37,7 +35,7 @@ extension Stripe.Forwarding.Request.API {
                     )
                 }
 
-                Route(.case(Stripe.Forwarding.Request.API.retrieve)) {
+                Route(.case(Stripe.Forwarding.Request.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.forwarding
@@ -55,7 +53,7 @@ extension Stripe.Forwarding.Request.API {
                 //                            Field("ending_before") { Parse(.string) }
                 //                        }
                 //                        Optionally {
-                //                            Field("limit") { Digits() }
+                //                            Field("limit") { Int.parser() }
                 //                        }
                 //                        Optionally {
                 //                            Field("starting_after") { Parse(.string) }

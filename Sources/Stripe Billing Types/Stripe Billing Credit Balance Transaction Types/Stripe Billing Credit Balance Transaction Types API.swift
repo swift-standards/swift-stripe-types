@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Credit.Balance {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/billing/credit-balance-transaction/retrieve.md
         case retrieve(id: Transaction.ID)
@@ -21,7 +19,7 @@ extension Stripe.Billing.Credit.Balance.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.Credit.Balance.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Billing.Credit.Balance.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Billing.Credit.Balance.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.billing
@@ -33,12 +31,23 @@ extension Stripe.Billing.Credit.Balance.API {
                     }
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.Credit.Balance.API.list)) {
+                URLRouting.Route(.case(Stripe.Billing.Credit.Balance.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.billing
                     Path.credit_balance_transactions
-                    Parse(.memberwise(Stripe.Billing.Credit.Balance.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((($0.0, $0.1), $0.2), $0.3), $0.4) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.Credit.Balance.List.Request.init,
+                                { ($0.customer, $0.creditGrant, $0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Field("customer") {
                                 Parse(.string.representing(Stripe.Customers.Customer.ID.self))
@@ -50,7 +59,7 @@ extension Stripe.Billing.Credit.Balance.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }

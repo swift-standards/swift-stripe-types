@@ -13,7 +13,7 @@ import URLRouting
 @testable import Stripe_Payment_Intents_Types
 @testable import Stripe_Types_Models
 
-@Suite("Payment Intents Router Tests")
+@Suite("Payment Intents Router Tests", .disabled(if: taggedMetadataSIGSEGV, "catalog §A9: Tagged metadata SIGSEGV on Swift <6.4"))
 struct PaymentIntentsRouterTests {
 
     @Test("Creates correct URL for payment intent creation")
@@ -51,7 +51,7 @@ struct PaymentIntentsRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.retrieve))
-        #expect(match.retrieve == id)
+        #expect(Stripe.PaymentIntents.API.cases.retrieve.extract(match) == id)
     }
 
     @Test("Creates correct URL for payment intent update")
@@ -109,8 +109,8 @@ struct PaymentIntentsRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.cancel))
-        #expect(match.cancel?.id == id)
-        #expect(match.cancel?.request.cancellationReason == .abandoned)
+        #expect(Stripe.PaymentIntents.API.cases.cancel.extract(match)?.id == id)
+        #expect(Stripe.PaymentIntents.API.cases.cancel.extract(match)?.request.cancellationReason == .abandoned)
     }
 
     @Test("Creates correct URL for capturing payment intent")
@@ -169,7 +169,7 @@ struct PaymentIntentsRouterTests {
             request: try router.request(for: api)
         )
         #expect(match.is(\.applyCustomerBalance))
-        #expect(match.applyCustomerBalance == id)
+        #expect(Stripe.PaymentIntents.API.cases.applyCustomerBalance.extract(match) == id)
     }
 
     @Test("Creates correct URL for searching payment intents")
@@ -207,3 +207,16 @@ struct PaymentIntentsRouterTests {
         #expect(url.path == "/v1/payment_intents/pi_123/verify_microdeposits")
     }
 }
+
+// §A9 toolchain gate (swift-institute/Research/swift-compiler-bug-catalog.md §A9):
+// institute `Tagged` materialized inside this router's deep generic parser chains
+// forces its value-witness table at first parse/print; on Swift 6.3.x
+// `swift_getTypeByMangledName` returns null metadata and the test runner SIGSEGVs.
+// Fixed in Swift 6.4; no source fix exists (graph-package ratified pattern —
+// `.disabled(if:)`, not `withKnownIssue`, because the crash kills the runner).
+// Auto-retires at the 6.4 toolchain move.
+#if compiler(<6.4)
+private let taggedMetadataSIGSEGV = true
+#else
+private let taggedMetadataSIGSEGV = false
+#endif

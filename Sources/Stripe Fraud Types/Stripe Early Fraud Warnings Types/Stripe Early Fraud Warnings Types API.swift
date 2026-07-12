@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -7,8 +6,7 @@ import URLFormCodingURLRouting
 import URLRouting
 
 extension Stripe.Fraud.EarlyFraudWarnings {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/radar/early_fraud_warnings/retrieve.md
         case retrieve(id: EarlyFraudWarning.ID)
@@ -23,7 +21,7 @@ extension Stripe.Fraud.EarlyFraudWarnings.API {
 
         public var body: some URLRouting.Router<Stripe.Fraud.EarlyFraudWarnings.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Fraud.EarlyFraudWarnings.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Fraud.EarlyFraudWarnings.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.radar
@@ -53,7 +51,7 @@ extension Stripe.Fraud.EarlyFraudWarnings.API {
                 //                            Field("ending_before") { Parse(.string) }
                 //                        }
                 //                        Optionally {
-                //                            Field("limit") { Digits() }
+                //                            Field("limit") { Int.parser() }
                 //                        }
                 //                        Optionally {
                 //                            Field("starting_after") { Parse(.string) }

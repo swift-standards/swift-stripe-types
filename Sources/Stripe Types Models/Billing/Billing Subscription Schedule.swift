@@ -176,8 +176,7 @@ extension Stripe.Billing.Subscription.Schedule {
 }
 
 extension Stripe.Billing.Subscription.Schedule {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum CollectionMethod: String, Codable, Sendable {
         case chargeAutomatically = "charge_automatically"
         case sendInvoice = "send_invoice"

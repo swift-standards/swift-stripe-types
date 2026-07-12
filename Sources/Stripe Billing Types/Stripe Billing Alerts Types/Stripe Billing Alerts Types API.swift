@@ -1,13 +1,10 @@
-import CasePaths
 import Foundation
-import Parsing
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Alerts {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/billing/alert/create.md
         case create(request: Create.Request)
@@ -35,12 +32,12 @@ extension Stripe.Billing.Alerts.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.Alerts.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Billing.Alerts.API.create)) {
+                URLRouting.Route(.case(Stripe.Billing.Alerts.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.billing
                     Path.alerts
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Alerts.Create.Request.self,
                             decoder: .stripe,
@@ -49,7 +46,7 @@ extension Stripe.Billing.Alerts.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.Alerts.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Billing.Alerts.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.billing
@@ -57,12 +54,23 @@ extension Stripe.Billing.Alerts.API {
                     Path { Parse(.string.representing(Stripe.Billing.Alerts.Alert.ID.self)) }
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.Alerts.API.list)) {
+                URLRouting.Route(.case(Stripe.Billing.Alerts.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.billing
                     Path.alerts
-                    Parse(.memberwise(Stripe.Billing.Alerts.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((($0.0, $0.1), $0.2), $0.3), $0.4) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.Alerts.List.Request.init,
+                                { ($0.alertType, $0.endingBefore, $0.limit, $0.meter, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("alert_type") {
@@ -77,7 +85,7 @@ extension Stripe.Billing.Alerts.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("meter") { Parse(.string) }
@@ -89,7 +97,7 @@ extension Stripe.Billing.Alerts.API {
                     }
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.Alerts.API.activate)) {
+                URLRouting.Route(.case(Stripe.Billing.Alerts.API.cases.activate)) {
                     Method.post
                     Path.v1
                     Path.billing
@@ -98,7 +106,7 @@ extension Stripe.Billing.Alerts.API {
                     Path.activate
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.Alerts.API.archive)) {
+                URLRouting.Route(.case(Stripe.Billing.Alerts.API.cases.archive)) {
                     Method.post
                     Path.v1
                     Path.billing
@@ -107,7 +115,7 @@ extension Stripe.Billing.Alerts.API {
                     Path.archive
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.Alerts.API.deactivate)) {
+                URLRouting.Route(.case(Stripe.Billing.Alerts.API.cases.deactivate)) {
                     Method.post
                     Path.v1
                     Path.billing

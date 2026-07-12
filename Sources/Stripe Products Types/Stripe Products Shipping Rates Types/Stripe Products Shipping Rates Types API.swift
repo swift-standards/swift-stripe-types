@@ -1,4 +1,3 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -6,8 +5,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Products.ShippingRates {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/shipping_rates/create.md
         case create(request: Create.Request)
@@ -26,11 +24,11 @@ extension Stripe.Products.ShippingRates.API {
 
         public var body: some URLRouting.Router<Stripe.Products.ShippingRates.API> {
             OneOf {
-                Route(.case(Stripe.Products.ShippingRates.API.create)) {
+                Route(.case(Stripe.Products.ShippingRates.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.shippingRates
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Products.ShippingRates.Create.Request.self,
                             decoder: .stripe,
@@ -39,19 +37,23 @@ extension Stripe.Products.ShippingRates.API {
                     )
                 }
 
-                Route(.case(Stripe.Products.ShippingRates.API.retrieve)) {
+                Route(.case(Stripe.Products.ShippingRates.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.shippingRates
                     Path { Parse(.string.representing(Stripe.Products.Shipping.Rate.ID.self)) }
                 }
 
-                Route(.case(Stripe.Products.ShippingRates.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Products.ShippingRates.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.shippingRates
                     Path { Parse(.string.representing(Stripe.Products.Shipping.Rate.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Products.ShippingRates.Update.Request.self,
                             decoder: .stripe,
@@ -60,11 +62,22 @@ extension Stripe.Products.ShippingRates.API {
                     )
                 }
 
-                Route(.case(Stripe.Products.ShippingRates.API.list)) {
+                Route(.case(Stripe.Products.ShippingRates.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.shippingRates
-                    Parse(.memberwise(Stripe.Products.ShippingRates.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Products.ShippingRates.List.Request.init,
+                                { ($0.active, $0.created, $0.currency, $0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("active") { Bool.parser() }
@@ -83,7 +96,7 @@ extension Stripe.Products.ShippingRates.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }

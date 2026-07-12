@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Checkout.Sessions {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case create(request: Stripe.Checkout.Sessions.Create.Request)
         case update(
@@ -29,12 +27,12 @@ extension Stripe.Checkout.Sessions.API {
 
         public var body: some URLRouting.Router<Stripe.Checkout.Sessions.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.create)) {
+                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.checkout
                     Path.sessions
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Checkout.Sessions.Create.Request.self,
                             decoder: .stripe,
@@ -43,7 +41,7 @@ extension Stripe.Checkout.Sessions.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.checkout
@@ -51,13 +49,17 @@ extension Stripe.Checkout.Sessions.API {
                     Path { Parse(.string.representing(Stripe.Checkout.Session.ID.self)) }
                 }
 
-                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Checkout.Sessions.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.checkout
                     Path.sessions
                     Path { Parse(.string.representing(Stripe.Checkout.Session.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Checkout.Sessions.Update.Request.self,
                             decoder: .stripe,
@@ -66,12 +68,23 @@ extension Stripe.Checkout.Sessions.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.list)) {
+                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.checkout
                     Path.sessions
-                    Parse(.memberwise(Stripe.Checkout.Sessions.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((($0.0, $0.1), $0.2), $0.3), $0.4) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Checkout.Sessions.List.Request.init,
+                                { ($0.paymentIntent, $0.subscription, $0.startingAfter, $0.endingBefore, $0.limit) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("payment_intent") {
@@ -94,13 +107,13 @@ extension Stripe.Checkout.Sessions.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                         }
                     }
                 }
 
-                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.expire)) {
+                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.cases.expire)) {
                     Method.post
                     Path.v1
                     Path.checkout
@@ -109,14 +122,29 @@ extension Stripe.Checkout.Sessions.API {
                     Path { "expire" }
                 }
 
-                URLRouting.Route(.case(Stripe.Checkout.Sessions.API.lineItems)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Checkout.Sessions.API.cases.lineItems))) {
                     Method.get
                     Path.v1
                     Path.checkout
                     Path.sessions
                     Path { Parse(.string.representing(Stripe.Checkout.Session.ID.self)) }
                     Path { "line_items" }
-                    Parse(.memberwise(Stripe.Checkout.Sessions.LineItems.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Checkout.Sessions.LineItems.Request.init,
+                                { ($0.endingBefore, $0.startingAfter, $0.limit) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("ending_before") { Parse(.string) }
@@ -125,7 +153,7 @@ extension Stripe.Checkout.Sessions.API {
                                 Field("starting_after") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                         }
                     }

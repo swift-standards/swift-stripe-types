@@ -79,8 +79,7 @@ extension Stripe.Events.Event {
 }
 
 extension Stripe.Events.Event {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum Object: Codable, Hashable, Sendable {
         case account(Stripe.Connect.Account)
         case application(Stripe.Connect.Application)

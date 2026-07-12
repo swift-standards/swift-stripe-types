@@ -5,7 +5,6 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Subscription.Schedule {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/subscription_schedules/create.md
         case create(request: Stripe.Billing.Subscription.Schedule.Create.Request)
@@ -47,11 +45,11 @@ extension Stripe.Billing.Subscription.Schedule.API {
         public var body: some URLRouting.Router<Stripe.Billing.Subscription.Schedule.API> {
             OneOf {
                 // https://docs.stripe.com/api/subscription_schedules/create.md
-                URLRouting.Route(.case(Stripe.Billing.Subscription.Schedule.API.create)) {
+                URLRouting.Route(.case(Stripe.Billing.Subscription.Schedule.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.subscription_schedules
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Subscription.Schedule.Create.Request.self,
                             decoder: .stripe,
@@ -61,7 +59,7 @@ extension Stripe.Billing.Subscription.Schedule.API {
                 }
 
                 // https://docs.stripe.com/api/subscription_schedules/retrieve.md
-                URLRouting.Route(.case(Stripe.Billing.Subscription.Schedule.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Billing.Subscription.Schedule.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.subscription_schedules
@@ -71,14 +69,18 @@ extension Stripe.Billing.Subscription.Schedule.API {
                 }
 
                 // https://docs.stripe.com/api/subscription_schedules/update.md
-                URLRouting.Route(.case(Stripe.Billing.Subscription.Schedule.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Subscription.Schedule.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.subscription_schedules
                     Path {
                         Parse(.string.representing(Stripe.Billing.Subscription.Schedule.ID.self))
                     }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Subscription.Schedule.Update.Request.self,
                             decoder: .stripe,
@@ -88,11 +90,22 @@ extension Stripe.Billing.Subscription.Schedule.API {
                 }
 
                 // https://docs.stripe.com/api/subscription_schedules/list.md
-                URLRouting.Route(.case(Stripe.Billing.Subscription.Schedule.API.list)) {
+                URLRouting.Route(.case(Stripe.Billing.Subscription.Schedule.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.subscription_schedules
-                    Parse(.memberwise(Stripe.Billing.Subscription.Schedule.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0.0.0.0, $0.0.0.0.0.0.0.0.1, $0.0.0.0.0.0.0.1, $0.0.0.0.0.0.1, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6), $0.7), $0.8) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.Subscription.Schedule.List.Request.init,
+                                { ($0.canceledAt, $0.completedAt, $0.created, $0.customer, $0.endingBefore, $0.limit, $0.releasedAt, $0.scheduled, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("canceled_at") {
@@ -118,7 +131,7 @@ extension Stripe.Billing.Subscription.Schedule.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("released_at") {
@@ -136,7 +149,11 @@ extension Stripe.Billing.Subscription.Schedule.API {
                 }
 
                 // https://docs.stripe.com/api/subscription_schedules/cancel.md
-                URLRouting.Route(.case(Stripe.Billing.Subscription.Schedule.API.cancel)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Subscription.Schedule.API.cases.cancel))) {
                     Method.post
                     Path.v1
                     Path.subscription_schedules
@@ -144,7 +161,7 @@ extension Stripe.Billing.Subscription.Schedule.API {
                         Parse(.string.representing(Stripe.Billing.Subscription.Schedule.ID.self))
                     }
                     Path.cancel
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Subscription.Schedule.Cancel.Request.self,
                             decoder: .stripe,
@@ -154,7 +171,11 @@ extension Stripe.Billing.Subscription.Schedule.API {
                 }
 
                 // https://docs.stripe.com/api/subscription_schedules/release.md
-                URLRouting.Route(.case(Stripe.Billing.Subscription.Schedule.API.release)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Subscription.Schedule.API.cases.release))) {
                     Method.post
                     Path.v1
                     Path.subscription_schedules
@@ -162,7 +183,7 @@ extension Stripe.Billing.Subscription.Schedule.API {
                         Parse(.string.representing(Stripe.Billing.Subscription.Schedule.ID.self))
                     }
                     Path.release
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Subscription.Schedule.Release.Request.self,
                             decoder: .stripe,

@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.PaymentMethods {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         case paymentMethods(Stripe.PaymentMethods.PaymentMethods.API)
         case paymentMethodConfigurations(Stripe.PaymentMethodConfigurations.API)
@@ -21,19 +19,19 @@ extension Stripe.PaymentMethods.API {
 
         public var body: some URLRouting.Router<Stripe.PaymentMethods.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.PaymentMethods.API.paymentMethods)) {
+                URLRouting.Route(.case(Stripe.PaymentMethods.API.cases.paymentMethods)) {
                     Stripe.PaymentMethods.PaymentMethods.API.Router()
                 }
 
-                URLRouting.Route(.case(Stripe.PaymentMethods.API.paymentMethodConfigurations)) {
+                URLRouting.Route(.case(Stripe.PaymentMethods.API.cases.paymentMethodConfigurations)) {
                     Stripe.PaymentMethodConfigurations.API.Router()
                 }
 
-                URLRouting.Route(.case(Stripe.PaymentMethods.API.paymentMethodDomains)) {
+                URLRouting.Route(.case(Stripe.PaymentMethods.API.cases.paymentMethodDomains)) {
                     Stripe.PaymentMethodDomains.API.Router()
                 }
 
-                URLRouting.Route(.case(Stripe.PaymentMethods.API.sources)) {
+                URLRouting.Route(.case(Stripe.PaymentMethods.API.cases.sources)) {
                     Stripe.PaymentMethods.Sources.API.Router()
                 }
             }

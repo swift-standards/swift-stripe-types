@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.MeterEvents {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/billing/meter-event/create.md
         case create(request: Create.Request)
@@ -26,12 +24,12 @@ extension Stripe.Billing.MeterEvents.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.MeterEvents.API> {
             OneOf {
-                Route(.case(Stripe.Billing.MeterEvents.API.create)) {
+                Route(.case(Stripe.Billing.MeterEvents.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.billing
                     Path.meter_events
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.MeterEvents.Create.Request.self,
                             decoder: .stripe,

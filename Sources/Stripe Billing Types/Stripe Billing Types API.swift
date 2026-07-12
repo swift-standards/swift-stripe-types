@@ -11,6 +11,7 @@ import Stripe_Types_Shared
 import URLRouting
 
 extension Stripe.Billing {
+    @Cases
     public enum API: Equatable, Sendable {
         //    case credit_Note(Stripe.Billing.Credit_Note.API)
         //    case customer_Balance_Transaction(Stripe.Billing.Customer_Balance_Transaction.API)
@@ -49,15 +50,15 @@ extension Stripe.Billing.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Billing.API.subscriptions)) {
+                URLRouting.Route(.case(Stripe.Billing.API.cases.subscriptions)) {
                     Stripe.Billing.Subscriptions.API.Router()
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.API.customer_Portal_Session)) {
+                URLRouting.Route(.case(Stripe.Billing.API.cases.customer_Portal_Session)) {
                     Stripe.Billing.Customer.Portal.Session.API.Router()
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.API.subscriptionSchedule)) {
+                URLRouting.Route(.case(Stripe.Billing.API.cases.subscriptionSchedule)) {
                     Stripe.Billing.Subscription.Schedule.API.Router()
                 }
             }

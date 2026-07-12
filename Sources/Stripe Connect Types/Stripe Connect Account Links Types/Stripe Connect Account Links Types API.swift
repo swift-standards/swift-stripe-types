@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Connect.AccountLinks {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/account_links/create.md
         case create(request: Stripe.Connect.AccountLinks.Create.Request)
@@ -19,11 +17,11 @@ extension Stripe.Connect.AccountLinks.API {
 
         public var body: some URLRouting.Router<Stripe.Connect.AccountLinks.API> {
             OneOf {
-                Route(.case(Stripe.Connect.AccountLinks.API.create)) {
+                Route(.case(Stripe.Connect.AccountLinks.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.account_links
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Connect.AccountLinks.Create.Request.self,
                             decoder: .stripe,

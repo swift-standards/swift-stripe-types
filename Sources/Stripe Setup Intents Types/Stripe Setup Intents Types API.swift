@@ -5,7 +5,6 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Setup.Intents {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/setup_intents/create.md
         case create(request: Stripe.Setup.Intents.Create.Request)
@@ -43,11 +41,11 @@ extension Stripe.Setup.Intents.API {
         public var body: some URLRouting.Router<Stripe.Setup.Intents.API> {
             OneOf {
                 // https://docs.stripe.com/api/setup_intents/create.md
-                URLRouting.Route(.case(Stripe.Setup.Intents.API.create)) {
+                URLRouting.Route(.case(Stripe.Setup.Intents.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.setupIntents
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Setup.Intents.Create.Request.self,
                             decoder: .stripe,
@@ -57,7 +55,7 @@ extension Stripe.Setup.Intents.API {
                 }
 
                 // https://docs.stripe.com/api/setup_intents/retrieve.md
-                URLRouting.Route(.case(Stripe.Setup.Intents.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Setup.Intents.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.setupIntents
@@ -65,12 +63,16 @@ extension Stripe.Setup.Intents.API {
                 }
 
                 // https://docs.stripe.com/api/setup_intents/update.md
-                URLRouting.Route(.case(Stripe.Setup.Intents.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Setup.Intents.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.setupIntents
                     Path { Parse(.string.representing(Stripe.Setup.Intent.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Setup.Intents.Update.Request.self,
                             decoder: .stripe,
@@ -80,11 +82,22 @@ extension Stripe.Setup.Intents.API {
                 }
 
                 // https://docs.stripe.com/api/setup_intents/list.md
-                URLRouting.Route(.case(Stripe.Setup.Intents.API.list)) {
+                URLRouting.Route(.case(Stripe.Setup.Intents.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.setupIntents
-                    Parse(.memberwise(Stripe.Setup.Intents.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0.0, $0.0.0.0.0.0.1, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Setup.Intents.List.Request.init,
+                                { ($0.attachToSelf, $0.created, $0.customer, $0.endingBefore, $0.limit, $0.paymentMethod, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("attach_to_self") { Bool.parser() }
@@ -103,7 +116,7 @@ extension Stripe.Setup.Intents.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("payment_method") {
@@ -122,13 +135,17 @@ extension Stripe.Setup.Intents.API {
                 }
 
                 // https://docs.stripe.com/api/setup_intents/confirm.md
-                URLRouting.Route(.case(Stripe.Setup.Intents.API.confirm)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Setup.Intents.API.cases.confirm))) {
                     Method.post
                     Path.v1
                     Path.setupIntents
                     Path { Parse(.string.representing(Stripe.Setup.Intent.ID.self)) }
                     Path { "confirm" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Setup.Intents.Confirm.Request.self,
                             decoder: .stripe,
@@ -138,13 +155,17 @@ extension Stripe.Setup.Intents.API {
                 }
 
                 // https://docs.stripe.com/api/setup_intents/cancel.md
-                URLRouting.Route(.case(Stripe.Setup.Intents.API.cancel)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Setup.Intents.API.cases.cancel))) {
                     Method.post
                     Path.v1
                     Path.setupIntents
                     Path { Parse(.string.representing(Stripe.Setup.Intent.ID.self)) }
                     Path { "cancel" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Setup.Intents.Cancel.Request.self,
                             decoder: .stripe,
@@ -154,13 +175,17 @@ extension Stripe.Setup.Intents.API {
                 }
 
                 // https://docs.stripe.com/api/setup_intents/verify_microdeposits.md
-                URLRouting.Route(.case(Stripe.Setup.Intents.API.verifyMicrodeposits)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Setup.Intents.API.cases.verifyMicrodeposits))) {
                     Method.post
                     Path.v1
                     Path.setupIntents
                     Path { Parse(.string.representing(Stripe.Setup.Intent.ID.self)) }
                     Path { "verify_microdeposits" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Setup.Intents.VerifyMicrodeposits.Request.self,
                             decoder: .stripe,

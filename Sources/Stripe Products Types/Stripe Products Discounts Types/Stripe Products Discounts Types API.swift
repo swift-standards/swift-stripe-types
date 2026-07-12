@@ -5,7 +5,6 @@
 //  Created on 2025-01-14.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Products.Discounts {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/discounts/delete.md
         case deleteCustomerDiscount(customerId: Stripe.Customers.Customer.ID)
@@ -29,7 +27,7 @@ extension Stripe.Products.Discounts.API {
 
         public var body: some URLRouting.Router<Stripe.Products.Discounts.API> {
             OneOf {
-                Route(.case(Stripe.Products.Discounts.API.deleteCustomerDiscount)) {
+                Route(.case(Stripe.Products.Discounts.API.cases.deleteCustomerDiscount)) {
                     Method.delete
                     Path.v1
                     Path.customers
@@ -37,7 +35,7 @@ extension Stripe.Products.Discounts.API {
                     Path.discount
                 }
 
-                Route(.case(Stripe.Products.Discounts.API.deleteSubscriptionDiscount)) {
+                Route(.case(Stripe.Products.Discounts.API.cases.deleteSubscriptionDiscount)) {
                     Method.delete
                     Path.v1
                     Path.subscriptions

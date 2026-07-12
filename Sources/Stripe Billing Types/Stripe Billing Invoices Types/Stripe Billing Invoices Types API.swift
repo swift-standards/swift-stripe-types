@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Invoices {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/invoices/create.md
         case create(request: Stripe.Billing.Invoices.Create.Request)
@@ -48,11 +46,11 @@ extension Stripe.Billing.Invoices.API {
         public var body: some URLRouting.Router<Stripe.Billing.Invoices.API> {
             OneOf {
                 // https://docs.stripe.com/api/invoices/create.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.create)) {
+                URLRouting.Route(.case(Stripe.Billing.Invoices.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.invoices
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoices.Create.Request.self,
                             decoder: .stripe,
@@ -62,12 +60,12 @@ extension Stripe.Billing.Invoices.API {
                 }
 
                 // https://docs.stripe.com/api/invoices/create_preview.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.createPreview)) {
+                URLRouting.Route(.case(Stripe.Billing.Invoices.API.cases.createPreview)) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path.createPreview
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoices.CreatePreview.Request.self,
                             decoder: .stripe,
@@ -77,7 +75,7 @@ extension Stripe.Billing.Invoices.API {
                 }
 
                 // https://docs.stripe.com/api/invoices/retrieve.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Billing.Invoices.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.invoices
@@ -85,12 +83,16 @@ extension Stripe.Billing.Invoices.API {
                 }
 
                 // https://docs.stripe.com/api/invoices/update.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoices.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path { Parse(.string.representing(Stripe.Billing.Invoice.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoices.Update.Request.self,
                             decoder: .stripe,
@@ -100,11 +102,22 @@ extension Stripe.Billing.Invoices.API {
                 }
 
                 // https://docs.stripe.com/api/invoices/list.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.list)) {
+                URLRouting.Route(.case(Stripe.Billing.Invoices.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.invoices
-                    Parse(.memberwise(Stripe.Billing.Invoices.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0.0.0.0, $0.0.0.0.0.0.0.0.1, $0.0.0.0.0.0.0.1, $0.0.0.0.0.0.1, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6), $0.7), $0.8) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.Invoices.List.Request.init,
+                                { ($0.collectionMethod, $0.created, $0.customer, $0.dueDate, $0.endingBefore, $0.limit, $0.startingAfter, $0.status, $0.subscription) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("collection_method") {
@@ -134,7 +147,7 @@ extension Stripe.Billing.Invoices.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -154,7 +167,7 @@ extension Stripe.Billing.Invoices.API {
                 }
 
                 // https://docs.stripe.com/api/invoices/delete.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.delete)) {
+                URLRouting.Route(.case(Stripe.Billing.Invoices.API.cases.delete)) {
                     Method.delete
                     Path.v1
                     Path.invoices
@@ -162,13 +175,17 @@ extension Stripe.Billing.Invoices.API {
                 }
 
                 // https://docs.stripe.com/api/invoices/finalize_invoice.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.finalize)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoices.API.cases.finalize))) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path { Parse(.string.representing(Stripe.Billing.Invoice.ID.self)) }
                     Path.finalize
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoices.Finalize.Request.self,
                             decoder: .stripe,
@@ -178,13 +195,17 @@ extension Stripe.Billing.Invoices.API {
                 }
 
                 // https://docs.stripe.com/api/invoices/pay.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.pay)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoices.API.cases.pay))) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path { Parse(.string.representing(Stripe.Billing.Invoice.ID.self)) }
                     Path.pay
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoices.Pay.Request.self,
                             decoder: .stripe,
@@ -194,13 +215,17 @@ extension Stripe.Billing.Invoices.API {
                 }
 
                 // https://docs.stripe.com/api/invoices/send.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.send)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoices.API.cases.send))) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path { Parse(.string.representing(Stripe.Billing.Invoice.ID.self)) }
                     Path.send
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoices.Send.Request.self,
                             decoder: .stripe,
@@ -210,13 +235,17 @@ extension Stripe.Billing.Invoices.API {
                 }
 
                 // https://docs.stripe.com/api/invoices/void.md
-                URLRouting.Route(.case(Stripe.Billing.Invoices.API.void)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoices.API.cases.void))) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path { Parse(.string.representing(Stripe.Billing.Invoice.ID.self)) }
                     Path.void
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoices.Void.Request.self,
                             decoder: .stripe,

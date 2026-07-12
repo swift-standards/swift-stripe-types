@@ -5,7 +5,6 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Mandates {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/mandates/retrieve.md
         case retrieve(id: Stripe.Mandates.Mandate.ID)
@@ -28,7 +26,7 @@ extension Stripe.Mandates.API {
         public var body: some URLRouting.Router<Stripe.Mandates.API> {
             OneOf {
                 // https://docs.stripe.com/api/mandates/retrieve.md
-                URLRouting.Route(.case(Stripe.Mandates.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Mandates.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.mandates

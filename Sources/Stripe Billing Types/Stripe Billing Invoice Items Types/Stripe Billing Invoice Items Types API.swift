@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.InvoiceItems {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/invoiceitems/create.md
         case create(request: Stripe.Billing.InvoiceItems.Create.Request)
@@ -38,11 +36,11 @@ extension Stripe.Billing.InvoiceItems.API {
         public var body: some URLRouting.Router<Stripe.Billing.InvoiceItems.API> {
             OneOf {
                 // https://docs.stripe.com/api/invoiceitems/create.md
-                URLRouting.Route(.case(Stripe.Billing.InvoiceItems.API.create)) {
+                URLRouting.Route(.case(Stripe.Billing.InvoiceItems.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.invoiceitems
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.InvoiceItems.Create.Request.self,
                             decoder: .stripe,
@@ -52,7 +50,7 @@ extension Stripe.Billing.InvoiceItems.API {
                 }
 
                 // https://docs.stripe.com/api/invoiceitems/retrieve.md
-                URLRouting.Route(.case(Stripe.Billing.InvoiceItems.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Billing.InvoiceItems.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.invoiceitems
@@ -60,12 +58,16 @@ extension Stripe.Billing.InvoiceItems.API {
                 }
 
                 // https://docs.stripe.com/api/invoiceitems/update.md
-                URLRouting.Route(.case(Stripe.Billing.InvoiceItems.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.InvoiceItems.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.invoiceitems
                     Path { Parse(.string.representing(Stripe.Billing.Invoice.Item.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.InvoiceItems.Update.Request.self,
                             decoder: .stripe,
@@ -75,11 +77,22 @@ extension Stripe.Billing.InvoiceItems.API {
                 }
 
                 // https://docs.stripe.com/api/invoiceitems/list.md
-                URLRouting.Route(.case(Stripe.Billing.InvoiceItems.API.list)) {
+                URLRouting.Route(.case(Stripe.Billing.InvoiceItems.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.invoiceitems
-                    Parse(.memberwise(Stripe.Billing.InvoiceItems.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0.0, $0.0.0.0.0.0.1, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.InvoiceItems.List.Request.init,
+                                { ($0.created, $0.customer, $0.endingBefore, $0.invoice, $0.limit, $0.pending, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("created") {
@@ -100,7 +113,7 @@ extension Stripe.Billing.InvoiceItems.API {
                                 }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("pending") { Parse(.string) }
@@ -113,7 +126,7 @@ extension Stripe.Billing.InvoiceItems.API {
                 }
 
                 // https://docs.stripe.com/api/invoiceitems/delete.md
-                URLRouting.Route(.case(Stripe.Billing.InvoiceItems.API.delete)) {
+                URLRouting.Route(.case(Stripe.Billing.InvoiceItems.API.cases.delete)) {
                     Method.delete
                     Path.v1
                     Path.invoiceitems

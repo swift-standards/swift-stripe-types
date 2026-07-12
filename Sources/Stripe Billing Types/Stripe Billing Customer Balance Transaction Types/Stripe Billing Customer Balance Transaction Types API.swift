@@ -1,12 +1,10 @@
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Customer.Balance {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/customer_balance_transactions/create.md
         case create(customerId: Stripe.Customers.Customer.ID, request: Create.Request)
@@ -29,13 +27,17 @@ extension Stripe.Billing.Customer.Balance.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.Customer.Balance.API> {
             OneOf {
-                URLRouting.Route(.case(Stripe.Billing.Customer.Balance.API.create)) {
+                URLRouting.Route(.convert(
+                        apply: { (customerId: $0.0, request: $0.1) },
+                        unapply: { ($0.customerId, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Customer.Balance.API.cases.create))) {
                     Method.post
                     Path.v1
                     Path.customers
                     Path { Parse(.string.representing(Stripe.Customers.Customer.ID.self)) }
                     Path.balance_transactions
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Customer.Balance.Create.Request.self,
                             decoder: .stripe,
@@ -44,7 +46,11 @@ extension Stripe.Billing.Customer.Balance.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.Customer.Balance.API.retrieve)) {
+                URLRouting.Route(.convert(
+                        apply: { (customerId: $0.0, id: $0.1) },
+                        unapply: { ($0.customerId, $0.id) }
+                    )
+                    .map(.case(Stripe.Billing.Customer.Balance.API.cases.retrieve))) {
                     Method.get
                     Path.v1
                     Path.customers
@@ -59,7 +65,11 @@ extension Stripe.Billing.Customer.Balance.API {
                     }
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.Customer.Balance.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (customerId: $0.0.0, id: $0.0.1, request: $0.1) },
+                        unapply: { (($0.customerId, $0.id), $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Customer.Balance.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.customers
@@ -72,7 +82,7 @@ extension Stripe.Billing.Customer.Balance.API {
                             )
                         )
                     }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Customer.Balance.Update.Request.self,
                             decoder: .stripe,
@@ -81,19 +91,34 @@ extension Stripe.Billing.Customer.Balance.API {
                     )
                 }
 
-                URLRouting.Route(.case(Stripe.Billing.Customer.Balance.API.list)) {
+                URLRouting.Route(.convert(
+                        apply: { (customerId: $0.0, request: $0.1) },
+                        unapply: { ($0.customerId, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Customer.Balance.API.cases.list))) {
                     Method.get
                     Path.v1
                     Path.customers
                     Path { Parse(.string.representing(Stripe.Customers.Customer.ID.self)) }
                     Path.balance_transactions
-                    Parse(.memberwise(Stripe.Billing.Customer.Balance.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.Customer.Balance.List.Request.init,
+                                { ($0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }

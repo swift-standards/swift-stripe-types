@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Invoice.LineItems {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/invoice-line-item/retrieve.md
         case list(invoiceId: String, request: Stripe.Billing.Invoice.LineItems.List.Request)
@@ -45,19 +43,34 @@ extension Stripe.Billing.Invoice.LineItems.API {
         public var body: some URLRouting.Router<Stripe.Billing.Invoice.LineItems.API> {
             OneOf {
                 // https://docs.stripe.com/api/invoice-line-item/retrieve.md
-                URLRouting.Route(.case(Stripe.Billing.Invoice.LineItems.API.list)) {
+                URLRouting.Route(.convert(
+                        apply: { (invoiceId: $0.0, request: $0.1) },
+                        unapply: { ($0.invoiceId, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoice.LineItems.API.cases.list))) {
                     Method.get
                     Path.v1
                     Path.invoices
                     Path { Parse(.string) }
                     Path.lines
-                    Parse(.memberwise(Stripe.Billing.Invoice.LineItems.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.Invoice.LineItems.List.Request.init,
+                                { ($0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -67,14 +80,18 @@ extension Stripe.Billing.Invoice.LineItems.API {
                 }
 
                 // https://docs.stripe.com/api/invoice-line-item/update.md
-                URLRouting.Route(.case(Stripe.Billing.Invoice.LineItems.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (invoiceId: $0.0.0, lineItemId: $0.0.1, request: $0.1) },
+                        unapply: { (($0.invoiceId, $0.lineItemId), $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoice.LineItems.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path { Parse(.string) }
                     Path.lines
                     Path { Parse(.string) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoice.LineItems.Update.Request.self,
                             decoder: .stripe,
@@ -84,13 +101,17 @@ extension Stripe.Billing.Invoice.LineItems.API {
                 }
 
                 // https://docs.stripe.com/api/invoice-line-item/bulk.md
-                URLRouting.Route(.case(Stripe.Billing.Invoice.LineItems.API.addLines)) {
+                URLRouting.Route(.convert(
+                        apply: { (invoiceId: $0.0, request: $0.1) },
+                        unapply: { ($0.invoiceId, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoice.LineItems.API.cases.addLines))) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path { Parse(.string) }
                     Path.add_lines
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoice.LineItems.AddLines.Request.self,
                             decoder: .stripe,
@@ -100,13 +121,17 @@ extension Stripe.Billing.Invoice.LineItems.API {
                 }
 
                 // https://docs.stripe.com/api/invoice-line-item/bulk-update.md
-                URLRouting.Route(.case(Stripe.Billing.Invoice.LineItems.API.updateLines)) {
+                URLRouting.Route(.convert(
+                        apply: { (invoiceId: $0.0, request: $0.1) },
+                        unapply: { ($0.invoiceId, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoice.LineItems.API.cases.updateLines))) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path { Parse(.string) }
                     Path.update_lines
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoice.LineItems.UpdateLines.Request.self,
                             decoder: .stripe,
@@ -116,13 +141,17 @@ extension Stripe.Billing.Invoice.LineItems.API {
                 }
 
                 // https://docs.stripe.com/api/invoice-line-item/invoices/remove-lines/bulk.md
-                URLRouting.Route(.case(Stripe.Billing.Invoice.LineItems.API.removeLines)) {
+                URLRouting.Route(.convert(
+                        apply: { (invoiceId: $0.0, request: $0.1) },
+                        unapply: { ($0.invoiceId, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Invoice.LineItems.API.cases.removeLines))) {
                     Method.post
                     Path.v1
                     Path.invoices
                     Path { Parse(.string) }
                     Path.remove_lines
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Invoice.LineItems.RemoveLines.Request.self,
                             decoder: .stripe,

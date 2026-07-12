@@ -5,7 +5,6 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
@@ -13,8 +12,7 @@ import Tagged_Primitives
 import URLFormCodingURLRouting
 
 extension Stripe.Charges {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/charges/create.md
         case create(request: Stripe.Charges.Create.Request)
@@ -38,11 +36,11 @@ extension Stripe.Charges.API {
         public var body: some URLRouting.Router<Stripe.Charges.API> {
             OneOf {
                 // https://docs.stripe.com/api/charges/create.md
-                URLRouting.Route(.case(Stripe.Charges.API.create)) {
+                URLRouting.Route(.case(Stripe.Charges.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.charges
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Charges.Create.Request.self,
                             decoder: .stripe,
@@ -52,7 +50,7 @@ extension Stripe.Charges.API {
                 }
 
                 // https://docs.stripe.com/api/charges/retrieve.md
-                URLRouting.Route(.case(Stripe.Charges.API.retrieve)) {
+                URLRouting.Route(.case(Stripe.Charges.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.charges
@@ -60,12 +58,16 @@ extension Stripe.Charges.API {
                 }
 
                 // https://docs.stripe.com/api/charges/update.md
-                URLRouting.Route(.case(Stripe.Charges.API.update)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Charges.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.charges
                     Path { Parse(.string.representing(Stripe.Charges.Charge.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Charges.Update.Request.self,
                             decoder: .stripe,
@@ -75,11 +77,22 @@ extension Stripe.Charges.API {
                 }
 
                 // https://docs.stripe.com/api/charges/list.md
-                URLRouting.Route(.case(Stripe.Charges.API.list)) {
+                URLRouting.Route(.case(Stripe.Charges.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.charges
-                    Parse(.memberwise(Stripe.Charges.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0.0.0, $0.0.0.0.0.0.1, $0.0.0.0.0.1, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((((($0.0, $0.1), $0.2), $0.3), $0.4), $0.5), $0.6) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Charges.List.Request.init,
+                                { ($0.created, $0.customer, $0.paymentIntent, $0.transferGroup, $0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Optionally {
                                 Field("created") {
@@ -107,7 +120,7 @@ extension Stripe.Charges.API {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -117,13 +130,17 @@ extension Stripe.Charges.API {
                 }
 
                 // https://docs.stripe.com/api/charges/capture.md
-                URLRouting.Route(.case(Stripe.Charges.API.capture)) {
+                URLRouting.Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Charges.API.cases.capture))) {
                     Method.post
                     Path.v1
                     Path.charges
                     Path { Parse(.string.representing(Stripe.Charges.Charge.ID.self)) }
                     Path { "capture" }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Charges.Capture.Request.self,
                             decoder: .stripe,
@@ -133,16 +150,27 @@ extension Stripe.Charges.API {
                 }
 
                 // https://docs.stripe.com/api/charges/search.md
-                URLRouting.Route(.case(Stripe.Charges.API.search)) {
+                URLRouting.Route(.case(Stripe.Charges.API.cases.search)) {
                     Method.get
                     Path.v1
                     Path.charges
                     Path { "search" }
-                    Parse(.memberwise(Stripe.Charges.Search.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0, $0.0.1, $0.1) },
+                            unapply: { (($0.0, $0.1), $0.2) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Charges.Search.Request.init,
+                                { ($0.query, $0.limit, $0.page) }
+                            )
+                        )
+                    ) {
                         URLRouting.Query {
                             Field("query") { Parse(.string) }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("page") { Parse(.string) }

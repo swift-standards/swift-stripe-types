@@ -5,15 +5,13 @@
 //  Created by Coen ten Thije Boonkkamp on 13/01/2025.
 //
 
-import CasePaths
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import URLFormCodingURLRouting
 
 extension Stripe.Billing.Meters {
-    @CasePathable
-    @dynamicMemberLookup
+    @Cases
     public enum API: Equatable, Sendable {
         // https://docs.stripe.com/api/billing/meter/create.md
         case create(request: Create.Request)
@@ -41,12 +39,12 @@ extension Stripe.Billing.Meters.API {
 
         public var body: some URLRouting.Router<Stripe.Billing.Meters.API> {
             OneOf {
-                Route(.case(Stripe.Billing.Meters.API.create)) {
+                Route(.case(Stripe.Billing.Meters.API.cases.create)) {
                     Method.post
                     Path.v1
                     Path.billing
                     Path.meters
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Meters.Create.Request.self,
                             decoder: .stripe,
@@ -55,7 +53,7 @@ extension Stripe.Billing.Meters.API {
                     )
                 }
 
-                Route(.case(Stripe.Billing.Meters.API.retrieve)) {
+                Route(.case(Stripe.Billing.Meters.API.cases.retrieve)) {
                     Method.get
                     Path.v1
                     Path.billing
@@ -63,13 +61,17 @@ extension Stripe.Billing.Meters.API {
                     Path { Parse(.string.representing(Stripe.Billing.Meters.Meter.ID.self)) }
                 }
 
-                Route(.case(Stripe.Billing.Meters.API.update)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Meters.API.cases.update))) {
                     Method.post
                     Path.v1
                     Path.billing
                     Path.meters
                     Path { Parse(.string.representing(Stripe.Billing.Meters.Meter.ID.self)) }
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Meters.Update.Request.self,
                             decoder: .stripe,
@@ -78,18 +80,29 @@ extension Stripe.Billing.Meters.API {
                     )
                 }
 
-                Route(.case(Stripe.Billing.Meters.API.list)) {
+                Route(.case(Stripe.Billing.Meters.API.cases.list)) {
                     Method.get
                     Path.v1
                     Path.billing
                     Path.meters
-                    Parse(.memberwise(Stripe.Billing.Meters.List.Request.init)) {
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { ((($0.0, $0.1), $0.2), $0.3) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Billing.Meters.List.Request.init,
+                                { ($0.endingBefore, $0.limit, $0.startingAfter, $0.status) }
+                            )
+                        )
+                    ) {
                         Query {
                             Optionally {
                                 Field("ending_before") { Parse(.string) }
                             }
                             Optionally {
-                                Field("limit") { Digits() }
+                                Field("limit") { Int.parser() }
                             }
                             Optionally {
                                 Field("starting_after") { Parse(.string) }
@@ -103,14 +116,18 @@ extension Stripe.Billing.Meters.API {
                     }
                 }
 
-                Route(.case(Stripe.Billing.Meters.API.deactivate)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Meters.API.cases.deactivate))) {
                     Method.post
                     Path.v1
                     Path.billing
                     Path.meters
                     Path { Parse(.string.representing(Stripe.Billing.Meters.Meter.ID.self)) }
                     Path.deactivate
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Meters.Deactivate.Request.self,
                             decoder: .stripe,
@@ -119,14 +136,18 @@ extension Stripe.Billing.Meters.API {
                     )
                 }
 
-                Route(.case(Stripe.Billing.Meters.API.reactivate)) {
+                Route(.convert(
+                        apply: { (id: $0.0, request: $0.1) },
+                        unapply: { ($0.id, $0.request) }
+                    )
+                    .map(.case(Stripe.Billing.Meters.API.cases.reactivate))) {
                     Method.post
                     Path.v1
                     Path.billing
                     Path.meters
                     Path { Parse(.string.representing(Stripe.Billing.Meters.Meter.ID.self)) }
                     Path.reactivate
-                    Body(
+                    URLRouting.Body(
                         .form(
                             Stripe.Billing.Meters.Reactivate.Request.self,
                             decoder: .stripe,
