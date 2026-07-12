@@ -7,9 +7,9 @@ extension Stripe.Billing.Credit.Balance {
     @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/billing/credit-balance-transaction/retrieve.md
-        public var retrieve: @Sendable (_ id: Transaction.ID) async throws(Witness.Unimplemented.Error) -> Transaction
+        public var retrieve: @Sendable (_ id: Transaction.ID) async throws(any Swift.Error) -> Transaction
 
         // https://docs.stripe.com/api/billing/credit-balance-transaction/list.md
-        public var list: @Sendable (_ request: List.Request) async throws(Witness.Unimplemented.Error) -> Transaction.List
+        public var list: @Sendable (_ request: List.Request) async throws(any Swift.Error) -> Transaction.List
     }
 }

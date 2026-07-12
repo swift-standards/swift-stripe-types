@@ -12,12 +12,12 @@ extension Stripe.Customers.CashBalanceTransactions {
             @Sendable (
                 _ customerId: Stripe.Customers.Customer.ID,
                 _ transactionId: CashBalanceTransaction.ID
-            ) async throws(Witness.Unimplemented.Error) -> CashBalanceTransaction
+            ) async throws(any Swift.Error) -> CashBalanceTransaction
 
         // https://docs.stripe.com/api/cash_balance_transactions/list.md
         public var list:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ request: List.Request)
-                async throws(Witness.Unimplemented.Error)
+                async throws(any Swift.Error)
                 -> List.Response
     }
 }

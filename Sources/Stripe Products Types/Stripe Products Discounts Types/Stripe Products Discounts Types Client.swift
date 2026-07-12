@@ -15,13 +15,13 @@ extension Stripe.Products.Discounts {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/discounts/delete.md
         public var deleteCustomerDiscount:
-            @Sendable (_ customerId: Stripe.Customers.Customer.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<
+            @Sendable (_ customerId: Stripe.Customers.Customer.ID) async throws(any Swift.Error) -> DeletedObject<
                 Stripe.Products.Discount
             >
 
         // https://docs.stripe.com/api/discounts/subscription_delete.md
         public var deleteSubscriptionDiscount:
-            @Sendable (_ subscriptionId: Stripe.Billing.Subscription.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ subscriptionId: Stripe.Billing.Subscription.ID) async throws(any Swift.Error) ->
                 DeletedObject<
                     Stripe.Products.Discount
                 >

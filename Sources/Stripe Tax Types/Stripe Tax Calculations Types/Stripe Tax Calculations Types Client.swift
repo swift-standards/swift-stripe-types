@@ -15,16 +15,16 @@ extension Stripe.Tax.Calculations {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/tax/calculations/create.md
         public var create:
-            @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.Tax.Calculation
+            @Sendable (_ request: Create.Request) async throws(any Swift.Error) -> Stripe.Tax.Calculation
 
         // https://docs.stripe.com/api/tax/calculations/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Tax.Calculation.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Tax.Calculation
+            @Sendable (_ id: Stripe.Tax.Calculation.ID) async throws(any Swift.Error) -> Stripe.Tax.Calculation
 
         // https://docs.stripe.com/api/tax/calculations/line_items.md
         public var listLineItems:
             @Sendable (_ id: Stripe.Tax.Calculation.ID, _ request: List.LineItems.Request)
-                async throws(Witness.Unimplemented.Error) ->
+                async throws(any Swift.Error) ->
                 List.LineItems.Response
     }
 }

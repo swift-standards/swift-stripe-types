@@ -7,19 +7,19 @@ extension Stripe.Terminal.Locations {
     @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/terminal/locations/create.md
-        public var create: @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Location
+        public var create: @Sendable (_ request: Create.Request) async throws(any Swift.Error) -> Location
 
         // https://docs.stripe.com/api/terminal/locations/retrieve.md
-        public var retrieve: @Sendable (_ id: Location.ID) async throws(Witness.Unimplemented.Error) -> Location
+        public var retrieve: @Sendable (_ id: Location.ID) async throws(any Swift.Error) -> Location
 
         // https://docs.stripe.com/api/terminal/locations/update.md
         public var update:
-            @Sendable (_ id: Location.ID, _ request: Update.Request) async throws(Witness.Unimplemented.Error) -> Location
+            @Sendable (_ id: Location.ID, _ request: Update.Request) async throws(any Swift.Error) -> Location
 
         // https://docs.stripe.com/api/terminal/locations/list.md
-        public var list: @Sendable (_ request: List.Request) async throws(Witness.Unimplemented.Error) -> List.Response
+        public var list: @Sendable (_ request: List.Request) async throws(any Swift.Error) -> List.Response
 
         // https://docs.stripe.com/api/terminal/locations/delete.md
-        public var delete: @Sendable (_ id: Location.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<Location>
+        public var delete: @Sendable (_ id: Location.ID) async throws(any Swift.Error) -> DeletedObject<Location>
     }
 }

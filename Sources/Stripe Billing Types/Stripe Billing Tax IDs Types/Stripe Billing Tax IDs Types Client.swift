@@ -9,23 +9,23 @@ extension Stripe.Billing.TaxIDs {
         // https://docs.stripe.com/api/customer_tax_ids/create
         public var create:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ request: Create.Request)
-                async throws(Witness.Unimplemented.Error)
+                async throws(any Swift.Error)
                 -> TaxID
 
         // https://docs.stripe.com/api/customer_tax_ids/retrieve
         public var retrieve:
-            @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ id: TaxID.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ id: TaxID.ID) async throws(any Swift.Error) ->
                 TaxID
 
         // https://docs.stripe.com/api/customer_tax_ids/delete
         public var delete:
-            @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ id: TaxID.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ id: TaxID.ID) async throws(any Swift.Error) ->
                 DeletedObject<Stripe.Customers.Customer>
 
         // https://docs.stripe.com/api/customer_tax_ids/list
         public var list:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ request: List.Request)
-                async throws(Witness.Unimplemented.Error)
+                async throws(any Swift.Error)
                 -> List.Response
     }
 }

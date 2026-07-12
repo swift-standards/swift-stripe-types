@@ -15,10 +15,10 @@ extension Stripe.Tokens {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/tokens/create.md
         public var create:
-            @Sendable (_ request: Stripe.Tokens.Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.Tokens.Token
+            @Sendable (_ request: Stripe.Tokens.Create.Request) async throws(any Swift.Error) -> Stripe.Tokens.Token
 
         // https://docs.stripe.com/api/tokens/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Tokens.Token.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Tokens.Token
+            @Sendable (_ id: Stripe.Tokens.Token.ID) async throws(any Swift.Error) -> Stripe.Tokens.Token
     }
 }

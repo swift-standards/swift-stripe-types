@@ -15,21 +15,21 @@ extension Stripe.Setup.Intents {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/setup_intents/create.md
         public var create:
-            @Sendable (_ request: Stripe.Setup.Intents.Create.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Setup.Intents.Create.Request) async throws(any Swift.Error) ->
                 Stripe.Setup.Intent
 
         // https://docs.stripe.com/api/setup_intents/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Setup.Intent.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Setup.Intent
+            @Sendable (_ id: Stripe.Setup.Intent.ID) async throws(any Swift.Error) -> Stripe.Setup.Intent
 
         // https://docs.stripe.com/api/setup_intents/update.md
         public var update:
             @Sendable (_ id: Stripe.Setup.Intent.ID, _ request: Stripe.Setup.Intents.Update.Request)
-                async throws(Witness.Unimplemented.Error) -> Stripe.Setup.Intent
+                async throws(any Swift.Error) -> Stripe.Setup.Intent
 
         // https://docs.stripe.com/api/setup_intents/list.md
         public var list:
-            @Sendable (_ request: Stripe.Setup.Intents.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Setup.Intents.List.Request) async throws(any Swift.Error) ->
                 Stripe.Setup.Intents.List.Response
 
         // https://docs.stripe.com/api/setup_intents/confirm.md
@@ -37,18 +37,18 @@ extension Stripe.Setup.Intents {
             @Sendable (
                 _ id: Stripe.Setup.Intent.ID, _ request: Stripe.Setup.Intents.Confirm.Request
             )
-                async throws(Witness.Unimplemented.Error) -> Stripe.Setup.Intent
+                async throws(any Swift.Error) -> Stripe.Setup.Intent
 
         // https://docs.stripe.com/api/setup_intents/cancel.md
         public var cancel:
             @Sendable (_ id: Stripe.Setup.Intent.ID, _ request: Stripe.Setup.Intents.Cancel.Request)
-                async throws(Witness.Unimplemented.Error) -> Stripe.Setup.Intent
+                async throws(any Swift.Error) -> Stripe.Setup.Intent
 
         // https://docs.stripe.com/api/setup_intents/verify_microdeposits.md
         public var verifyMicrodeposits:
             @Sendable (
                 _ id: Stripe.Setup.Intent.ID,
                 _ request: Stripe.Setup.Intents.VerifyMicrodeposits.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe.Setup.Intent
+            ) async throws(any Swift.Error) -> Stripe.Setup.Intent
     }
 }

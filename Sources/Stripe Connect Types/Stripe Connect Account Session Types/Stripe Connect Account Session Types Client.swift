@@ -15,6 +15,6 @@ extension Stripe.Connect.Account.Session {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/account_sessions/create.md
         public var create:
-            @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.Connect.Account.Session
+            @Sendable (_ request: Create.Request) async throws(any Swift.Error) -> Stripe.Connect.Account.Session
     }
 }

@@ -10,37 +10,37 @@ extension Stripe.Customers.BankAccounts {
         // https://docs.stripe.com/api/customer_bank_accounts/create.md
         public var create:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ request: Create.Request)
-                async throws(Witness.Unimplemented.Error)
+                async throws(any Swift.Error)
                 -> BankAccount
 
         // https://docs.stripe.com/api/customer_bank_accounts/retrieve.md
         public var retrieve:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ bankAccountId: BankAccount.ID)
-                async throws(Witness.Unimplemented.Error) -> BankAccount
+                async throws(any Swift.Error) -> BankAccount
 
         // https://docs.stripe.com/api/customer_bank_accounts/update.md
         public var update:
             @Sendable (
                 _ customerId: Stripe.Customers.Customer.ID, _ bankAccountId: BankAccount.ID,
                 _ request: Update.Request
-            ) async throws(Witness.Unimplemented.Error) -> BankAccount
+            ) async throws(any Swift.Error) -> BankAccount
 
         // https://docs.stripe.com/api/customer_bank_accounts/list.md
         public var list:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ request: List.Request)
-                async throws(Witness.Unimplemented.Error)
+                async throws(any Swift.Error)
                 -> List.Response
 
         // https://docs.stripe.com/api/customer_bank_accounts/delete.md
         public var delete:
             @Sendable (_ customerId: Stripe.Customers.Customer.ID, _ bankAccountId: BankAccount.ID)
-                async throws(Witness.Unimplemented.Error) -> DeletedObject<BankAccount>
+                async throws(any Swift.Error) -> DeletedObject<BankAccount>
 
         // https://docs.stripe.com/api/customer_bank_accounts/verify.md
         public var verify:
             @Sendable (
                 _ customerId: Stripe.Customers.Customer.ID, _ bankAccountId: BankAccount.ID,
                 _ request: Verify.Request
-            ) async throws(Witness.Unimplemented.Error) -> BankAccount
+            ) async throws(any Swift.Error) -> BankAccount
     }
 }

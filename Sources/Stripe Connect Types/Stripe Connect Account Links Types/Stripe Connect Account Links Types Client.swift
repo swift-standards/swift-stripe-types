@@ -8,7 +8,7 @@ extension Stripe.Connect.AccountLinks {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/account_links/create.md
         public var create:
-            @Sendable (_ request: Stripe.Connect.AccountLinks.Create.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Connect.AccountLinks.Create.Request) async throws(any Swift.Error) ->
                 Stripe.Connect.Account.Link
     }
 }

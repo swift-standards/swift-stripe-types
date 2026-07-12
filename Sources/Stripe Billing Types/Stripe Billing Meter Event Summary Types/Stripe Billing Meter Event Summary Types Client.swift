@@ -16,6 +16,6 @@ extension Stripe.Billing.MeterEventSummary {
         // https://docs.stripe.com/api/billing/meter-event-summary/list.md
         public var list:
             @Sendable (_ meterId: String, _ request: Stripe.Billing.MeterEventSummary.List.Request)
-                async throws(Witness.Unimplemented.Error) -> List.Response
+                async throws(any Swift.Error) -> List.Response
     }
 }

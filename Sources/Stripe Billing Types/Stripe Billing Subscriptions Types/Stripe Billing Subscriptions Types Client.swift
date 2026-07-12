@@ -15,7 +15,7 @@ extension Stripe.Billing.Subscriptions {
 
         // https://docs.stripe.com/api/subscriptions/create.md
         public var create:
-            @Sendable (_ request: Stripe.Billing.Subscriptions.Create.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Billing.Subscriptions.Create.Request) async throws(any Swift.Error) ->
                 Stripe.Billing.Subscription
 
         // https://docs.stripe.com/api/subscriptions/update.md
@@ -23,16 +23,16 @@ extension Stripe.Billing.Subscriptions {
             @Sendable (
                 _ id: Stripe.Billing.Subscription.ID,
                 _ request: Stripe.Billing.Subscriptions.Update.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Subscription
+            ) async throws(any Swift.Error) -> Stripe.Billing.Subscription
 
         // https://docs.stripe.com/api/subscriptions/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Billing.Subscription.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ id: Stripe.Billing.Subscription.ID) async throws(any Swift.Error) ->
                 Stripe.Billing.Subscription
 
         // https://docs.stripe.com/api/subscriptions/list.md
         public var list:
-            @Sendable (_ request: Stripe.Billing.Subscriptions.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Billing.Subscriptions.List.Request) async throws(any Swift.Error) ->
                 Stripe.Billing.Subscriptions.List.Response
 
         // https://docs.stripe.com/api/subscriptions/cancel.md
@@ -40,6 +40,6 @@ extension Stripe.Billing.Subscriptions {
             @Sendable (
                 _ id: Stripe.Billing.Subscription.ID,
                 _ request: Stripe.Billing.Subscriptions.Cancel.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Subscription
+            ) async throws(any Swift.Error) -> Stripe.Billing.Subscription
     }
 }

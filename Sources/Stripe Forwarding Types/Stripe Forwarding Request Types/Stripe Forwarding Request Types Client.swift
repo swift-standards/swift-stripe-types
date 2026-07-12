@@ -8,15 +8,15 @@ extension Stripe.Forwarding.Request {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/forwarding/request/create.md
         public var create:
-            @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.Forwarding.Request
+            @Sendable (_ request: Create.Request) async throws(any Swift.Error) -> Stripe.Forwarding.Request
 
         // https://docs.stripe.com/api/forwarding/request/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Forwarding.Request.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Forwarding.Request
+            @Sendable (_ id: Stripe.Forwarding.Request.ID) async throws(any Swift.Error) -> Stripe.Forwarding.Request
 
         // https://docs.stripe.com/api/forwarding/request/list.md
         public var list:
-            @Sendable (_ request: Stripe.Forwarding.Request.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Forwarding.Request.List.Request) async throws(any Swift.Error) ->
                 Stripe.Forwarding.Request.List.Response
     }
 }

@@ -15,12 +15,12 @@ extension Stripe.BalanceTransactions {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/balance_transactions/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Balance.Transaction.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ id: Stripe.Balance.Transaction.ID) async throws(any Swift.Error) ->
                 Stripe.Balance.Transaction
 
         // https://docs.stripe.com/api/balance_transactions/list.md
         public var list:
-            @Sendable (_ request: Stripe.BalanceTransactions.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.BalanceTransactions.List.Request) async throws(any Swift.Error) ->
                 Stripe.BalanceTransactions.List.Response
     }
 }

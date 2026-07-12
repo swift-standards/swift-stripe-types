@@ -8,9 +8,9 @@ extension Stripe.Fraud.EarlyFraudWarnings {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/radar/early_fraud_warnings/retrieve.md
         public var retrieve:
-            @Sendable (_ id: EarlyFraudWarning.ID) async throws(Witness.Unimplemented.Error) -> EarlyFraudWarning
+            @Sendable (_ id: EarlyFraudWarning.ID) async throws(any Swift.Error) -> EarlyFraudWarning
 
         // https://docs.stripe.com/api/radar/early_fraud_warnings/list.md
-        public var list: @Sendable (_ request: API.List.Request) async throws(Witness.Unimplemented.Error) -> API.List.Response
+        public var list: @Sendable (_ request: API.List.Request) async throws(any Swift.Error) -> API.List.Response
     }
 }

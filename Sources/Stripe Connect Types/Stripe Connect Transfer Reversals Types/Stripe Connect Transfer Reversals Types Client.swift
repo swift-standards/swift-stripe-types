@@ -16,7 +16,7 @@ extension Stripe.Connect.Transfer.Reversals {
         // https://docs.stripe.com/api/transfer_reversals/create.md
         public var create:
             @Sendable (_ transferId: Stripe.Connect.Transfer.ID, _ request: Create.Request)
-                async throws(Witness.Unimplemented.Error)
+                async throws(any Swift.Error)
                 -> Stripe.Connect.Transfer.Reversal
 
         // https://docs.stripe.com/api/transfer_reversals/retrieve.md
@@ -24,7 +24,7 @@ extension Stripe.Connect.Transfer.Reversals {
             @Sendable (
                 _ transferId: Stripe.Connect.Transfer.ID,
                 _ reversalId: Stripe.Connect.Transfer.Reversal.ID
-            ) async throws(Witness.Unimplemented.Error) -> Stripe.Connect.Transfer.Reversal
+            ) async throws(any Swift.Error) -> Stripe.Connect.Transfer.Reversal
 
         // https://docs.stripe.com/api/transfer_reversals/update.md
         public var update:
@@ -32,12 +32,12 @@ extension Stripe.Connect.Transfer.Reversals {
                 _ transferId: Stripe.Connect.Transfer.ID,
                 _ reversalId: Stripe.Connect.Transfer.Reversal.ID,
                 _ request: Update.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe.Connect.Transfer.Reversal
+            ) async throws(any Swift.Error) -> Stripe.Connect.Transfer.Reversal
 
         // https://docs.stripe.com/api/transfer_reversals/list.md
         public var list:
             @Sendable (_ transferId: Stripe.Connect.Transfer.ID, _ request: List.Request)
-                async throws(Witness.Unimplemented.Error) ->
+                async throws(any Swift.Error) ->
                 List.Response
     }
 }

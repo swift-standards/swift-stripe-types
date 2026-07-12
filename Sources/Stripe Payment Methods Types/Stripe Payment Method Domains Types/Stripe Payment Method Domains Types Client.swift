@@ -9,25 +9,25 @@ extension Stripe.PaymentMethodDomains {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/payment_method_domains/create.md
         public var create:
-            @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.PaymentMethodDomain
+            @Sendable (_ request: Create.Request) async throws(any Swift.Error) -> Stripe.PaymentMethodDomain
 
         // https://docs.stripe.com/api/payment_method_domains/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.PaymentMethodDomain.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ id: Stripe.PaymentMethodDomain.ID) async throws(any Swift.Error) ->
                 Stripe.PaymentMethodDomain
 
         // https://docs.stripe.com/api/payment_method_domains/update.md
         public var update:
-            @Sendable (_ id: Stripe.PaymentMethodDomain.ID, _ request: Update.Request) async throws(Witness.Unimplemented.Error)
+            @Sendable (_ id: Stripe.PaymentMethodDomain.ID, _ request: Update.Request) async throws(any Swift.Error)
                 ->
                 Stripe.PaymentMethodDomain
 
         // https://docs.stripe.com/api/payment_method_domains/list.md
-        public var list: @Sendable (_ request: List.Request) async throws(Witness.Unimplemented.Error) -> List.Response
+        public var list: @Sendable (_ request: List.Request) async throws(any Swift.Error) -> List.Response
 
         // https://docs.stripe.com/api/payment_method_domains/validate.md
         public var validate:
-            @Sendable (_ id: Stripe.PaymentMethodDomain.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ id: Stripe.PaymentMethodDomain.ID) async throws(any Swift.Error) ->
                 Stripe.PaymentMethodDomain
     }
 }

@@ -15,12 +15,12 @@ extension Stripe.Billing.InvoiceItems {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/invoiceitems/create.md
         public var create:
-            @Sendable (_ request: Stripe.Billing.InvoiceItems.Create.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Billing.InvoiceItems.Create.Request) async throws(any Swift.Error) ->
                 Stripe.Billing.Invoice.Item
 
         // https://docs.stripe.com/api/invoiceitems/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Billing.Invoice.Item.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ id: Stripe.Billing.Invoice.Item.ID) async throws(any Swift.Error) ->
                 Stripe.Billing.Invoice.Item
 
         // https://docs.stripe.com/api/invoiceitems/update.md
@@ -28,16 +28,16 @@ extension Stripe.Billing.InvoiceItems {
             @Sendable (
                 _ id: Stripe.Billing.Invoice.Item.ID,
                 _ request: Stripe.Billing.InvoiceItems.Update.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice.Item
+            ) async throws(any Swift.Error) -> Stripe.Billing.Invoice.Item
 
         // https://docs.stripe.com/api/invoiceitems/list.md
         public var list:
-            @Sendable (_ request: Stripe.Billing.InvoiceItems.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Billing.InvoiceItems.List.Request) async throws(any Swift.Error) ->
                 Stripe.Billing.InvoiceItems.List.Response
 
         // https://docs.stripe.com/api/invoiceitems/delete.md
         public var delete:
-            @Sendable (_ id: Stripe.Billing.Invoice.Item.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<
+            @Sendable (_ id: Stripe.Billing.Invoice.Item.ID) async throws(any Swift.Error) -> DeletedObject<
                 Stripe.Billing.Invoice.Item
             >
     }

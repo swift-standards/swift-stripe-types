@@ -15,11 +15,11 @@ extension Stripe.Billing.Meters {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/billing/meter/create.md
         public var create:
-            @Sendable (_ request: Stripe.Billing.Meters.Create.Request) async throws(Witness.Unimplemented.Error) -> Meter
+            @Sendable (_ request: Stripe.Billing.Meters.Create.Request) async throws(any Swift.Error) -> Meter
 
         // https://docs.stripe.com/api/billing/meter/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Billing.Meters.Meter.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ id: Stripe.Billing.Meters.Meter.ID) async throws(any Swift.Error) ->
                 Stripe.Billing.Meters.Meter
 
         // https://docs.stripe.com/api/billing/meter/update.md
@@ -27,11 +27,11 @@ extension Stripe.Billing.Meters {
             @Sendable (
                 _ id: Stripe.Billing.Meters.Meter.ID,
                 _ request: Stripe.Billing.Meters.Update.Request
-            ) async throws(Witness.Unimplemented.Error) -> Meter
+            ) async throws(any Swift.Error) -> Meter
 
         // https://docs.stripe.com/api/billing/meter/list.md
         public var list:
-            @Sendable (_ request: Stripe.Billing.Meters.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Billing.Meters.List.Request) async throws(any Swift.Error) ->
                 Stripe.Billing.Meters.List.Response
 
         // https://docs.stripe.com/api/billing/meter/deactivate.md
@@ -39,13 +39,13 @@ extension Stripe.Billing.Meters {
             @Sendable (
                 _ id: Stripe.Billing.Meters.Meter.ID,
                 _ request: Stripe.Billing.Meters.Deactivate.Request
-            ) async throws(Witness.Unimplemented.Error) -> Meter
+            ) async throws(any Swift.Error) -> Meter
 
         // https://docs.stripe.com/api/billing/meter/reactivate.md
         public var reactivate:
             @Sendable (
                 _ id: Stripe.Billing.Meters.Meter.ID,
                 _ request: Stripe.Billing.Meters.Reactivate.Request
-            ) async throws(Witness.Unimplemented.Error) -> Meter
+            ) async throws(any Swift.Error) -> Meter
     }
 }

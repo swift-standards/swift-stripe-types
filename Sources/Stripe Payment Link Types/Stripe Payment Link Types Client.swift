@@ -7,21 +7,21 @@ extension Stripe.PaymentLinks {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/payment-link/create.md
         public var create:
-            @Sendable (_ request: Stripe.PaymentLinks.Create.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.PaymentLinks.Create.Request) async throws(any Swift.Error) ->
                 Stripe.PaymentLink
 
         // https://docs.stripe.com/api/payment-link/update.md
         public var update:
             @Sendable (_ id: Stripe.PaymentLink.ID, _ request: Stripe.PaymentLinks.Update.Request)
-                async throws(Witness.Unimplemented.Error) -> Stripe.PaymentLink
+                async throws(any Swift.Error) -> Stripe.PaymentLink
 
         // https://docs.stripe.com/api/payment-link/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.PaymentLink.ID) async throws(Witness.Unimplemented.Error) -> Stripe.PaymentLink
+            @Sendable (_ id: Stripe.PaymentLink.ID) async throws(any Swift.Error) -> Stripe.PaymentLink
 
         // https://docs.stripe.com/api/payment-link/list.md
         public var list:
-            @Sendable (_ request: Stripe.PaymentLinks.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.PaymentLinks.List.Request) async throws(any Swift.Error) ->
                 Stripe.PaymentLinks.List.Response
 
         // https://docs.stripe.com/api/payment-link/retrieve-line-items.md
@@ -29,6 +29,6 @@ extension Stripe.PaymentLinks {
             @Sendable (
                 _ id: Stripe.PaymentLink.ID, _ request: Stripe.PaymentLinks.LineItems.Request
             )
-                async throws(Witness.Unimplemented.Error) -> Stripe.PaymentLinks.LineItems.Response
+                async throws(any Swift.Error) -> Stripe.PaymentLinks.LineItems.Response
     }
 }

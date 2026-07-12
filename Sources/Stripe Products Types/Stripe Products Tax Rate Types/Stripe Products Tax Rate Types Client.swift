@@ -14,17 +14,17 @@ extension Stripe.Products.TaxRates {
     @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/tax_rates/create.md
-        public var create: @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.Tax.Rate
+        public var create: @Sendable (_ request: Create.Request) async throws(any Swift.Error) -> Stripe.Tax.Rate
 
         // https://docs.stripe.com/api/tax_rates/retrieve.md
-        public var retrieve: @Sendable (_ id: Stripe.Tax.Rate.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Tax.Rate
+        public var retrieve: @Sendable (_ id: Stripe.Tax.Rate.ID) async throws(any Swift.Error) -> Stripe.Tax.Rate
 
         // https://docs.stripe.com/api/tax_rates/update.md
         public var update:
-            @Sendable (_ id: Stripe.Tax.Rate.ID, _ request: Update.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ id: Stripe.Tax.Rate.ID, _ request: Update.Request) async throws(any Swift.Error) ->
                 Stripe.Tax.Rate
 
         // https://docs.stripe.com/api/tax_rates/list.md
-        public var list: @Sendable (_ request: List.Request) async throws(Witness.Unimplemented.Error) -> List.Response
+        public var list: @Sendable (_ request: List.Request) async throws(any Swift.Error) -> List.Response
     }
 }

@@ -9,20 +9,20 @@ extension Stripe.Products.ShippingRates {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/shipping_rates/create.md
         public var create:
-            @Sendable (_ request: Create.Request) async throws(Witness.Unimplemented.Error) -> Stripe.Products.Shipping.Rate
+            @Sendable (_ request: Create.Request) async throws(any Swift.Error) -> Stripe.Products.Shipping.Rate
 
         // https://docs.stripe.com/api/shipping_rates/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Products.Shipping.Rate.ID) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ id: Stripe.Products.Shipping.Rate.ID) async throws(any Swift.Error) ->
                 Stripe.Products.Shipping.Rate
 
         // https://docs.stripe.com/api/shipping_rates/update.md
         public var update:
             @Sendable (_ id: Stripe.Products.Shipping.Rate.ID, _ request: Update.Request)
-                async throws(Witness.Unimplemented.Error) ->
+                async throws(any Swift.Error) ->
                 Stripe.Products.Shipping.Rate
 
         // https://docs.stripe.com/api/shipping_rates/list.md
-        public var list: @Sendable (_ request: List.Request) async throws(Witness.Unimplemented.Error) -> List.Response
+        public var list: @Sendable (_ request: List.Request) async throws(any Swift.Error) -> List.Response
     }
 }

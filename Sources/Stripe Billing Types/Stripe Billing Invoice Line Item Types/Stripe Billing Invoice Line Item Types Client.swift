@@ -18,32 +18,32 @@ extension Stripe.Billing.Invoice.LineItems {
             @Sendable (
                 _ invoiceId: String, _ request: Stripe.Billing.Invoice.LineItems.List.Request
             )
-                async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice.LineItem.List
+                async throws(any Swift.Error) -> Stripe.Billing.Invoice.LineItem.List
 
         // https://docs.stripe.com/api/invoice-line-item/update.md
         public var update:
             @Sendable (
                 _ invoiceId: String, _ lineItemId: String,
                 _ request: Stripe.Billing.Invoice.LineItems.Update.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice.LineItem
+            ) async throws(any Swift.Error) -> Stripe.Billing.Invoice.LineItem
 
         // https://docs.stripe.com/api/invoice-line-item/bulk.md
         public var addLines:
             @Sendable (
                 _ invoiceId: String, _ request: Stripe.Billing.Invoice.LineItems.AddLines.Request
             )
-                async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice
+                async throws(any Swift.Error) -> Stripe.Billing.Invoice
 
         // https://docs.stripe.com/api/invoice-line-item/bulk-update.md
         public var updateLines:
             @Sendable (
                 _ invoiceId: String, _ request: Stripe.Billing.Invoice.LineItems.UpdateLines.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice
+            ) async throws(any Swift.Error) -> Stripe.Billing.Invoice
 
         // https://docs.stripe.com/api/invoice-line-item/invoices/remove-lines/bulk.md
         public var removeLines:
             @Sendable (
                 _ invoiceId: String, _ request: Stripe.Billing.Invoice.LineItems.RemoveLines.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Invoice
+            ) async throws(any Swift.Error) -> Stripe.Billing.Invoice
     }
 }

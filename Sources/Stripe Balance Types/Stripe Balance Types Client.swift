@@ -14,6 +14,6 @@ extension Stripe.Balance {
     @Witness
     public struct Client: Sendable {
         // https://docs.stripe.com/api/balance/retrieve.md
-        public var retrieve: @Sendable () async throws(Witness.Unimplemented.Error) -> Stripe.Balance
+        public var retrieve: @Sendable () async throws(any Swift.Error) -> Stripe.Balance
     }
 }

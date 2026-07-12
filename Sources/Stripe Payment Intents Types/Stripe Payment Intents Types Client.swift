@@ -14,7 +14,7 @@ extension Stripe.PaymentIntents {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/payment_intents/create.md
         public var create:
-            @Sendable (_ request: Stripe.PaymentIntents.Create.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.PaymentIntents.Create.Request) async throws(any Swift.Error) ->
                 Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
 
         // https://docs.stripe.com/api/payment_intents/update.md
@@ -22,17 +22,17 @@ extension Stripe.PaymentIntents {
             @Sendable (
                 _ id: Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent.ID,
                 _ request: Stripe.PaymentIntents.Update.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
+            ) async throws(any Swift.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
 
         // https://docs.stripe.com/api/payment_intents/retrieve.md
         public var retrieve:
             @Sendable (_ id: Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent.ID)
-                async throws(Witness.Unimplemented.Error) ->
+                async throws(any Swift.Error) ->
                 Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
 
         // https://docs.stripe.com/api/payment_intents/list.md
         public var list:
-            @Sendable (_ request: Stripe.PaymentIntents.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.PaymentIntents.List.Request) async throws(any Swift.Error) ->
                 Stripe.PaymentIntents.List.Response
 
         // https://docs.stripe.com/api/payment_intents/cancel.md
@@ -40,38 +40,38 @@ extension Stripe.PaymentIntents {
             @Sendable (
                 _ id: Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent.ID,
                 _ request: Stripe.PaymentIntents.Cancel.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
+            ) async throws(any Swift.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
 
         // https://docs.stripe.com/api/payment_intents/capture.md
         public var capture:
             @Sendable (
                 _ id: Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent.ID,
                 _ request: Stripe.PaymentIntents.Capture.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
+            ) async throws(any Swift.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
 
         // https://docs.stripe.com/api/payment_intents/confirm.md
         public var confirm:
             @Sendable (
                 _ id: Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent.ID,
                 _ request: Stripe.PaymentIntents.Confirm.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
+            ) async throws(any Swift.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
 
         // https://docs.stripe.com/api/payment_intents/increment_authorization.md
         public var incrementAuthorization:
             @Sendable (
                 _ id: Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent.ID,
                 _ request: Stripe.PaymentIntents.IncrementAuthorization.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
+            ) async throws(any Swift.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
 
         // https://docs.stripe.com/api/payment_intents/apply_customer_balance.md
         public var applyCustomerBalance:
             @Sendable (_ id: Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent.ID)
-                async throws(Witness.Unimplemented.Error) ->
+                async throws(any Swift.Error) ->
                 Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
 
         // https://docs.stripe.com/api/payment_intents/search.md
         public var search:
-            @Sendable (_ request: Stripe.PaymentIntents.Search.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.PaymentIntents.Search.Request) async throws(any Swift.Error) ->
                 Stripe.PaymentIntents.Search.Response
 
         // https://docs.stripe.com/api/payment_intents/verify_microdeposits.md
@@ -79,6 +79,6 @@ extension Stripe.PaymentIntents {
             @Sendable (
                 _ id: Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent.ID,
                 _ request: Stripe.PaymentIntents.VerifyMicrodeposits.Request
-            ) async throws(Witness.Unimplemented.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
+            ) async throws(any Swift.Error) -> Stripe_Types_Shared.Stripe.PaymentIntents.PaymentIntent
     }
 }

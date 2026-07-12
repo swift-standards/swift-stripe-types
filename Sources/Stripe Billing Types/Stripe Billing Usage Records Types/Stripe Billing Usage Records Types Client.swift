@@ -11,13 +11,13 @@ extension Stripe.Billing.UsageRecords {
             @Sendable (
                 _ subscriptionItemId: Stripe.Billing.SubscriptionItems.SubscriptionItem.ID,
                 _ request: Create.Request
-            ) async throws(Witness.Unimplemented.Error) -> UsageRecord
+            ) async throws(any Swift.Error) -> UsageRecord
 
         // https://docs.stripe.com/api/usage_records/list
         public var list:
             @Sendable (
                 _ subscriptionItemId: Stripe.Billing.SubscriptionItems.SubscriptionItem.ID,
                 _ request: List.Request
-            ) async throws(Witness.Unimplemented.Error) -> List.Response
+            ) async throws(any Swift.Error) -> List.Response
     }
 }

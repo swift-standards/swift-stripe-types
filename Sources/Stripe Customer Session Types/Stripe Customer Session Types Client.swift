@@ -8,7 +8,7 @@ extension Stripe.Customers.Customer.Sessions {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/customer_sessions/create.md
         public var create:
-            @Sendable (_ request: Stripe.Customers.Customer.Sessions.Create.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Customers.Customer.Sessions.Create.Request) async throws(any Swift.Error) ->
                 Stripe.Customers.Customer.Session
     }
 }

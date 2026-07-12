@@ -15,26 +15,26 @@ extension Stripe.Billing.Plans {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/plans/create.md
         public var create:
-            @Sendable (_ request: Stripe.Billing.Plans.Create.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Billing.Plans.Create.Request) async throws(any Swift.Error) ->
                 Stripe.Billing.Plan
 
         // https://docs.stripe.com/api/plans/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Billing.Plan.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Plan
+            @Sendable (_ id: Stripe.Billing.Plan.ID) async throws(any Swift.Error) -> Stripe.Billing.Plan
 
         // https://docs.stripe.com/api/plans/update.md
         public var update:
             @Sendable (_ id: Stripe.Billing.Plan.ID, _ request: Stripe.Billing.Plans.Update.Request)
-                async throws(Witness.Unimplemented.Error) -> Stripe.Billing.Plan
+                async throws(any Swift.Error) -> Stripe.Billing.Plan
 
         // https://docs.stripe.com/api/plans/list.md
         public var list:
-            @Sendable (_ request: Stripe.Billing.Plans.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Billing.Plans.List.Request) async throws(any Swift.Error) ->
                 Stripe.Billing.Plans.List.Response
 
         // https://docs.stripe.com/api/plans/delete.md
         public var delete:
-            @Sendable (_ id: Stripe.Billing.Plan.ID) async throws(Witness.Unimplemented.Error) -> DeletedObject<
+            @Sendable (_ id: Stripe.Billing.Plan.ID) async throws(any Swift.Error) -> DeletedObject<
                 Stripe.Billing.Plan
             >
     }

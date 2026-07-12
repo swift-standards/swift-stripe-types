@@ -11,6 +11,6 @@ extension Stripe.Billing.UsageRecordSummary {
             @Sendable (
                 _ subscriptionItemId: Stripe.Billing.SubscriptionItems.SubscriptionItem.ID,
                 _ request: List.Request
-            ) async throws(Witness.Unimplemented.Error) -> List.Response
+            ) async throws(any Swift.Error) -> List.Response
     }
 }

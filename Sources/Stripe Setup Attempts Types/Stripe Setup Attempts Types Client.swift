@@ -15,7 +15,7 @@ extension Stripe.Setup.Attempts {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/setup_attempts/list.md
         public var list:
-            @Sendable (_ request: Stripe.Setup.Attempts.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Setup.Attempts.List.Request) async throws(any Swift.Error) ->
                 Stripe.Setup.Attempts.List.Response
     }
 }

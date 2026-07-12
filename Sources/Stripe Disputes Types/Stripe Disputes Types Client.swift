@@ -15,20 +15,20 @@ extension Stripe.Disputes {
     public struct Client: Sendable {
         // https://docs.stripe.com/api/disputes/retrieve.md
         public var retrieve:
-            @Sendable (_ id: Stripe.Disputes.Dispute.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Disputes.Dispute
+            @Sendable (_ id: Stripe.Disputes.Dispute.ID) async throws(any Swift.Error) -> Stripe.Disputes.Dispute
 
         // https://docs.stripe.com/api/disputes/update.md
         public var update:
             @Sendable (_ id: Stripe.Disputes.Dispute.ID, _ request: Stripe.Disputes.Update.Request)
-                async throws(Witness.Unimplemented.Error) -> Stripe.Disputes.Dispute
+                async throws(any Swift.Error) -> Stripe.Disputes.Dispute
 
         // https://docs.stripe.com/api/disputes/list.md
         public var list:
-            @Sendable (_ request: Stripe.Disputes.List.Request) async throws(Witness.Unimplemented.Error) ->
+            @Sendable (_ request: Stripe.Disputes.List.Request) async throws(any Swift.Error) ->
                 Stripe.Disputes.List.Response
 
         // https://docs.stripe.com/api/disputes/close.md
         public var close:
-            @Sendable (_ id: Stripe.Disputes.Dispute.ID) async throws(Witness.Unimplemented.Error) -> Stripe.Disputes.Dispute
+            @Sendable (_ id: Stripe.Disputes.Dispute.ID) async throws(any Swift.Error) -> Stripe.Disputes.Dispute
     }
 }
