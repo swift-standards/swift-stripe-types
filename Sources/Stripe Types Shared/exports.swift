@@ -10,4 +10,4 @@
 @_exported import Dual
 @_exported import URLRouting
 @_exported import URLFormCoding
-@_exported import URLFormCodingURLRouting
+@_exported import URL_Routing_Form_Coding

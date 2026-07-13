@@ -2,7 +2,7 @@ import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
 import Tagged_Primitives
-import URLFormCodingURLRouting
+import URL_Routing_Form_Coding
 
 extension Stripe.Products.Coupons {
     @Cases

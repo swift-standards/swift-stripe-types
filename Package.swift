@@ -102,7 +102,7 @@ extension Target.Dependency {
     static var dual: Self { .product(name: "Dual", package: "swift-dual") }
     static var urlRouting: Self { .product(name: "URLRouting", package: "swift-url-routing") }
     static var urlFormCoding: Self { .product(name: "URLFormCoding", package: "swift-url-form-coding") }
-    static var urlFormCodingURLRouting: Self { .product(name: "URLFormCodingURLRouting", package: "swift-url-form-coding") }
+    static var urlFormCodingURLRouting: Self { .product(name: "URL Routing Form Coding", package: "swift-url-routing-form-coding") }
 }
 
 let package = Package(
@@ -164,7 +164,8 @@ let package = Package(
         .package(url: "https://github.com/swift-primitives/swift-tagged-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-dual.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing.git", branch: "main"),
-        .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main")
+        .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-url-routing-form-coding.git", branch: "main")
     ],
     targets: [
         .target(
