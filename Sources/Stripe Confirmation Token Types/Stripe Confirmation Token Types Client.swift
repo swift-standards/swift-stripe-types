@@ -8,6 +8,7 @@ extension Stripe {
     public struct ConfirmationTokenClient: Sendable {
         // https://docs.stripe.com/api/confirmation_tokens/retrieve.md
         public var retrieve:
-            @Sendable (_ id: ConfirmationToken.ID) async throws(any Swift.Error) -> ConfirmationToken
+            @Sendable (_ id: Stripe_Types_Models.ConfirmationToken.ID) async throws(any Swift.Error) ->
+                Stripe_Types_Models.ConfirmationToken
     }
 }
