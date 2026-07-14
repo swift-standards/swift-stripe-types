@@ -8,24 +8,6 @@
 import Foundation
 import URLRouting
 
-extension Path<PathBuilder.Component<String>> {
-    package static var v1: Path<PathBuilder.Component<String>> { Path {
-        "v1"
-    } }
-
-    package static var v2: Path<PathBuilder.Component<String>> { Path {
-        "v2"
-    } }
-
-    package static var v3: Path<PathBuilder.Component<String>> { Path {
-        "v3"
-    } }
-
-    package static var v4: Path<PathBuilder.Component<String>> { Path {
-        "v4"
-    } }
-
-    package static var v5: Path<PathBuilder.Component<String>> { Path {
-        "v5"
-    } }
-}
+// The Path version constants (.v1 … .v5) are the canonical URLRouting
+// declarations (PointFree.Path.Versions.swift); the local package copy was
+// removed in the W3 decomposition after it went ambiguous against them.
