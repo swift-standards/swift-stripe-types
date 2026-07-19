@@ -247,7 +247,8 @@ let package = Package(
             name: "Stripe Types Shared Tests",
             dependencies: [
                 .stripeTypesShared,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .tagged
             ]
         ),
         .testTarget(

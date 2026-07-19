@@ -88,7 +88,13 @@ public struct Expandable<Model: Codable, ID: Codable & Hashable & Sendable>: Cod
         if let container = try decoder.singleValueContainerIfPresentAndNotNull() {
             do {
                 self._state = .unexpanded(try container.decode(ID.self))
-            } catch DecodingError.typeMismatch(let type, _) where type is ID.Type {
+            } catch is DecodingError {
+                // `ID` may be a wrapper type (e.g. `Tagged<Tag, String>`) whose own
+                // `init(from:)` reports the typeMismatch against its *underlying*
+                // wire type, not `ID.self` — so a guard comparing the thrown type's
+                // identity to `ID.self` never matches and the error propagates
+                // uncaught. Fall back structurally: any decoding failure while
+                // reading `ID` means the payload was the expanded `Model` instead.
                 self._state = .expanded(try container.decode(Model.self))
             }
         } else {
