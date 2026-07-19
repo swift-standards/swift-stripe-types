@@ -35,30 +35,50 @@ extension Stripe.Fraud.EarlyFraudWarnings.API {
                     }
                 }
 
-                //                URLRouting.Route(.case(Stripe.Fraud.EarlyFraudWarnings.API.list)) {
-                //                    Method.get
-                //                    Path.v1
-                //                    Path.radar
-                //                    Path.earlyFraudWarnings
-                //                    Query {
-                //                        Optionally {
-                //                            Field("charge") { Parse(.string) }
-                //                        }
-                //                        Optionally {
-                //                            Field("payment_intent") { Parse(.string) }
-                //                        }
-                //                        Optionally {
-                //                            Field("ending_before") { Parse(.string) }
-                //                        }
-                //                        Optionally {
-                //                            Field("limit") { Int.parser() }
-                //                        }
-                //                        Optionally {
-                //                            Field("starting_after") { Parse(.string) }
-                //                        }
-                //                    }
-                //                    .query(Stripe.Fraud.EarlyFraudWarnings.API.List.Request?.self)
-                //                }
+                URLRouting.Route(.case(Stripe.Fraud.EarlyFraudWarnings.API.cases.list)) {
+                    Method.get
+                    Path.v1
+                    Path.radar
+                    Path.earlyFraudWarnings
+                    Parse(
+                        .convert(
+                            apply: { ($0.0.0.0.0, $0.0.0.0.1, $0.0.0.1, $0.0.1, $0.1) },
+                            unapply: { (((($0.0, $0.1), $0.2), $0.3), $0.4) }
+                        )
+                        .map(
+                            .memberwise(
+                                Stripe.Fraud.EarlyFraudWarnings.API.List.Request.init,
+                                { ($0.charge, $0.paymentIntent, $0.endingBefore, $0.limit, $0.startingAfter) }
+                            )
+                        )
+                    ) {
+                        Query {
+                            Optionally {
+                                Field("charge") {
+                                    Parse(.string.representing(Stripe.Charges.Charge.ID.self))
+                                }
+                            }
+                            Optionally {
+                                Field("payment_intent") {
+                                    Parse(
+                                        .string.representing(
+                                            Stripe.PaymentIntents.PaymentIntent.ID.self
+                                        )
+                                    )
+                                }
+                            }
+                            Optionally {
+                                Field("ending_before") { Parse(.string) }
+                            }
+                            Optionally {
+                                Field("limit") { Int.parser() }
+                            }
+                            Optionally {
+                                Field("starting_after") { Parse(.string) }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
