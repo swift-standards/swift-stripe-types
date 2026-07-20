@@ -244,6 +244,15 @@ let package = Package(
             ]
         ),
         .testTarget(
+            name: "Router Parity Tests",
+            dependencies: [
+                .stripeTypes,
+                .product(name: "URL Routing Test Support", package: "swift-url-routing")
+            ],
+            path: "Tests/Router Parity Tests",
+            exclude: ["__Corpus__"]
+        ),
+        .testTarget(
             name: "Stripe Types Shared Tests",
             dependencies: [
                 .stripeTypesShared,
