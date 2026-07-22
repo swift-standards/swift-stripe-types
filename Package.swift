@@ -101,7 +101,12 @@ extension Target.Dependency {
     static var tagged: Self { .product(name: "Tagged Primitives", package: "swift-tagged-primitives") }
     static var dual: Self { .product(name: "Dual", package: "swift-dual") }
     static var urlRouting: Self { .product(name: "URLRouting", package: "swift-url-routing") }
-    static var urlFormCoding: Self { .product(name: "URLFormCoding", package: "swift-url-form-coding") }
+    static var htmlFormCoder: Self {
+        .product(name: "HTML Form Coder Codable", package: "swift-html-form-coder")
+    }
+    static var htmlStandard: Self {
+        .product(name: "HTML Standard", package: "swift-html-standard")
+    }
     static var urlFormCodingURLRouting: Self { .product(name: "URL Routing Form Coding", package: "swift-url-routing-form-coding") }
 }
 
@@ -164,7 +169,8 @@ let package = Package(
         .package(url: "https://github.com/swift-primitives/swift-tagged-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-dual.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing.git", branch: "main"),
-        .package(url: "https://github.com/swift-foundations/swift-url-form-coding.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-html-form-coder.git", branch: "main"),
+        .package(url: "https://github.com/swift-standards/swift-html-standard.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing-form-coding.git", branch: "main")
     ],
     targets: [
@@ -174,7 +180,8 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
+                .htmlStandard,
                 .urlFormCodingURLRouting,
             ]
         ),
@@ -184,7 +191,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged,
                 .stripeTypesShared
@@ -198,7 +205,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged,
                 .stripeBalance,
@@ -283,7 +290,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -303,7 +310,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -323,7 +330,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -343,7 +350,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -363,7 +370,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -383,7 +390,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -403,7 +410,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -423,7 +430,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -443,7 +450,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -463,7 +470,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -483,7 +490,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -503,7 +510,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -523,7 +530,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -543,7 +550,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -563,7 +570,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -583,7 +590,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -603,7 +610,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -623,7 +630,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -643,7 +650,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -663,7 +670,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -683,7 +690,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -703,7 +710,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -723,7 +730,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -743,7 +750,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -763,7 +770,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -783,7 +790,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -803,7 +810,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -823,7 +830,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -843,7 +850,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -863,7 +870,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -883,7 +890,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -903,7 +910,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -923,7 +930,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -943,7 +950,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -963,7 +970,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -983,7 +990,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -1003,7 +1010,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -1023,7 +1030,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -1043,7 +1050,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]
@@ -1063,7 +1070,7 @@ let package = Package(
                 .dependencies,
                 .dual,
                 .urlRouting,
-                .urlFormCoding,
+                .htmlFormCoder,
                 .urlFormCodingURLRouting,
                 .tagged
             ]

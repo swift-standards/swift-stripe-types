@@ -6,21 +6,22 @@
 //
 
 import Foundation
-import URLFormCoding
+import HTML_Form_Coder_Codable
+import HTML_Standard
 
-extension Form.Decoder {
-    package static var stripe: Form.Decoder {
+extension HTML.Form.Coder.Decoder {
+    package static var stripe: HTML.Form.Coder.Decoder {
         .init(
-            dateDecodingStrategy: .secondsSince1970,
+            dateDecodingStrategy: .seconds,
             arrayParsingStrategy: .bracketsWithIndices
         )
     }
 }
 
-extension Form.Encoder {
-    package static var stripe: Form.Encoder {
+extension HTML.Form.Coder.Encoder {
+    package static var stripe: HTML.Form.Coder.Encoder {
         .init(
-            dateEncodingStrategy: .secondsSince1970,
+            dateEncodingStrategy: .seconds,
             arrayEncodingStrategy: .bracketsWithIndices
         )
     }
