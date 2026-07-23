@@ -1,7 +1,7 @@
 import Foundation
 import Stripe_Types_Models
 import Stripe_Types_Shared
-import URL_Routing_Form_Coding
+import URLRouting
 
 extension Stripe.Billing.Credit.Grant {
     @Cases
