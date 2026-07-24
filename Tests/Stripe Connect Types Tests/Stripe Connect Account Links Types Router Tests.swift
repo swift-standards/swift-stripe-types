@@ -2,6 +2,7 @@ import Foundation
 import Stripe_Types_Shared
 import Testing
 import URLRouting
+import URL_Routing_Foundation_Integration
 
 @testable import Stripe_Connect_Types
 @testable import Stripe_Types_Models

@@ -274,7 +274,8 @@ let package = Package(
             name: "Stripe Types Tests",
             dependencies: [
                 .stripeTypes,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -293,7 +294,8 @@ let package = Package(
             name: "Stripe Balance Types Tests",
             dependencies: [
                 .stripeBalance,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -312,7 +314,8 @@ let package = Package(
             name: "Stripe Balance Transactions Types Tests",
             dependencies: [
                 .stripeBalanceTransactions,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -331,7 +334,8 @@ let package = Package(
             name: "Stripe Charges Types Tests",
             dependencies: [
                 .stripeCharges,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -350,7 +354,8 @@ let package = Package(
             name: "Stripe Customers Types Tests",
             dependencies: [
                 .stripeCustomers,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -369,7 +374,8 @@ let package = Package(
             name: "Stripe Customer Session Types Tests",
             dependencies: [
                 .stripeCustomerSession,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -388,7 +394,8 @@ let package = Package(
             name: "Stripe Disputes Types Tests",
             dependencies: [
                 .stripeDisputes,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -407,7 +414,8 @@ let package = Package(
             name: "Stripe Events Types Tests",
             dependencies: [
                 .stripeEvents,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -445,7 +453,8 @@ let package = Package(
             name: "Stripe Files Types Tests",
             dependencies: [
                 .stripeFiles,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -464,7 +473,8 @@ let package = Package(
             name: "Stripe File Links Types Tests",
             dependencies: [
                 .stripeFileLinks,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -502,7 +512,8 @@ let package = Package(
             name: "Stripe Payment Intents Types Tests",
             dependencies: [
                 .stripePaymentIntents,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -559,7 +570,8 @@ let package = Package(
             name: "Stripe Payouts Types Tests",
             dependencies: [
                 .stripePayouts,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -578,7 +590,8 @@ let package = Package(
             name: "Stripe Refunds Types Tests",
             dependencies: [
                 .stripeRefunds,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -597,7 +610,8 @@ let package = Package(
             name: "Stripe Confirmation Token Types Tests",
             dependencies: [
                 .stripeConfirmationToken,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -635,7 +649,8 @@ let package = Package(
             name: "Stripe Payment Methods Types Tests",
             dependencies: [
                 .stripePaymentMethods,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -654,7 +669,8 @@ let package = Package(
             name: "Stripe Products Types Tests",
             dependencies: [
                 .stripeProducts,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -692,7 +708,8 @@ let package = Package(
             name: "Stripe Payment Link Types Tests",
             dependencies: [
                 .stripePaymentLink,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -711,7 +728,8 @@ let package = Package(
             name: "Stripe Billing Types Tests",
             dependencies: [
                 .stripeBilling,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -730,7 +748,8 @@ let package = Package(
             name: "Stripe Capital Types Tests",
             dependencies: [
                 .stripeCapital,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -749,7 +768,8 @@ let package = Package(
             name: "Stripe Connect Types Tests",
             dependencies: [
                 .stripeConnect,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -768,7 +788,8 @@ let package = Package(
             name: "Stripe Fraud Types Tests",
             dependencies: [
                 .stripeFraud,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -920,7 +941,8 @@ let package = Package(
             name: "Stripe Tax Types Tests",
             dependencies: [
                 .stripeTax,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(
@@ -1015,7 +1037,8 @@ let package = Package(
             name: "Stripe Webhooks Types Tests",
             dependencies: [
                 .stripeWebhooks,
-                .dependenciesTestSupport
+                .dependenciesTestSupport,
+                .product(name: "URL Routing Foundation Integration", package: "swift-url-routing")
             ]
         ),
         .target(

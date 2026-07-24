@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 import URLRouting
+import URL_Routing_Foundation_Integration
 
 @testable import Stripe_Customers_Types
 @testable import Stripe_Payment_Intents_Types
