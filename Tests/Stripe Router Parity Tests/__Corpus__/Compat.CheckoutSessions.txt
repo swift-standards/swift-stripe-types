@@ -1,4 +1,4 @@
 == checkout.sessions.create ==
-method: Method(rawValue: "POST", isSafe: false, isIdempotent: false, isCacheable: true)
+method: POST
 path: /v1/checkout/sessions
 body(utf8): cancel_url=https%3A%2F%2Fexample.com%2Fcancel&client_reference_id=parity-fixture-1&mode=payment&success_url=https%3A%2F%2Fexample.com%2Fsuccess
